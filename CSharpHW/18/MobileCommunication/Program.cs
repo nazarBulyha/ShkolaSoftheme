@@ -29,9 +29,9 @@ namespace MobileCommunication
             account3.MakeCall(account4.Number);
             account5.MakeCall(account6.Number);
 
-            account1.SendSMS(account2.Number);
-            account3.SendSMS(account4.Number);
-            account5.SendSMS(account6.Number);
+            //account1.SendSMS(account2.Number);
+            //account3.SendSMS(account4.Number);
+            //account5.SendSMS(account6.Number);
 
             Console.ReadKey();
         }

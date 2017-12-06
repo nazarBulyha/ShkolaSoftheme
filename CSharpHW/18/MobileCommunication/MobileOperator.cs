@@ -24,7 +24,7 @@ namespace MobileCommunication
         {
             try
             {
-                _callMaker = (IMobileAccount)sender;
+                _callMaker = sender as IMobileAccount;
                 _callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
 
                 if (_callReceiver == null)
