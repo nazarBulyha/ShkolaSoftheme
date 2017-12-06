@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C9399CE8-9613-4249-A62D-FDBCA2B089B7}</ProjectGuid>
+    <ProjectGuid>{4C2E56CF-7E80-4942-B6D6-059844A1FD62}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MobileOperator</RootNamespace>
-    <AssemblyName>MobileOperator</AssemblyName>
+    <RootNamespace>MobileCommunication</RootNamespace>
+    <AssemblyName>MobileCommunication</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,13 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressBook.cs" />
+    <Compile Include="CallLog.cs" />
+    <Compile Include="Extensions\ListExtension.cs" />
+    <Compile Include="Interfaces\ILog.cs" />
     <Compile Include="Interfaces\IMobileAccount.cs" />
     <Compile Include="Interfaces\IMobileOperator.cs" />
     <Compile Include="MobileAccount.cs" />
     <Compile Include="MobileOperator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RouteController.cs" />
+    <Compile Include="Extensions\AccountEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

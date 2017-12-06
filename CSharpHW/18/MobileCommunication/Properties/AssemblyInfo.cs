@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MobileOperator")]
+[assembly: AssemblyTitle("MobileCommunication")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MobileOperator")]
+[assembly: AssemblyProduct("MobileCommunication")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c9399ce8-9613-4249-a62d-fdbca2b089b7")]
+[assembly: Guid("4c2e56cf-7e80-4942-b6d6-059844a1fd62")]
 
 // Version information for an assembly consists of the following four values:
 //
