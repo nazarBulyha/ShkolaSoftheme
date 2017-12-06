@@ -19,11 +19,15 @@ namespace MobileCommunication
 
         public MobileAccount(IMobileOperator mobileOperator)
         {
+            //define standard numbers in account address book 
+            //AddressBook = new AddressBook( {"", 2219321 }, { "", 2219322 } );
             _mobileOperator = mobileOperator;
+
             if (Number == 2219320 || Number == 0)
             {
                 Number = mobileOperator.CreateNumber();
             }
+
         }
 
         public void MakeCall(int number)
@@ -33,6 +37,9 @@ namespace MobileCommunication
                 SenderNumber = Number,
                 ReceiverNumber = number
             };
+
+            //TODO: logic with Address book
+            Console.WriteLine($"Trying to deal {number}.");
 
             OnStartCallHandler += _mobileOperator.TryMakeCall;
             OnStartCallHandler?.Invoke(this, numberEventArgs);
@@ -48,7 +55,10 @@ namespace MobileCommunication
             };
 
             //TODO: make logic with address book
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Call received from {number}");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine();
 
             //if account want to receive a call
             if (true)
@@ -59,11 +69,13 @@ namespace MobileCommunication
             }
         }
 
+        //TODO: realize method as it is in MakeCall
         public void SendSMS(int number)
         {
 
         }
 
+        //TODO: realize method as it is in ReceiveCall
         public void ReceiveSMS(int number)
         {
 

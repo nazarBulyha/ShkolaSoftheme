@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MobileCommunication.Interfaces
 {
@@ -9,8 +8,11 @@ namespace MobileCommunication.Interfaces
         CallLog CallLogs { get; set; }
 
         int CreateNumber();
+
         void TryReceiveSMS(object sender, AccountEventArgs e);
+
         void TryMakeCall(object sender, AccountEventArgs e);
+
         void EndCall(object sender, AccountEventArgs e);
     }
 }

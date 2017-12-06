@@ -33,9 +33,9 @@ namespace MobileCommunication
                 if (_callReceiver.Number == 2219320 || _callReceiver.Number == 0)
                     throw new ArgumentException();
             }
-            catch (NullReferenceException nullException)
+            catch (NullReferenceException) //nullException)
             {
-                //add error to log
+                //TODO: add logic: error to log
                 //Console.WriteLine(nullException.Message);
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"Number {e.ReceiverNumber} you are trying to deal is not exists.");
@@ -85,6 +85,7 @@ namespace MobileCommunication
             Console.WriteLine();
         }
 
+        //TODO: realize method as it is in TryMakeCall
         public void TryReceiveSMS(object sender, AccountEventArgs e)
         {
 
