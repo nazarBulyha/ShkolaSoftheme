@@ -30,13 +30,13 @@ namespace MobileCommunication
         {
             numberEventArgs = new AccountEventArgs
             {
-                SenderNumber = this.Number,
+                SenderNumber = Number,
                 ReceiverNumber = number
             };
 
             OnStartCallHandler += _mobileOperator.TryMakeCall;
-
             OnStartCallHandler?.Invoke(this, numberEventArgs);
+            OnStartCallHandler -= _mobileOperator.TryMakeCall;
         }
 
         public void ReceiveCall(int number)
@@ -50,12 +50,10 @@ namespace MobileCommunication
             //TODO: make logic with address book
             Console.WriteLine($"Call received from {number}");
 
-            OnStartCallHandler -= _mobileOperator.TryMakeCall;
-            OnEndCallHandler += _mobileOperator.EndCall;
-
-            //if I want to receive a call
+            //if account want to receive a call
             if (true)
             {
+                OnEndCallHandler += _mobileOperator.EndCall;
                 OnEndCallHandler?.Invoke(this, numberEventArgs);
                 OnEndCallHandler -= _mobileOperator.EndCall;
             }

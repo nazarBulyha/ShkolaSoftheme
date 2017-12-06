@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using MobileCommunication.Interfaces;
+using System.Linq;
+using System;
 
 namespace MobileCommunication
 {
@@ -20,24 +22,39 @@ namespace MobileCommunication
 
         public void TryMakeCall(object sender, AccountEventArgs e)
         {
-            _callMaker = (IMobileAccount)sender;
-            _callReceiver = new MobileAccount(this);
-
-            //check if account exists. If not end call for sender, else get receiver from accounts list
-            foreach (var account in MobileAccounts)
+            try
             {
-                if (e.ReceiverNumber.Equals(account.Number))
-                {
-                    _callReceiver = account;
-                    break;
-                }
+                _callMaker = (IMobileAccount)sender;
+                _callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
+
+                if (_callReceiver == null)
+                    throw new NullReferenceException();
+
+                if (_callReceiver.Number == 2219320 || _callReceiver.Number == 0)
+                    throw new ArgumentException();
             }
-            if(_callReceiver.Number == 2219320)
+            catch (NullReferenceException nullException)
             {
-                //say user that number doesn't exists
-                System.Console.WriteLine($"Number {e.ReceiverNumber} you are trying to deal is not available.");
+                //add error to log
+                //Console.WriteLine(nullException.Message);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Number {e.ReceiverNumber} you are trying to deal is not exists.");
+                Console.ForegroundColor = ConsoleColor.Gray;
 
-                EndCall(this, e);
+                CallCrashed(e);
+                return;
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine($"Number {e.ReceiverNumber} you are trying to deal is not available.");
+
+                CallCrashed(e);
+                return;
+            }
+            catch (Exception exceptionStandart)
+            {
+                Console.WriteLine(exceptionStandart.Message);
+                return;
             }
 
             numberEventArgs = new AccountEventArgs
@@ -54,6 +71,18 @@ namespace MobileCommunication
         {
             //end call for both users
             //if number doesn't exists, end call for one user
+
+        }
+
+        private void CallCrashed(AccountEventArgs e)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Call to {e.ReceiverNumber} hasn't started.");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"For more details open call log.");
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            Console.WriteLine();
         }
 
         public void TryReceiveSMS(object sender, AccountEventArgs e)
