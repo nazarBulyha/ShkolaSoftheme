@@ -1,34 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using MobileCommunication.Interfaces;
+using System.Collections.Generic;
 
 namespace MobileCommunication
 {
-    class AddressBook
-    {
-        protected Dictionary<int, string> NumberList { get; set; }
+    using System.Linq;
 
-        public AddressBook(params Dictionary<string, int>[] list)
+    internal class AddressBook
+    {
+        protected List<IMobileAccount> NumberList { get; set; }
+
+        public AddressBook(params IMobileAccount[] mobileAccounts)
         {
-            foreach (var values in list)
-            {
-                foreach (var element in values)
-                {
-                    NumberList.Add(element.Value, element.Key);
-                }
-            }
+            NumberList.AddRange(mobileAccounts);
         }
 
         public string GetAccountNameByNumber(int number)
         {
-            if (NumberList.ContainsKey(number))
-            {
-                var accountName = "";
-                NumberList.TryGetValue(number, out accountName);
-                return accountName;
-            }
-            else
-            {
-                return number.ToString();
-            }
+            var accountName = NumberList.Select(account => account.Number == number).ToString();
+
+            return accountName;
         }
     }
 }

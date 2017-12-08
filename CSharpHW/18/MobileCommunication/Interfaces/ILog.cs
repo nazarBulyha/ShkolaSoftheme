@@ -1,18 +1,9 @@
-﻿using System;
-
-namespace MobileCommunication.Interfaces
+﻿namespace MobileCommunication.Interfaces
 {
-    interface ILog
+    internal interface ILog
     {
-        string ErrorMessage { get; set; }
-        string SuccessMessage { get; set; }
-        DateTime DateTime { get; set; }
-        string Name { get; set; }
-        int Number { get; set; }
+        void WriteToFile(string message, int sender, int receiver, bool isError);
 
-        void WriteToFileSuccess(/*parameters*/);
-
-        //overload method WriteToFile
-        void WriteToFileWithException(/*parameters*/);
+        void ReadFromFile(/*parameters*/);
     }
 }

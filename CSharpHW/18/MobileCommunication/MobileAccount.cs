@@ -1,14 +1,19 @@
 ﻿using System;
 using MobileCommunication.Interfaces;
+using MobileCommunication.Extensions;
 
 namespace MobileCommunication
 {
-    class MobileAccount : IMobileAccount
+    internal class MobileAccount : IMobileAccount
     {
-        private IMobileOperator _mobileOperator;
-        private event EventHandler<AccountEventArgs> OnStartCallHandler;
-        private event EventHandler<AccountEventArgs> OnEndCallHandler;
-        AccountEventArgs numberEventArgs;
+        public IMobileOperator Operator { get; }
+
+        public event EventHandler<AccountEventArgs> OnStartCallHandler;
+        public event EventHandler<AccountEventArgs> OnEndCallHandler;
+        public event EventHandler<AccountEventArgs> OnStartSmsHandler;
+        public event EventHandler<AccountEventArgs> OnEndSmsHandler;
+
+        private AccountEventArgs numberEventArgs;
 
         public int Number { get; set; }
         public string Name { get; set; }
@@ -19,15 +24,15 @@ namespace MobileCommunication
 
         public MobileAccount(IMobileOperator mobileOperator)
         {
-            //define standard numbers in account address book 
-            //AddressBook = new AddressBook( {"", 2219321 }, { "", 2219322 } );
-            _mobileOperator = mobileOperator;
+            Operator = mobileOperator;
 
-            if (Number == 2219320 || Number == 0)
-            {
-                Number = mobileOperator.CreateNumber();
-            }
-
+            Number = mobileOperator.CreateNumber();
+            Name = "Ivan";
+            Surname = "Ivanovych";
+            Email = "";
+            DateBirth = DateTime.Now;
+            // define standard numbers in account address book 
+            //AddressBook = new AddressBook( new MobileAccount(this), { "", 2219322 } );
         }
 
         public void MakeCall(int number)
@@ -38,47 +43,67 @@ namespace MobileCommunication
                 ReceiverNumber = number
             };
 
-            //TODO: logic with Address book
+            // TODO: logic with Address book
+
+
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Trying to deal {number}.");
 
-            OnStartCallHandler += _mobileOperator.TryMakeCall;
             OnStartCallHandler?.Invoke(this, numberEventArgs);
-            OnStartCallHandler -= _mobileOperator.TryMakeCall;
+        }
+
+        public void SendSms(int number)
+        {
+            numberEventArgs = new AccountEventArgs
+            {
+                SenderNumber = Number,
+                ReceiverNumber = number
+            };
+
+            // TODO: logic with Address book
+            Console.WriteLine($"Trying to send SMS to {number}.");
+
+            OnStartSmsHandler?.Invoke(this, numberEventArgs);
         }
 
         public void ReceiveCall(int number)
         {
-            numberEventArgs = new AccountEventArgs
-            {
-                SenderNumber = number,
-                ReceiverNumber = this.Number
-            };
+            // TODO: make logic with address book
 
-            //TODO: make logic with address book
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write("Call");
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Call received from {number}");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write(" received from ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"{number}.");
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
 
-            //if account want to receive a call
+            // if account want to receive a call
             if (true)
             {
-                OnEndCallHandler += _mobileOperator.EndCall;
                 OnEndCallHandler?.Invoke(this, numberEventArgs);
-                OnEndCallHandler -= _mobileOperator.EndCall;
             }
         }
 
-        //TODO: realize method as it is in MakeCall
-        public void SendSMS(int number)
+        public void ReceiveSms(int number)
         {
+            // TODO: make logic with address book
 
-        }
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write("Sms");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(" received from ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"{number}.");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
 
-        //TODO: realize method as it is in ReceiveCall
-        public void ReceiveSMS(int number)
-        {
-
+            // if account want to receive a call
+            if (true)
+            {
+                OnEndSmsHandler?.Invoke(this, numberEventArgs);
+            }
         }
     }
 }

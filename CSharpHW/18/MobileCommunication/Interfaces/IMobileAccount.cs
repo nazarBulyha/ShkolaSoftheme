@@ -1,8 +1,9 @@
 ﻿using System;
+using MobileCommunication.Extensions;
 
 namespace MobileCommunication.Interfaces
 {
-    interface IMobileAccount
+    internal interface IMobileAccount
     {
         int Number { get; set; }
         string Name { get; set; }
@@ -11,9 +12,14 @@ namespace MobileCommunication.Interfaces
         DateTime DateBirth { get; set; }
         AddressBook AddressBook { get; set; }
 
-        void SendSMS(int number);
+        event EventHandler<AccountEventArgs> OnStartCallHandler;
+        event EventHandler<AccountEventArgs> OnEndCallHandler;
+        event EventHandler<AccountEventArgs> OnStartSmsHandler;
+        event EventHandler<AccountEventArgs> OnEndSmsHandler;
 
-        void ReceiveSMS(int number);
+        void SendSms(int number);
+
+        void ReceiveSms(int number);
 
         void MakeCall(int number);
 

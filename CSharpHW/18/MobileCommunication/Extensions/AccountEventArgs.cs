@@ -1,6 +1,6 @@
-﻿namespace MobileCommunication
+﻿namespace MobileCommunication.Extensions
 {
-    class AccountEventArgs
+    internal class AccountEventArgs
     {
         public int SenderNumber { get; set; }
         public int ReceiverNumber { get; set; }

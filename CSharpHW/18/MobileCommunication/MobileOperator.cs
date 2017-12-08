@@ -1,99 +1,181 @@
-﻿using System.Collections.Generic;
-using MobileCommunication.Interfaces;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System;
+using MobileCommunication.Extensions;
+
+using MobileCommunication.Interfaces;
 
 namespace MobileCommunication
 {
-    class MobileOperator : IMobileOperator
+    internal class MobileOperator : IMobileOperator
     {
-        public MobileOperator()
-        {
-        }
-
-        private int Number = 2219320;
+        private IMobileAccount callMaker;
+        private IMobileAccount callReceiver;
+        private int number = 2219320;
 
         public List<IMobileAccount> MobileAccounts { get; set; }
-        public CallLog CallLogs { get; set; }
+        public CallLog CallLogger { get; set; } = new CallLog();
+        public AccountEventArgs NumberEventArgs { get; private set; }
 
-        private IMobileAccount _callMaker;
-        private IMobileAccount _callReceiver;
-        AccountEventArgs numberEventArgs;
+        public IMobileAccount CreateAccount(IMobileOperator mobileOperator)
+        {
+            var account = new MobileAccount(this);
 
-        public void TryMakeCall(object sender, AccountEventArgs e)
+            account.OnStartCallHandler += TryMakeCall;
+            account.OnEndCallHandler += EndCall;
+            account.OnStartSmsHandler += TrySendSms;
+            account.OnEndSmsHandler += ReceiveSms;
+
+            return account;
+        }
+
+        public IMobileAccount SetAccountParametres(IMobileAccount account, string name, string surname, string email, DateTime dateTime)
+        {
+            account.Name = name;
+            account.Surname = surname;
+            account.Email = email;
+            account.DateBirth = dateTime;
+
+            return account;
+        }
+
+        public int CreateNumber()
+        {
+            return number++;
+        }
+
+        private void TryMakeCall(object sender, AccountEventArgs e)
         {
             try
             {
-                _callMaker = (IMobileAccount)sender;
-                _callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
+                callMaker = (IMobileAccount)sender;
+                callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
 
-                if (_callReceiver == null)
+                if (callReceiver == null)
                     throw new NullReferenceException();
 
-                if (_callReceiver.Number == 2219320 || _callReceiver.Number == 0)
+                if (callMaker.Number == 2219320 || callMaker.Number == 0)
+                    throw new NullReferenceException();
+
+                if (callReceiver.Number == 2219320 || callReceiver.Number == 0)
                     throw new ArgumentException();
             }
-            catch (NullReferenceException) //nullException)
+            catch (NullReferenceException)
             {
-                //TODO: add logic: error to log
-                //Console.WriteLine(nullException.Message);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Number {e.ReceiverNumber} you are trying to deal is not exists.");
-                Console.ForegroundColor = ConsoleColor.Gray;
-
+                callMaker.OnEndCallHandler -= EndCall;
                 CallCrashed(e);
+
                 return;
             }
             catch (ArgumentException)
             {
-                Console.WriteLine($"Number {e.ReceiverNumber} you are trying to deal is not available.");
-
+                callMaker.OnEndCallHandler -= EndCall;
                 CallCrashed(e);
+
                 return;
             }
             catch (Exception exceptionStandart)
             {
                 Console.WriteLine(exceptionStandart.Message);
+                callMaker.OnEndCallHandler -= EndCall;
+                CallCrashed(e);
+
                 return;
             }
 
-            numberEventArgs = new AccountEventArgs
+            NumberEventArgs = new AccountEventArgs
             {
-                SenderNumber = _callMaker.Number,
-                ReceiverNumber = _callReceiver.Number
+                SenderNumber = callMaker.Number,
+                ReceiverNumber = callReceiver.Number
             };
 
-            _callReceiver.ReceiveCall(_callMaker.Number);
+            callReceiver.ReceiveCall(callMaker.Number);
         }
 
-        //TODO: realize method
-        public void EndCall(object sender, AccountEventArgs e)
+        private void TrySendSms(object sender, AccountEventArgs e)
         {
-            //end call for both users
-            //if number doesn't exists, end call for one user
+            try
+            {
+                callMaker = (IMobileAccount)sender;
+                callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
+
+                if (callReceiver == null)
+                    throw new NullReferenceException();
+
+                if (callMaker.Number == 2219320 || callMaker.Number == 0)
+                    throw new NullReferenceException();
+
+                if (callReceiver.Number == 2219320 || callReceiver.Number == 0)
+                    throw new ArgumentException();
+            }
+            catch (NullReferenceException)
+            {
+                callMaker.OnEndSmsHandler -= ReceiveSms;
+                SmsCrashed(e);
+
+                return;
+            }
+            catch (ArgumentException)
+            {
+                callMaker.OnEndSmsHandler -= ReceiveSms;
+                SmsCrashed(e);
+
+                return;
+            }
+            catch (Exception standartException)
+            {
+                Console.WriteLine(standartException.Message + Environment.NewLine);
+                callMaker.OnEndSmsHandler -= ReceiveSms;
+                SmsCrashed(e);
+
+                return;
+            }
+
+            NumberEventArgs = new AccountEventArgs
+            {
+                SenderNumber = callMaker.Number,
+                ReceiverNumber = callReceiver.Number
+            };
+
+            callReceiver.ReceiveSms(callMaker.Number);
+        }
+
+        // TODO: Implement logic after receiving Call
+        private static void EndCall(object sender, AccountEventArgs e)
+        {
+            // end call for both users
+            // if number doesn't exists, end call for one user
+
+        }
+
+        // TODO: Implement logic after receiving SMS
+        private static void ReceiveSms(object sender, AccountEventArgs e)
+        {
+            // if sender number isn't in blocked numbers than receive sms
 
         }
 
         private void CallCrashed(AccountEventArgs e)
         {
+            CallLogger.WriteToFile("Call crashed", e.SenderNumber, e.ReceiverNumber, isError : true);
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Call to {e.ReceiverNumber} hasn't started.");
+            Console.WriteLine($"Number {e.ReceiverNumber} you are trying to deal is not exists.");
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"For more details open call log.");
-            Console.ForegroundColor = ConsoleColor.Gray;
-
-            Console.WriteLine();
+            Console.WriteLine($"For more details open call log. {Environment.NewLine}");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
-        //TODO: realize method as it is in TryMakeCall
-        public void TryReceiveSMS(object sender, AccountEventArgs e)
+        private void SmsCrashed(AccountEventArgs e)
         {
+            CallLogger.WriteToFile("Sms wasn't sent. Call receiver isn't exists.", e.SenderNumber, e.ReceiverNumber, isError: true);
 
-        }
-
-        public int CreateNumber()
-        {
-            return Number++;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Number {e.ReceiverNumber} you are trying to send SMS is not available.");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"For more details open call log. {Environment.NewLine}");
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
