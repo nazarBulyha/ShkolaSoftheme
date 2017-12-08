@@ -39,9 +39,7 @@ namespace MobileCommunication
             var andriy = myOperator.CreateAccount(myOperator);
             myOperator.SetAccountParametres(vasyl, "Andriy", "Andriyovych", "andriy.andriyovych@gmail.com", new DateTime(1997, 10, 16));
 
-
-            myOperator.MobileAccounts.AddMany(vasyl, petro, taras, nazar, igor, andriy);
-
+            //myOperator.MobileAccounts.AddMany(vasyl, petro, taras, nazar, igor, andriy);
 
             vasyl.MakeCall(adminAccount.Number);
             vasyl.MakeCall(tempAccount.Number);
@@ -55,6 +53,8 @@ namespace MobileCommunication
             vasyl.SendSms(petro.Number);
             taras.SendSms(nazar.Number);
             igor.SendSms(andriy.Number);
+
+            // TODO: CallLog ReadFromFile and write to console
 
             Console.ReadKey();
         }

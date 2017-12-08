@@ -1,6 +1,7 @@
 ﻿using System;
 using MobileCommunication.Interfaces;
 using MobileCommunication.Extensions;
+using System.Collections.Generic;
 
 namespace MobileCommunication
 {
@@ -16,23 +17,24 @@ namespace MobileCommunication
         private AccountEventArgs numberEventArgs;
 
         public int Number { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Email { get; set; }
-        public DateTime DateBirth { get; set; }
+        public string Name { get; set; } = "Ivan";
+        public string Surname { get; set; } = "Ivanovych";
+        public string Email { get; set; } = "";
+        public DateTime DateBirth { get; set; } = DateTime.Now;
         public AddressBook AddressBook { get; set; }
 
         public MobileAccount(IMobileOperator mobileOperator)
         {
             Operator = mobileOperator;
-
             Number = mobileOperator.CreateNumber();
-            Name = "Ivan";
-            Surname = "Ivanovych";
-            Email = "";
-            DateBirth = DateTime.Now;
-            // define standard numbers in account address book 
-            //AddressBook = new AddressBook( new MobileAccount(this), { "", 2219322 } );
+
+            // define standard numbers in account address book
+            var standartAccount1 = mobileOperator.SetAccountParametres(this, "standartName1", "standartSurname1", "", DateTime.Now);
+            var standartAccount2 = mobileOperator.SetAccountParametres(this, "standartName2", "standartSurname2", "", DateTime.Now);
+            var standartAccount3 = mobileOperator.SetAccountParametres(this, "standartName3", "standartSurname3", "", DateTime.Now);
+            var standartAccount4 = mobileOperator.SetAccountParametres(this, "standartName4", "standartSurname4", "", DateTime.Now);
+                                                                    
+            AddressBook = new AddressBook(new List<IMobileAccount>() { standartAccount1, standartAccount2, standartAccount3, standartAccount4 });
         }
 
         public void MakeCall(int number)
@@ -43,11 +45,10 @@ namespace MobileCommunication
                 ReceiverNumber = number
             };
 
+            Console.ForegroundColor = ConsoleColor.White;
             // TODO: logic with Address book
 
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Trying to deal {number}.");
+            Console.WriteLine($"Trying to deal {AddressBook.GetAccountNameByNumber(number)}.");
 
             OnStartCallHandler?.Invoke(this, numberEventArgs);
         }
@@ -99,11 +100,7 @@ namespace MobileCommunication
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
 
-            // if account want to receive a call
-            if (true)
-            {
-                OnEndSmsHandler?.Invoke(this, numberEventArgs);
-            }
+            OnEndSmsHandler?.Invoke(this, numberEventArgs);
         }
     }
 }

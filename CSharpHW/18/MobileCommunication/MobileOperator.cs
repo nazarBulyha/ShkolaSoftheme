@@ -20,6 +20,7 @@ namespace MobileCommunication
         public IMobileAccount CreateAccount(IMobileOperator mobileOperator)
         {
             var account = new MobileAccount(this);
+            MobileAccounts.Add(account);
 
             account.OnStartCallHandler += TryMakeCall;
             account.OnEndCallHandler += EndCall;
@@ -60,14 +61,14 @@ namespace MobileCommunication
             catch (NullReferenceException)
             {
                 callMaker.OnEndCallHandler -= EndCall;
-                CallCrashed(e);
+                LogCallEvent(e, "Call crashed.", true);
 
                 return;
             }
             catch (ArgumentException)
             {
                 callMaker.OnEndCallHandler -= EndCall;
-                CallCrashed(e);
+                LogCallEvent(e, "Call crashed.", true);
 
                 return;
             }
@@ -75,7 +76,7 @@ namespace MobileCommunication
             {
                 Console.WriteLine(exceptionStandart.Message);
                 callMaker.OnEndCallHandler -= EndCall;
-                CallCrashed(e);
+                LogCallEvent(e, "Call crashed.", true);
 
                 return;
             }
@@ -85,6 +86,8 @@ namespace MobileCommunication
                 SenderNumber = callMaker.Number,
                 ReceiverNumber = callReceiver.Number
             };
+
+            LogCallEvent(e, "Try to call");
 
             callReceiver.ReceiveCall(callMaker.Number);
         }
@@ -108,14 +111,15 @@ namespace MobileCommunication
             catch (NullReferenceException)
             {
                 callMaker.OnEndSmsHandler -= ReceiveSms;
-                SmsCrashed(e);
+                LogSmsEvent(e, "Sms wasn't send.", true);
 
                 return;
             }
             catch (ArgumentException)
             {
                 callMaker.OnEndSmsHandler -= ReceiveSms;
-                SmsCrashed(e);
+                LogSmsEvent(e, "Sms wasn't send.", true);
+
 
                 return;
             }
@@ -123,7 +127,7 @@ namespace MobileCommunication
             {
                 Console.WriteLine(standartException.Message + Environment.NewLine);
                 callMaker.OnEndSmsHandler -= ReceiveSms;
-                SmsCrashed(e);
+                LogSmsEvent(e, "Sms wasn't send.", true);
 
                 return;
             }
@@ -134,45 +138,33 @@ namespace MobileCommunication
                 ReceiverNumber = callReceiver.Number
             };
 
+            LogSmsEvent(e, "Try to send sms");
+
             callReceiver.ReceiveSms(callMaker.Number);
         }
 
         // TODO: Implement logic after receiving Call
-        private static void EndCall(object sender, AccountEventArgs e)
+        private void EndCall(object sender, AccountEventArgs e)
         {
             // end call for both users
             // if number doesn't exists, end call for one user
-
+            LogSmsEvent(e, "Call ended.");
         }
 
-        // TODO: Implement logic after receiving SMS
-        private static void ReceiveSms(object sender, AccountEventArgs e)
+        private void ReceiveSms(object sender, AccountEventArgs e)
         {
             // if sender number isn't in blocked numbers than receive sms
-
+            LogSmsEvent(e, "Sms received.");
         }
 
-        private void CallCrashed(AccountEventArgs e)
+        private void LogCallEvent(AccountEventArgs e, string message, bool isError = false)
         {
-            CallLogger.WriteToFile("Call crashed", e.SenderNumber, e.ReceiverNumber, isError : true);
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Call to {e.ReceiverNumber} hasn't started.");
-            Console.WriteLine($"Number {e.ReceiverNumber} you are trying to deal is not exists.");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"For more details open call log. {Environment.NewLine}");
-            Console.ForegroundColor = ConsoleColor.White;
+            CallLogger.WriteToFile(message, e.SenderNumber, e.ReceiverNumber, isError);
         }
 
-        private void SmsCrashed(AccountEventArgs e)
+        private void LogSmsEvent(AccountEventArgs e, string message, bool isError = false)
         {
-            CallLogger.WriteToFile("Sms wasn't sent. Call receiver isn't exists.", e.SenderNumber, e.ReceiverNumber, isError: true);
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Number {e.ReceiverNumber} you are trying to send SMS is not available.");
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"For more details open call log. {Environment.NewLine}");
-            Console.ForegroundColor = ConsoleColor.White;
+            CallLogger.WriteToFile(message, e.SenderNumber, e.ReceiverNumber, isError);
         }
     }
 }
