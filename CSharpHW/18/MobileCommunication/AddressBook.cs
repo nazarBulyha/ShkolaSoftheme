@@ -1,10 +1,9 @@
 ﻿using MobileCommunication.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MobileCommunication
 {
-    using System.Linq;
-
     internal class AddressBook
     {
         protected List<IMobileAccount> NumberList { get; set; }

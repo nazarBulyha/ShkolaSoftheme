@@ -48,16 +48,8 @@ namespace MobileCommunication
         {
             try
             {
-<<<<<<< HEAD
-                callMaker = (IMobileAccount)sender;
+                callMaker = sender as IMobileAccount;
                 callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
-
-                if (callReceiver == null)
-                    throw new NullReferenceException();
-=======
-                _callMaker = sender as IMobileAccount;
-                _callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
->>>>>>> 4c76b679f43b1dfa16701e5fe9a70264c829b7cd
 
                 if (callMaker.Number == 2219320 || callMaker.Number == 0)
                     throw new NullReferenceException();
