@@ -1,9 +1,18 @@
-﻿namespace MobileCommunication.Interfaces
+﻿using MobileCommunication.Models;
+using System;
+
+namespace MobileCommunication.Interfaces
 {
     internal interface ILog
     {
-        void WriteToFile(string message, int sender, int receiver, bool isError);
+        LogMessage LogMessage { get; set; }
 
-        void ReadFromFile(/*parameters*/);
+        void Log(int sender, int receiver, string message, bool isError);
+
+        void ShowAllLog();
+
+        void ShowLog(DateTime dateTime, string message, int sender, int receiver, bool isError = false);
+
+        void CheckExcisting(string path, bool isError);
     }
 }

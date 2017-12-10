@@ -2,31 +2,42 @@
 using System.IO;
 
 using MobileCommunication.Interfaces;
+using MobileCommunication.Models;
+using Newtonsoft.Json;
 
 namespace MobileCommunication
 {
-    public class CallLog : ILog
+    internal class CallLog : ILog
     {
-        private readonly string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\\" + "CallLogs\\";
+        private string fileName;
+        private readonly string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\\CallLogs\\";
+
         private StreamWriter StreamWriter { get; set; }
+        private StreamReader StreamReader { get; set; }
 
+        public LogMessage LogMessage { get; set; }
 
-        public void WriteToFile(string message, int sender, int receiver, bool isError = false)
+        public void Log(int sender, int receiver, string message, bool isError = false)
         {
-            if (!Directory.Exists(path))
+            LogMessage = new LogMessage()
             {
-                Directory.CreateDirectory(path);
-            }
+                Sender = sender,
+                Receiver = receiver,
+                Message = message,
+                IsError = isError,
+                DateTime = DateTime.Now
+            };
 
             try
             {
-                var fileName = isError == true ? $"ErrorCallLogFor {DateTime.Now:dd_MM_yyyy}.txt" : $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
+                CheckExcisting(path, isError);
 
+                // write to JSon
                 using (StreamWriter = File.AppendText(path + fileName))
                 {
-                    var myMessage = $@"Message: {message}{Environment.NewLine} Sender {sender}{Environment.NewLine} Receiver {receiver}{Environment.NewLine} DateTime {DateTime.Now} 
-                                        {Environment.NewLine}";
-                    StreamWriter.WriteLine(myMessage);
+                    string serializeToJson = JsonConvert.SerializeObject(LogMessage, Formatting.Indented);
+
+                    StreamWriter.WriteLine(serializeToJson);
                 }
             }
             catch (NullReferenceException nullException)
@@ -43,9 +54,49 @@ namespace MobileCommunication
             }
         }
 
-        public void ReadFromFile()
+        public void ShowAllLog()
         {
+            CheckExcisting(path);
 
+            using (StreamReader reader = new StreamReader(path + fileName))
+            {
+                Console.WriteLine(reader.ReadToEnd());
+            }
+
+        }
+
+        public void ShowLog(DateTime dateTime, string message = null, int sender = 0, int receiver = 0, bool isError = false)
+        {
+            CheckExcisting(path);
+
+            using (StreamReader reader = new StreamReader(path + fileName))
+            {
+                string line = null;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.Contains("DateTime"))
+                    {
+
+                    }
+                }
+            }
+        }
+
+        public void CheckExcisting(string path, bool isError = false)
+        {
+            fileName = isError == true ? 
+                       $"ErrorCallLogFor {DateTime.Now:dd_MM_yyyy}.txt" : 
+                       $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+
+                if (!File.Exists(path + fileName))
+                {
+                    File.Create(path + fileName);
+                }
+            }
         }
     }
 }

@@ -6,33 +6,26 @@ namespace MobileCommunication
 {
     internal class AddressBook
     {
+        // make address book unique for each user
         protected List<IMobileAccount> NumberList { get; set; } = new List<IMobileAccount>();
-
-        public AddressBook(params IMobileAccount[] mobileAccounts)
-        {
-            NumberList.AddRange(mobileAccounts);
-        }
-
-        public AddressBook(List<IMobileAccount> mobileAccounts)
-        {
-            NumberList.AddRange(mobileAccounts);
-        }
 
         public string GetAccountNameByNumber(int number)
         {
-            var accountName = ContainsAccount(number) == true ? 
-                              NumberList.Select(account => account.Number == number).ToString() :
-                              number.ToString();
+            string accountName = NumberList.SingleOrDefault(account => account.Number == number) != null ?
+                                 NumberList.Where(account => account.Number == number).Select(account => account.Name).SingleOrDefault() :
+                                 number.ToString();
 
             return accountName;
         }
 
-        // return string type null or account Name
-        public bool ContainsAccount(int number)
+        public void SetAccount(IMobileAccount mobileAccount)
         {
-            var contains = NumberList.SingleOrDefault(account => account.Number == number);
+            NumberList.Add(mobileAccount);
+        }
 
-            return contains == null ? false : true;
+        public void SetAccounts(List<IMobileAccount> mobileAccounts)
+        {
+            NumberList.AddRange(mobileAccounts);
         }
     }
 }

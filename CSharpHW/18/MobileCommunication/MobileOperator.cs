@@ -9,13 +9,13 @@ namespace MobileCommunication
 {
     internal class MobileOperator : IMobileOperator
     {
-        private IMobileAccount callMaker;
-        private IMobileAccount callReceiver;
+        private IMobileAccount Sender;
+        private IMobileAccount Receiver;
         private int number = 2219320;
 
         public List<IMobileAccount> MobileAccounts { get; set; }
-        public CallLog CallLogger { get; set; } = new CallLog();
         public AccountEventArgs NumberEventArgs { get; private set; }
+        public ILog CallLogger { get; set; } = new CallLog();
 
         public IMobileAccount CreateAccount(IMobileOperator mobileOperator)
         {
@@ -30,14 +30,14 @@ namespace MobileCommunication
             return account;
         }
 
-        public IMobileAccount SetAccountParametres(IMobileAccount account, string name, string surname, string email, DateTime dateTime)
+        public IMobileAccount SetAccountParametres(IMobileAccount mobileAccount, string name, string surname, string email, DateTime dateTime)
         {
-            account.Name = name;
-            account.Surname = surname;
-            account.Email = email;
-            account.DateBirth = dateTime;
+            mobileAccount.Account.Name = name;
+            mobileAccount.Account.Surname = surname;
+            mobileAccount.Account.Email = email;
+            mobileAccount.Account.DateBirth = dateTime;
 
-            return account;
+            return mobileAccount;
         }
 
         public int CreateNumber()
@@ -49,98 +49,121 @@ namespace MobileCommunication
         {
             try
             {
-                callMaker = sender as IMobileAccount;
-                callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
+                Sender = sender as IMobileAccount;
+                Receiver = MobileAccounts.FirstOrDefault(mobileAccount => e.ReceiverNumber.Equals(mobileAccount.Account.Number));
 
-                if (callMaker.Number == 2219320 || callMaker.Number == 0)
+                if (Sender.Account.Number == 2219320 || Sender.Account.Number == 0)
                     throw new NullReferenceException();
 
-                if (callReceiver.Number == 2219320 || callReceiver.Number == 0)
+                if (Receiver.Account.Number == 2219320 || Receiver.Account.Number == 0)
                     throw new ArgumentException();
             }
             catch (NullReferenceException)
             {
-                callMaker.OnEndCallHandler -= EndCall;
-                LogCallEvent(e, "Call crashed.", true);
+                Sender.OnEndCallHandler -= EndCall;
+                LogCallEvent("Call crashed.", e, true);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Call crashed");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
 
                 return;
             }
             catch (ArgumentException)
             {
-                callMaker.OnEndCallHandler -= EndCall;
-                LogCallEvent(e, "Call crashed.", true);
+                Sender.OnEndCallHandler -= EndCall;
+                LogCallEvent("Call crashed.", e, true);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Call crashed");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
 
                 return;
             }
             catch (Exception exceptionStandart)
             {
                 Console.WriteLine(exceptionStandart.Message);
-                callMaker.OnEndCallHandler -= EndCall;
-                LogCallEvent(e, "Call crashed.", true);
+                Sender.OnEndCallHandler -= EndCall;
+                LogCallEvent("Call crashed.", e, true);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Call crashed");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
 
                 return;
             }
 
             NumberEventArgs = new AccountEventArgs
             {
-                SenderNumber = callMaker.Number,
-                ReceiverNumber = callReceiver.Number
+                SenderNumber = Sender.Account.Number,
+                ReceiverNumber = Receiver.Account.Number
             };
 
-            LogCallEvent(e, "Try to call");
+            LogCallEvent("Try to call", e);
 
-            callReceiver.ReceiveCall(callMaker.Number);
+            Receiver.ReceiveCall(Sender.Account.Number);
         }
 
         private void TrySendSms(object sender, AccountEventArgs e)
         {
             try
             {
-                callMaker = (IMobileAccount)sender;
-                callReceiver = MobileAccounts.FirstOrDefault(account => e.ReceiverNumber.Equals(account.Number));
+                Sender = (IMobileAccount)sender;
+                Receiver = MobileAccounts.FirstOrDefault(mobileAccount => e.ReceiverNumber.Equals(mobileAccount.Account.Number));
 
-                if (callReceiver == null)
+                if (Receiver == null)
                     throw new NullReferenceException();
 
-                if (callMaker.Number == 2219320 || callMaker.Number == 0)
+                if (Sender.Account.Number == 2219320 || Sender.Account.Number == 0)
                     throw new NullReferenceException();
 
-                if (callReceiver.Number == 2219320 || callReceiver.Number == 0)
+                if (Receiver.Account.Number == 2219320 || Receiver.Account.Number == 0)
                     throw new ArgumentException();
             }
             catch (NullReferenceException)
             {
-                callMaker.OnEndSmsHandler -= ReceiveSms;
-                LogSmsEvent(e, "Sms wasn't send.", true);
+                Sender.OnEndSmsHandler -= ReceiveSms;
+                LogSmsEvent("Sms wasn't send.", e, true);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Sms wasn't send.");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
 
                 return;
             }
             catch (ArgumentException)
             {
-                callMaker.OnEndSmsHandler -= ReceiveSms;
-                LogSmsEvent(e, "Sms wasn't send.", true);
-
+                Sender.OnEndSmsHandler -= ReceiveSms;
+                LogSmsEvent("Sms wasn't send.", e, true);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Sms wasn't send.");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
 
                 return;
             }
             catch (Exception standartException)
             {
                 Console.WriteLine(standartException.Message + Environment.NewLine);
-                callMaker.OnEndSmsHandler -= ReceiveSms;
-                LogSmsEvent(e, "Sms wasn't send.", true);
+                Sender.OnEndSmsHandler -= ReceiveSms;
+                LogSmsEvent("Sms wasn't send.", e, true);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Sms wasn't send.");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
 
                 return;
             }
 
             NumberEventArgs = new AccountEventArgs
             {
-                SenderNumber = callMaker.Number,
-                ReceiverNumber = callReceiver.Number
+                SenderNumber = Sender.Account.Number,
+                ReceiverNumber = Receiver.Account.Number
             };
 
-            LogSmsEvent(e, "Try to send sms");
+            LogSmsEvent("Try to send sms", e);
 
-            callReceiver.ReceiveSms(callMaker.Number);
+            Receiver.ReceiveSms(Sender.Account.Number);
         }
 
         // TODO: Implement logic after receiving Call
@@ -148,23 +171,23 @@ namespace MobileCommunication
         {
             // end call for both users
             // if number doesn't exists, end call for one user
-            LogSmsEvent(e, "Call ended.");
+            LogSmsEvent("Call ended.", e);
         }
 
         private void ReceiveSms(object sender, AccountEventArgs e)
         {
             // if sender number isn't in blocked numbers than receive sms
-            LogSmsEvent(e, "Sms received.");
+            LogSmsEvent("Sms received.", e);
         }
 
-        private void LogCallEvent(AccountEventArgs e, string message, bool isError = false)
+        private void LogCallEvent(string message, AccountEventArgs e, bool isError = false)
         {
-            CallLogger.WriteToFile(message, e.SenderNumber, e.ReceiverNumber, isError);
+            CallLogger.Log(e.SenderNumber, e.ReceiverNumber, message, isError);
         }
 
-        private void LogSmsEvent(AccountEventArgs e, string message, bool isError = false)
+        private void LogSmsEvent(string message, AccountEventArgs e, bool isError = false)
         {
-            CallLogger.WriteToFile(message, e.SenderNumber, e.ReceiverNumber, isError);
+            CallLogger.Log(e.SenderNumber, e.ReceiverNumber, message, isError);
         }
     }
 }

@@ -25,34 +25,41 @@ namespace MobileCommunication
                                             dateTime: new DateTime(1987, 10, 24));
 
             var petro = myOperator.CreateAccount(myOperator);
-            myOperator.SetAccountParametres(vasyl, "Petro", "Petrovych", "petro.petrovych@gmail.com", new DateTime(1988, 01, 15));
-
             var taras = myOperator.CreateAccount(myOperator);
-            myOperator.SetAccountParametres(vasyl, "Taras", "Tarasovych", "taras.tarasovych@gmail.com", new DateTime(1991, 01, 28));
-
             var nazar = myOperator.CreateAccount(myOperator);
-            myOperator.SetAccountParametres(vasyl, "Nazar", "Nazarovych", "nazar.nazarovych@gmail.com", new DateTime(1997, 06, 10));
-
             var igor = myOperator.CreateAccount(myOperator);
-            myOperator.SetAccountParametres(vasyl, "Igor", "Igorovych", "igor.igorovych@gmail.com", new DateTime(1997, 01, 28));
-
             var andriy = myOperator.CreateAccount(myOperator);
-            myOperator.SetAccountParametres(vasyl, "Andriy", "Andriyovych", "andriy.andriyovych@gmail.com", new DateTime(1997, 10, 16));
 
-            //myOperator.MobileAccounts.AddMany(vasyl, petro, taras, nazar, igor, andriy);
+            List<IMobileAccount> mobileAccountsForAddressBook = new List<IMobileAccount>
+            {
+                vasyl, petro, taras, nazar, igor, andriy
+            };
 
-            vasyl.MakeCall(adminAccount.Number);
-            vasyl.MakeCall(tempAccount.Number);
-            vasyl.MakeCall(petro.Number);
-            taras.MakeCall(nazar.Number);
-            igor.MakeCall(andriy.Number);
+            myOperator.SetAccountParametres(petro, "Petro", "Petrovych", "petro.petrovych@gmail.com", new DateTime(1988, 01, 15));
+            myOperator.SetAccountParametres(taras, "Taras", "Tarasovych", "taras.tarasovych@gmail.com", new DateTime(1991, 01, 28));
+            myOperator.SetAccountParametres(nazar, "Nazar", "Nazarovych", "nazar.nazarovych@gmail.com", new DateTime(1997, 06, 10));
+            myOperator.SetAccountParametres(igor, "Igor", "Igorovych", "igor.igorovych@gmail.com", new DateTime(1997, 01, 28));
+            myOperator.SetAccountParametres(andriy, "Andriy", "Andriyovych", "andriy.andriyovych@gmail.com", new DateTime(1997, 10, 16));
+            
+            // set standard address book contacts
+            petro.Account.AddressBook.SetAccounts(mobileAccountsForAddressBook);
+            taras.Account.AddressBook.SetAccounts(mobileAccountsForAddressBook);
+            nazar.Account.AddressBook.SetAccounts(mobileAccountsForAddressBook);
+            igor.Account.AddressBook.SetAccounts(mobileAccountsForAddressBook);
+            andriy.Account.AddressBook.SetAccounts(mobileAccountsForAddressBook);
 
-            vasyl.SendSms(tempAccount.Number);
-            tempAccount.SendSms(vasyl.Number);
+            vasyl.MakeCall(adminAccount.Account.Number);
+            vasyl.MakeCall(tempAccount.Account.Number);
+            vasyl.MakeCall(petro.Account.Number);
+            taras.MakeCall(nazar.Account.Number);
+            igor.MakeCall(andriy.Account.Number);
 
-            vasyl.SendSms(petro.Number);
-            taras.SendSms(nazar.Number);
-            igor.SendSms(andriy.Number);
+            vasyl.SendSms(tempAccount.Account.Number);
+            tempAccount.SendSms(vasyl.Account.Number);
+
+            vasyl.SendSms(petro.Account.Number);
+            taras.SendSms(nazar.Account.Number);
+            igor.SendSms(andriy.Account.Number);
 
             // TODO: CallLog ReadFromFile and write to console
 
