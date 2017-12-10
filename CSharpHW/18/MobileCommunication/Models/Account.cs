@@ -4,7 +4,18 @@ namespace MobileCommunication.Models
 {
     internal class Account
     {
-        public int Number { get; private set; }
+        private int _number;
+        public int Number
+        {
+            get
+            {
+                return _number;
+            }
+            private set
+            {
+
+            }
+        }
 
         public string Name { get; set; } = "Ivan";
 
