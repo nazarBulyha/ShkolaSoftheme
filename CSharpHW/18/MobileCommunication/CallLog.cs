@@ -4,6 +4,7 @@ using System.IO;
 using MobileCommunication.Interfaces;
 using MobileCommunication.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MobileCommunication
 {
@@ -58,11 +59,20 @@ namespace MobileCommunication
         {
             CheckExcisting(path);
 
-            using (StreamReader reader = new StreamReader(path + fileName))
-            {
-                Console.WriteLine(reader.ReadToEnd());
-            }
+            //var deserializedProduct = JsonConvert.DeserializeObject<CallLog>(path + fileName);
 
+            using (StreamReader reader = File.OpenText(path + fileName))
+            {
+                JObject jsonObject = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
+                // do stuff
+                var name = jsonObject["Message"].Values();
+                string date = (string)jsonObject["DateTime"];
+
+                foreach (var json in jsonObject)
+                {
+                    Console.WriteLine(json.Key + " " + json.Value);
+                }
+            }
         }
 
         public void ShowLog(DateTime dateTime, string message = null, int sender = 0, int receiver = 0, bool isError = false)

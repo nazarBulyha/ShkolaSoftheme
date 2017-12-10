@@ -4,6 +4,7 @@ using System.Linq;
 using MobileCommunication.Extensions;
 
 using MobileCommunication.Interfaces;
+using MobileCommunication.Models;
 
 namespace MobileCommunication
 {
@@ -13,29 +14,82 @@ namespace MobileCommunication
         private IMobileAccount Receiver;
         private int number = 2219320;
 
-        public List<IMobileAccount> MobileAccounts { get; set; }
+        public List<IMobileAccount> MobileAccounts { get; set; } = new List<IMobileAccount>();
+        public List<IMobileAccount> StandardMobileAccounts { get; set; }
         public AccountEventArgs NumberEventArgs { get; private set; }
         public ILog CallLogger { get; set; } = new CallLog();
 
-        public IMobileAccount CreateAccount(IMobileOperator mobileOperator)
+        public MobileOperator()
         {
-            var account = new MobileAccount(this);
-            MobileAccounts.Add(account);
+            StandardMobileAccounts = CreateStandardMobileAccounts();
+        }
 
-            account.OnStartCallHandler += TryMakeCall;
-            account.OnEndCallHandler += EndCall;
-            account.OnStartSmsHandler += TrySendSms;
-            account.OnEndSmsHandler += ReceiveSms;
+        private List<IMobileAccount> CreateStandardMobileAccounts()
+        {
+            #region Define standard accounts for address book
+            IMobileAccount standartAccount1 = new MobileAccount(this);
+            IMobileAccount standartAccount2 = new MobileAccount(this);
+            IMobileAccount standartAccount3 = new MobileAccount(this);
+            IMobileAccount standartAccount4 = new MobileAccount(this);
 
-            return account;
+            standartAccount1.Account = new Account(CreateNumber())
+            {
+                Name = "standartName1",
+                Surname = "standartSurname1",
+                DateBirth = DateTime.Now
+            };
+            standartAccount2.Account = new Account(CreateNumber())
+            {
+                Name = "standartName2",
+                Surname = "standartSurname2",
+                DateBirth = DateTime.Now
+            };
+            standartAccount3.Account = new Account(CreateNumber())
+            {
+                Name = "standartName3",
+                Surname = "standartSurname3",
+                DateBirth = DateTime.Now
+            };
+            standartAccount4.Account = new Account(CreateNumber())
+            {
+                Name = "standartName4",
+                Surname = "standartSurname4s",
+                DateBirth = DateTime.Now
+            };
+
+            var StandardMobileAccounts = new List<IMobileAccount>();
+            StandardMobileAccounts.AddMany(standartAccount1, standartAccount2, standartAccount3, standartAccount4);
+            #endregion
+
+            return StandardMobileAccounts;
+        }
+
+        public IMobileAccount CreateMobileAccount(IMobileOperator mobileOperator)
+        {
+            var mobileAccount = new MobileAccount(this);
+
+            MobileAccounts.Add(mobileAccount);
+
+            mobileAccount.OnStartCallHandler += TryMakeCall;
+            mobileAccount.OnEndCallHandler += EndCall;
+            mobileAccount.OnStartSmsHandler += TrySendSms;
+            mobileAccount.OnEndSmsHandler += ReceiveSms;
+
+            return mobileAccount;
         }
 
         public IMobileAccount SetAccountParametres(IMobileAccount mobileAccount, string name, string surname, string email, DateTime dateTime)
         {
-            mobileAccount.Account.Name = name;
-            mobileAccount.Account.Surname = surname;
-            mobileAccount.Account.Email = email;
-            mobileAccount.Account.DateBirth = dateTime;
+            var account = new Account(CreateNumber())
+            {
+                Name = name,
+                Surname = surname,
+                Email = email,
+                DateBirth = dateTime
+            };
+            account.AddressBook.SetAccounts(StandardMobileAccounts);
+
+            mobileAccount.Account = account;
 
             return mobileAccount;
         }
@@ -49,13 +103,14 @@ namespace MobileCommunication
         {
             try
             {
+                // TODO: Fix: sender <=> receiver bag
                 Sender = sender as IMobileAccount;
                 Receiver = MobileAccounts.FirstOrDefault(mobileAccount => e.ReceiverNumber.Equals(mobileAccount.Account.Number));
 
-                if (Sender.Account.Number == 2219320 || Sender.Account.Number == 0)
+                if (Receiver.Account.Number == 0 || Sender.Account.Number == 0 || Sender == null || Receiver == null || Sender.Account == null || Receiver.Account == null)
                     throw new NullReferenceException();
 
-                if (Receiver.Account.Number == 2219320 || Receiver.Account.Number == 0)
+                if (Sender.Account.Number == 2219324 || Sender.Account.Number == 2219325 || Receiver.Account.Number == 2219324 || Receiver.Account.Number == 2219325)
                     throw new ArgumentException();
             }
             catch (NullReferenceException)
@@ -111,13 +166,10 @@ namespace MobileCommunication
                 Sender = (IMobileAccount)sender;
                 Receiver = MobileAccounts.FirstOrDefault(mobileAccount => e.ReceiverNumber.Equals(mobileAccount.Account.Number));
 
-                if (Receiver == null)
+                if (Receiver.Account.Number == 0 || Sender.Account.Number == 0 || Sender == null || Receiver == null || Sender.Account == null || Receiver.Account == null)
                     throw new NullReferenceException();
 
-                if (Sender.Account.Number == 2219320 || Sender.Account.Number == 0)
-                    throw new NullReferenceException();
-
-                if (Receiver.Account.Number == 2219320 || Receiver.Account.Number == 0)
+                if (Sender.Account.Number == 2219324 || Sender.Account.Number == 2219325 || Receiver.Account.Number == 2219324 || Receiver.Account.Number == 2219325)
                     throw new ArgumentException();
             }
             catch (NullReferenceException)
@@ -182,6 +234,7 @@ namespace MobileCommunication
 
         private void LogCallEvent(string message, AccountEventArgs e, bool isError = false)
         {
+            Console.WriteLine($"Sender {e.SenderNumber} sent a message - {message} to {e.ReceiverNumber}.");
             CallLogger.Log(e.SenderNumber, e.ReceiverNumber, message, isError);
         }
 

@@ -8,7 +8,7 @@ namespace MobileCommunication.Interfaces
         List<IMobileAccount> MobileAccounts { get; set; }
         ILog CallLogger { get; set; }
 
-        IMobileAccount CreateAccount(IMobileOperator mobileOperator);
+        IMobileAccount CreateMobileAccount(IMobileOperator mobileOperator);
 
         IMobileAccount SetAccountParametres(IMobileAccount account, string name, string surname, string email, DateTime dateTime);
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using MobileCommunication.Interfaces;
 using MobileCommunication.Extensions;
-using System.Collections.Generic;
 using MobileCommunication.Models;
 
 namespace MobileCommunication
@@ -21,15 +20,7 @@ namespace MobileCommunication
 
         public MobileAccount(IMobileOperator mobileOperator)
         {
-            // define standard numbers in account address book
-            var standartAccount1 = mobileOperator.SetAccountParametres(this, "standartName1", "standartSurname1", "", DateTime.Now);
-            var standartAccount2 = mobileOperator.SetAccountParametres(this, "standartName2", "standartSurname2", "", DateTime.Now);
-            var standartAccount3 = mobileOperator.SetAccountParametres(this, "standartName3", "standartSurname3", "", DateTime.Now);
-            var standartAccount4 = mobileOperator.SetAccountParametres(this, "standartName4", "standartSurname4", "", DateTime.Now);
-
             Operator = mobileOperator;
-            Account.Number = mobileOperator.CreateNumber();
-            Account.AddressBook.SetAccounts(new List<IMobileAccount>() { standartAccount1, standartAccount2, standartAccount3, standartAccount4 });
         }
 
         public void MakeCall(int number)
@@ -76,8 +67,8 @@ namespace MobileCommunication
 
             numberEventArgs = new AccountEventArgs
             {
-                SenderNumber = Account.Number,
-                ReceiverNumber = number
+                SenderNumber = number,
+                ReceiverNumber = Account.Number
             };
 
             // if account want to receive a call
@@ -97,6 +88,12 @@ namespace MobileCommunication
             Console.WriteLine($"{Account.AddressBook.GetAccountNameByNumber(number)}.");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
+
+            numberEventArgs = new AccountEventArgs
+            {
+                SenderNumber = number,
+                ReceiverNumber = Account.Number
+            };
 
             OnEndSmsHandler?.Invoke(this, numberEventArgs);
         }
