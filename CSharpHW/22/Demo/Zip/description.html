@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head><link rel="stylesheet" type="text/css" href="https://i-msdn.sec.s-msft.com/Combined.css?resources=0:Header,0:sprite;/Areas/Epx/Themes/Windows/Content:0&amp;amp;v=2E572489ED729454830831A126604A15" xmlns="http://www.w3.org/1999/xhtml" />
+<link rel="stylesheet" type="text/css" href="https://i-msdn.sec.s-msft.com/Combined.css?resources=0:Footer,0:sprite,1:LinkList,1:SelectLocaleFromPopUp;/Areas/Epx/Themes/Windows/Content:0,/Areas/Epx/Themes/Base/Content:1&amp;amp;v=70D521A340BFF3F1852BC2A920E0DDEA" xmlns="http://www.w3.org/1999/xhtml" />
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Visual C# coding for Zip / Unzip a folder or collection of files.</title>
+        <link href="description/Galleries.css" type="text/css" rel="Stylesheet" /><link href="description/Layout.css" type="text/css" rel="Stylesheet" /><link href="description/Brand.css" type="text/css" rel="Stylesheet" /><link href="description/4e6247e4-ffe9-47e1-afa4-1afa7dc5ec7cBrand.css" type="text/css" rel="Stylesheet" />
+        <link href="https://i1.code.msdn.s-msft.com/windowsdesktop/content/windowsdesktop/iframedescription.css" rel="Stylesheet" type="text/css" />
+        <script src="https://i1.code.msdn.s-msft.com/windowsdesktop/content/common/offline.js" type="text/javascript"></script>
+        <style type="text/css">
+            #projectInfo {
+                overflow: auto;
+            }
+            #longDesc {
+                clear:both;
+                margin: 25px 0 10px 0;
+            }
+
+            #SampleIndexList{
+                margin-left: 15px;
+            }
+        </style>
+    </head>
+<body>
+    <div id="offlineDescription">
+        <h1>Visual C# coding for Zip / Unzip a folder or collection of files.</h1>
+        <br/>
+        <div id="projectInfo">
+            <div class="section">
+                    <div class="itemBarLong tagsContainer">
+                        <label for="Technologies">Technologies</label>
+                        <div id="Technologies">
+                            C#, C# Language, Visual C#
+                        </div>
+                    </div>
+                    <div class="itemBarLong tagsContainer">
+                        <label for="Topics">Topics</label>
+                        <div id="Topics">
+                            Visual Studio, Compression
+                        </div>
+                    </div>
+                <div class="itemBarLong">
+                    <label for="Platforms">Platforms</label>
+                    <div id="Platforms">
+                        Desktop
+                    </div>
+                </div>
+                <div class="itemBarLong">
+                    <label for="Requirements">Requirements</label>
+                    <div id="Requirements">
+                        
+                    </div>
+                </div>
+                <div class="itemBar">
+                    <label for="LastUpdated">Primary language</label>
+                    <div id="LastUpdated">en-US</div>
+                </div>
+                <div class="itemBar">
+                    <label for="LastUpdated">Updated</label>
+                    <div id="LastUpdated">4/6/2015</div>
+                </div>
+                <div class="itemBarLong">
+                    <label for="License">License</label>
+                    <div id="License">
+                        <a href="license.rtf">MIT</a></div>
+                </div>
+                <div class="itemBar">
+                    <div class="viewonlinecont">
+                        <a data-link="online" href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298">View this sample online</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+                   
+<script type="text/javascript">
+    function initializePage() {
+        var otherTabClass = 'otherTab';
+        var hiddenPreClass = 'hidden';
+
+        var htmlDecode = function(encodedData) {
+            var decodedData = "";
+            if (encodedData) {
+                var div = document.createElement('div');
+                div.innerHTML = encodedData;
+                decodedData = div.firstChild.nodeValue.replace( /\\r\\n/ig , '\r\n');
+            }
+            return decodedData;
+        };
+                
+        Galleries.iterateElem(Galleries.findElem(null, 'div', 'scriptcode'), function (index, scriptBlock) {
+            var titleElem = Galleries.findElem(scriptBlock, 'div', 'title')[0];
+            var labelElems = Galleries.findElem(titleElem, 'span');
+            if (labelElems.length == 0) {
+                labelElems = titleElem;
+            }
+            var languageSpans = Galleries.findElem(scriptBlock, 'span', 'hidden');
+            var pres = Galleries.findElem(scriptBlock, 'pre');
+            if (languageSpans.length > 0 && pres.length > 1) {
+                Galleries.iterateElem(labelElems, function(index, elem) {
+                    var codePre = pres[index];
+                    var labelSpan = elem;
+                    var languageSpan = languageSpans[index];
+                            
+                    elem.code = codePre.innerHTML.replace( /(\r(\n)?)|((\r)?\n)/ig , '\\r\\n');
+                            
+                    codePre.className = codePre.className.replace(hiddenPreClass, '');
+                            
+                    languageSpan.parentNode.removeChild(languageSpan);
+                });
+
+                pres = Galleries.findElem(scriptBlock, 'pre');
+                Galleries.iterateElem(labelElems, function(index, elem) {
+                    var codePre = pres[index];
+                    var labelSpan = elem;
+                    if (index == 0) {
+                        scriptBlock.activeTab = 0;
+                    }
+                    else {
+                        labelSpan.className += otherTabClass;
+                        codePre.className += hiddenPreClass;
+                    }
+                    Galleries.attachEventHandler(labelSpan, 'click', function(e) {
+                        var activeTab = scriptBlock.activeTab;
+                        labelElems[activeTab].className += otherTabClass;
+                        pres[activeTab].className += hiddenPreClass;
+
+                        codePre.className = codePre.className.replace(hiddenPreClass, '');
+                        labelSpan.className = labelSpan.className.replace(otherTabClass, '');
+                        scriptBlock.activeTab = index;
+                    });
+                });
+
+                var preview = Galleries.findElem(scriptBlock, 'div', 'preview');
+                if (preview.length == 0) {
+                    preview.push(pres[pres.length - 1]);
+                }
+                Galleries.iterateElem(preview, function(index, elem) {
+                    elem.parentNode.removeChild(elem);
+                });
+
+                if (window.clipboardData && clipboardData.setData) {
+                    var copyLink = document.createElement('a');
+                    copyLink.href = 'javascript:void(0);';
+                    copyLink.className = 'copyCode';
+                    copyLink.innerHTML = 'Copy code';
+                    Galleries.attachEventHandler(copyLink, 'click', function (e) {
+                        clipboardData.setData("Text", htmlDecode(labelElems[scriptBlock.activeTab].code));
+                        return false;
+                    });
+                    scriptBlock.insertBefore(copyLink, scriptBlock.childNodes[0]);
+                }
+            }
+        });
+    }
+
+    Galleries.onWindowLoad(function(){
+        initializePage();
+    });
+
+</script>
+<div id="longDesc">
+    
+<h1>Description</h1>
+<p>&nbsp;</p>
+<p>The high featured Visual C# provide options to create a custom zipper to achieve Zip and Unzip operation as we required many people may know about this options that present in
+<a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression(v=vs.110).aspx">
+System.IO.Compression</a> library of Microsoft but this gallery help you to custom coding for the same.&nbsp; The
+<a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression(v=vs.110).aspx">
+System.IO.Compression</a> namespace contains classes that provide basic compression and decompression services for streams. Also
+<a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression(v=vs.110).aspx">
+System.IO.Compression</a> class come with some usable interface that you help us to create more effective custom compressor Zipper as per our desire.</p>
+<p>In this <a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression(v=vs.110).aspx">
+System.IO.Compression</a> we can define our format / Extension like &ldquo;.zip&rdquo; or &ldquo;.abc&rdquo; or &ldquo;.zipped&rdquo; likewise as per our desire format. Also this class help us to quick way to Zip a folder or file and Collection of folder and
+ collection of file as well.</p>
+<p>Here the attached sample provide you a glance that may be a basic example to zip ad unzip a Folder with a Simple UI. &nbsp;In this sample there is two module, Zip and Unzip what will help us to zip (to our desire format or Extension) a folder from a location
+ and placed it to our desire location and get a zip (or our custom format / extension) to extract in a required location respectively</p>
+<p>The <a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression(v=vs.110).aspx">
+System.IO.Compression</a> available with following classes</p>
+<table border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td valign="top">
+<p><a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression.deflatestream(v=vs.110).aspx">DeflateStream</a></p>
+</td>
+<td valign="top">
+<p>Provides methods and properties for compressing and decompressing streams by using the Deflate algorithm.</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p><a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression.gzipstream(v=vs.110).aspx">GZipStream</a></p>
+</td>
+<td valign="top">
+<p>Provides methods and properties used to compress and decompress streams.</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p><a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression.ziparchive(v=vs.110).aspx">ZipArchive</a></p>
+</td>
+<td valign="top">
+<p>Represents a package of compressed files in the zip archive format.</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p><a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression.ziparchiveentry(v=vs.110).aspx">ZipArchiveEntry</a></p>
+</td>
+<td valign="top">
+<p>Represents a compressed file within a zip archive.</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p><a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression.zipfile(v=vs.110).aspx">ZipFile</a></p>
+</td>
+<td valign="top">
+<p>Provides static methods for creating, extracting, and opening zip archives.</p>
+</td>
+</tr>
+<tr>
+<td valign="top">
+<p><a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression.zipfileextensions(v=vs.110).aspx">ZipFileExtensions</a></p>
+</td>
+<td valign="top">
+<p>Provides extension methods for the <a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression.ziparchive(v=vs.110).aspx">
+ZipArchive</a> and <a href="https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://code.msdn.microsoft.com/windowsdesktop/Visual-C-coding-for-Zip-2ebb8298/https://msdn.microsoft.com/en-us/library/system.io.compression.ziparchiveentry(v=vs.110).aspx">
+ZipArchiveEntry</a> classes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div class="scriptcode">
+<div class="pluginEditHolder" pluginCommand="mceScriptCode">
+<div class="title"><span>C#</span></div>
+<div class="pluginLinkHolder"><span class="pluginEditHolderLink">Edit</span>|<span class="pluginRemoveHolderLink">Remove</span></div>
+<span class="hidden">csharp</span>
+<pre class="hidden">namespace VisualCSharpZipper
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.folderBrowserDialog1.ShowDialog();
+
+            this.textBox1.Text = this.folderBrowserDialog1.SelectedPath;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.folderBrowserDialog1.ShowDialog();
+
+            this.textBox2.Text = this.folderBrowserDialog1.SelectedPath;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if ( Directory.Exists(textBox1.Text)&amp;&amp; Directory.Exists(textBox2.Text))
+            {
+                ZipFile.CreateFromDirectory(textBox1.Text, textBox2.Text &#43;&quot;.zip&quot;);
+            }
+            else
+            {
+                if (Directory.Exists(textBox1.Text))
+                    MessageBox.Show(&quot;Zip Path is invalid&quot;);
+                else
+                    MessageBox.Show(&quot;Open folder path is invalid&quot;);
+
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(textBox3.Text) &amp;&amp; Directory.Exists(textBox4.Text))
+            {
+                ZipFile.CreateFromDirectory(textBox3.Text &#43;&quot;.zip&quot;, textBox4.Text);
+            }
+            else
+            {
+                if (Directory.Exists(textBox3.Text))
+                    MessageBox.Show(&quot;Extract Path is invalid&quot;);
+                else
+                    MessageBox.Show(&quot;Open Zip path is invalid&quot;);
+
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.folderBrowserDialog1.ShowDialog();
+
+            this.textBox3.Text = this.folderBrowserDialog1.SelectedPath;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            this.folderBrowserDialog1.ShowDialog();
+
+            this.textBox4.Text = this.folderBrowserDialog1.SelectedPath;
+        }
+    }
+}
+</pre>
+<div class="preview">
+<pre class="csharp"><span class="cs__keyword">namespace</span>&nbsp;VisualCSharpZipper&nbsp;
+{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">public</span>&nbsp;partial&nbsp;<span class="cs__keyword">class</span>&nbsp;Form1&nbsp;:&nbsp;Form&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">public</span>&nbsp;Form1()&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InitializeComponent();&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">private</span>&nbsp;<span class="cs__keyword">void</span>&nbsp;Form1_Load(<span class="cs__keyword">object</span>&nbsp;sender,&nbsp;EventArgs&nbsp;e)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">private</span>&nbsp;<span class="cs__keyword">void</span>&nbsp;button1_Click(<span class="cs__keyword">object</span>&nbsp;sender,&nbsp;EventArgs&nbsp;e)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">this</span>.folderBrowserDialog1.ShowDialog();&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">this</span>.textBox1.Text&nbsp;=&nbsp;<span class="cs__keyword">this</span>.folderBrowserDialog1.SelectedPath;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">private</span>&nbsp;<span class="cs__keyword">void</span>&nbsp;button2_Click(<span class="cs__keyword">object</span>&nbsp;sender,&nbsp;EventArgs&nbsp;e)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">this</span>.folderBrowserDialog1.ShowDialog();&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">this</span>.textBox2.Text&nbsp;=&nbsp;<span class="cs__keyword">this</span>.folderBrowserDialog1.SelectedPath;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">private</span>&nbsp;<span class="cs__keyword">void</span>&nbsp;button3_Click(<span class="cs__keyword">object</span>&nbsp;sender,&nbsp;EventArgs&nbsp;e)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">if</span>&nbsp;(&nbsp;Directory.Exists(textBox1.Text)&amp;&amp;&nbsp;Directory.Exists(textBox2.Text))&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZipFile.CreateFromDirectory(textBox1.Text,&nbsp;textBox2.Text&nbsp;&#43;<span class="cs__string">&quot;.zip&quot;</span>);&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">else</span>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">if</span>&nbsp;(Directory.Exists(textBox1.Text))&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MessageBox.Show(<span class="cs__string">&quot;Zip&nbsp;Path&nbsp;is&nbsp;invalid&quot;</span>);&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">else</span>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MessageBox.Show(<span class="cs__string">&quot;Open&nbsp;folder&nbsp;path&nbsp;is&nbsp;invalid&quot;</span>);&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">private</span>&nbsp;<span class="cs__keyword">void</span>&nbsp;button5_Click(<span class="cs__keyword">object</span>&nbsp;sender,&nbsp;EventArgs&nbsp;e)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">if</span>&nbsp;(Directory.Exists(textBox3.Text)&nbsp;&amp;&amp;&nbsp;Directory.Exists(textBox4.Text))&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZipFile.CreateFromDirectory(textBox3.Text&nbsp;&#43;<span class="cs__string">&quot;.zip&quot;</span>,&nbsp;textBox4.Text);&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">else</span>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">if</span>&nbsp;(Directory.Exists(textBox3.Text))&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MessageBox.Show(<span class="cs__string">&quot;Extract&nbsp;Path&nbsp;is&nbsp;invalid&quot;</span>);&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">else</span>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MessageBox.Show(<span class="cs__string">&quot;Open&nbsp;Zip&nbsp;path&nbsp;is&nbsp;invalid&quot;</span>);&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">private</span>&nbsp;<span class="cs__keyword">void</span>&nbsp;button4_Click(<span class="cs__keyword">object</span>&nbsp;sender,&nbsp;EventArgs&nbsp;e)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">this</span>.folderBrowserDialog1.ShowDialog();&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">this</span>.textBox3.Text&nbsp;=&nbsp;<span class="cs__keyword">this</span>.folderBrowserDialog1.SelectedPath;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">private</span>&nbsp;<span class="cs__keyword">void</span>&nbsp;button6_Click(<span class="cs__keyword">object</span>&nbsp;sender,&nbsp;EventArgs&nbsp;e)&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">this</span>.folderBrowserDialog1.ShowDialog();&nbsp;
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cs__keyword">this</span>.textBox4.Text&nbsp;=&nbsp;<span class="cs__keyword">this</span>.folderBrowserDialog1.SelectedPath;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;
+}&nbsp;
+</pre>
+</div>
+</div>
+</div>
+<h1><img id="135926" src="description/folderzipper.png" alt="" width="515" height="310"></h1>
+
+</div>
+
+
+    </div>
+</body>
+</html>
