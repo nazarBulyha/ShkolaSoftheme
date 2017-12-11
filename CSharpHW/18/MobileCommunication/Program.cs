@@ -89,7 +89,6 @@ namespace MobileCommunication
             igor.SendSms(andriy.Account.Number);
             #endregion
 
-            // TODO: CallLog ReadFromFile and write to console
             CallLog callLog = new CallLog();
             callLog.ShowAllLog();
 

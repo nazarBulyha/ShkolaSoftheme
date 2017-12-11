@@ -103,7 +103,6 @@ namespace MobileCommunication
         {
             try
             {
-                // TODO: Fix: sender <=> receiver bag
                 Sender = sender as IMobileAccount;
                 Receiver = MobileAccounts.FirstOrDefault(mobileAccount => e.ReceiverNumber.Equals(mobileAccount.Account.Number));
 

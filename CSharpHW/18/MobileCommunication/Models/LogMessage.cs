@@ -8,7 +8,6 @@ namespace MobileCommunication.Models
     internal class LogMessage
     {
         [JsonProperty]
-        [JsonConverter(typeof(JavaScriptDateTimeConverter))]
         public DateTime DateTime { get; set; } = DateTime.Now;
 
         [JsonProperty]

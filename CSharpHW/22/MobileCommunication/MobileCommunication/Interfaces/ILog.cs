@@ -3,9 +3,9 @@ using System;
 
 namespace MobileCommunication.Interfaces
 {
-    internal interface ILog
+    public interface ILog
     {
-        LogMessage LoggerMessage { get; set; }
+        LogMessage LogMessage { get; set; }
 
         void Log(int sender, int receiver, string message, bool isError);
 

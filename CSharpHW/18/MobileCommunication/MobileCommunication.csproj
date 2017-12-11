@@ -45,14 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressBook.cs" />
-    <Compile Include="CallLog.cs" />
+    <Compile Include="Models\AddressBook.cs" />
+    <Compile Include="Controllers\CallLog.cs" />
     <Compile Include="Extensions\ListExtension.cs" />
     <Compile Include="Interfaces\ILog.cs" />
     <Compile Include="Interfaces\IMobileAccount.cs" />
     <Compile Include="Interfaces\IMobileOperator.cs" />
-    <Compile Include="MobileAccount.cs" />
-    <Compile Include="MobileOperator.cs" />
+    <Compile Include="Controllers\MobileAccount.cs" />
+    <Compile Include="Controllers\MobileOperator.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\LogMessage.cs" />
     <Compile Include="Program.cs" />

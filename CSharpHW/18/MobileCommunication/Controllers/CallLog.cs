@@ -4,23 +4,21 @@ using System.IO;
 using MobileCommunication.Interfaces;
 using MobileCommunication.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace MobileCommunication
 {
     internal class CallLog : ILog
     {
-        private string fileName;
+        private string currentLog;
+        private string standartLogName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.json";
+        private string standartLogErrorName = $"ErrorCallLogFor {DateTime.Now:dd_MM_yyyy}.json";
         private readonly string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\\CallLogs\\";
 
-        private StreamWriter StreamWriter { get; set; }
-        private StreamReader StreamReader { get; set; }
-
-        public LogMessage LogMessage { get; set; }
+        public LogMessage LoggerMessage { get; set; }
 
         public void Log(int sender, int receiver, string message, bool isError = false)
         {
-            LogMessage = new LogMessage()
+            LoggerMessage = new LogMessage()
             {
                 Sender = sender,
                 Receiver = receiver,
@@ -33,12 +31,12 @@ namespace MobileCommunication
             {
                 CheckExcisting(path, isError);
 
-                // write to JSon
-                using (StreamWriter = File.AppendText(path + fileName))
+                using (StreamWriter file = File.AppendText(path + currentLog))
                 {
-                    string serializeToJson = JsonConvert.SerializeObject(LogMessage, Formatting.Indented);
+                    JsonSerializer jSerializer = new JsonSerializer();
+                    jSerializer.Formatting = Formatting.Indented;
 
-                    StreamWriter.WriteLine(serializeToJson);
+                    jSerializer.Serialize(file, LoggerMessage);
                 }
             }
             catch (NullReferenceException nullException)
@@ -57,29 +55,39 @@ namespace MobileCommunication
 
         public void ShowAllLog()
         {
-            CheckExcisting(path);
-
-            //var deserializedProduct = JsonConvert.DeserializeObject<CallLog>(path + fileName);
-
-            using (StreamReader reader = File.OpenText(path + fileName))
+            try
             {
-                JObject jsonObject = (JObject)JToken.ReadFrom(new JsonTextReader(reader));
-                // do stuff
-                var name = jsonObject["Message"].Values();
-                string date = (string)jsonObject["DateTime"];
+                CheckExcisting(path);
 
-                foreach (var json in jsonObject)
+                // TODO: Fix LoggerMessage = null for deserialization
+                using (var StreamReader = File.OpenText(path + currentLog))
                 {
-                    Console.WriteLine(json.Key + " " + json.Value);
+                    JsonSerializer jSerializer = new JsonSerializer();
+                    var derializeFromJson = (CallLog)jSerializer.Deserialize(StreamReader, typeof(CallLog));
+
+                    //Console.WriteLine(derializeFromJson.ToString());
                 }
             }
+            catch (NullReferenceException nullException)
+            {
+                Console.WriteLine(nullException.Message);
+            }
+            catch (IOException ioException)
+            {
+                Console.WriteLine(ioException.Message);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
         }
 
         public void ShowLog(DateTime dateTime, string message = null, int sender = 0, int receiver = 0, bool isError = false)
         {
             CheckExcisting(path);
 
-            using (StreamReader reader = new StreamReader(path + fileName))
+            using (StreamReader reader = new StreamReader(path + standartLogName))
             {
                 string line = null;
                 while ((line = reader.ReadLine()) != null)
@@ -94,17 +102,15 @@ namespace MobileCommunication
 
         public void CheckExcisting(string path, bool isError = false)
         {
-            fileName = isError == true ? 
-                       $"ErrorCallLogFor {DateTime.Now:dd_MM_yyyy}.txt" : 
-                       $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
+            currentLog = isError == true ? standartLogErrorName : standartLogName;
 
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
 
-                if (!File.Exists(path + fileName))
+                if (!File.Exists(path + currentLog))
                 {
-                    File.Create(path + fileName);
+                    File.Create(path + currentLog);
                 }
             }
         }
