@@ -6,7 +6,9 @@ namespace MobileCommunication.Interfaces
     internal interface IMobileOperator
     {
         List<IMobileAccount> MobileAccounts { get; set; }
-        ILog CallLogger { get; set; }
+	    List<IMobileAccount> StandardMobileAccounts { get; set; }
+
+		ILog CallLogger { get; set; }
 
         IMobileAccount CreateMobileAccount(IMobileOperator mobileOperator);
 

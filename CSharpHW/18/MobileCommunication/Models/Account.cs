@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 
 namespace MobileCommunication.Models
 {
-    [JsonObject(MemberSerialization.OptIn)]
     internal class Account
     {
         public Account(int number)
@@ -11,22 +9,14 @@ namespace MobileCommunication.Models
             Number = number;
         }
 
-        [JsonProperty]
         public int Number { get; private set; }
 
-        [JsonProperty]
-        public string Name { get; set; } = "Ivan";
+	    public string Name { get; set; }
 
-        [JsonProperty]
-        public string Surname { get; set; } = "Ivanovych";
+        public string Surname { get; set; }
 
-        [JsonProperty]
-        public string Email { get; set; } = "";
+        public string Email { get; set; }
 
-        [JsonProperty]
         public DateTime DateBirth { get; set; } = DateTime.Now;
-
-        [JsonProperty]
-        public AddressBook AddressBook { get; set; } = new AddressBook();
     }
 }

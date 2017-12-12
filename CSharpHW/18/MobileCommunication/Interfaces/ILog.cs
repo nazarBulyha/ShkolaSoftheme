@@ -7,7 +7,7 @@ namespace MobileCommunication.Interfaces
     {
         LogMessage LoggerMessage { get; set; }
 
-        void Log(int sender, int receiver, string message, bool isError);
+        void Log(string message, bool isError);
 
         void ShowAllLog();
 

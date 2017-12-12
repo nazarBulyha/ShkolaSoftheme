@@ -1,10 +1,11 @@
 ﻿using MobileCommunication.Interfaces;
 using System;
-using System.Collections.Generic;
 
 namespace MobileCommunication
 {
-    internal class Program
+	using MobileCommunication.Controllers;
+
+	internal class Program
     {
         private static void Main()
         {
@@ -18,60 +19,56 @@ namespace MobileCommunication
 
             #region Initializing mobile accounts
             var vasyl = myOperator.CreateMobileAccount(myOperator);
-            myOperator.SetAccountParametres(account: vasyl,
-                                            name: "Vasyl",
-                                            surname: "Vasylovych",
-                                            email: "vasyl.vasylovych@gmail.com",
-                                            dateTime: new DateTime(1987, 10, 24));
+            myOperator.SetAccountParametres(vasyl,
+                                            "Vasyl",
+                                            "Vasylovych",
+                                            "vasyl.vasylovych@gmail.com",
+                                            new DateTime(1987, 10, 24));
 
             var petro = myOperator.CreateMobileAccount(myOperator);
-            myOperator.SetAccountParametres(account: petro, 
-                                            name: "Petro",
-                                            surname:"Petrovych", 
-                                            email:"petro.petrovych@gmail.com", 
-                                            dateTime: new DateTime(1988, 01, 15));
+            myOperator.SetAccountParametres(petro, 
+                                            "Petro",
+                                            "Petrovych", 
+                                            "petro.petrovych@gmail.com", 
+                                            new DateTime(1988, 01, 15));
 
             var taras = myOperator.CreateMobileAccount(myOperator);
-            myOperator.SetAccountParametres(account: taras, 
-                                            name: "Taras", 
-                                            surname: "Tarasovych", 
-                                            email: "taras.tarasovych@gmail.com", 
-                                            dateTime: new DateTime(1991, 01, 28));
+            myOperator.SetAccountParametres(taras, 
+                                            "Taras", 
+                                            "Tarasovych", 
+                                            "taras.tarasovych@gmail.com", 
+                                            new DateTime(1991, 01, 28));
 
             var nazar = myOperator.CreateMobileAccount(myOperator);
-            myOperator.SetAccountParametres(account: nazar, 
-                                            name: "Nazar", 
-                                            surname: "Nazarovych", 
-                                            email: "nazar.nazarovych@gmail.com", 
-                                            dateTime: new DateTime(1997, 06, 10));
+            myOperator.SetAccountParametres(nazar, 
+                                            "Nazar", 
+                                            "Nazarovych", 
+                                            "nazar.nazarovych@gmail.com", 
+                                            new DateTime(1997, 06, 10));
 
             var igor = myOperator.CreateMobileAccount(myOperator);
-            myOperator.SetAccountParametres(account: igor, 
-                                            name: "Igor", 
-                                            surname: "Igorovych", 
-                                            email: "igor.igorovych@gmail.com", 
-                                            dateTime: new DateTime(1997, 01, 28));
+            myOperator.SetAccountParametres(igor, 
+                                            "Igor", 
+                                            "Igorovych", 
+                                            "igor.igorovych@gmail.com", 
+                                            new DateTime(1997, 01, 28));
 
             var andriy = myOperator.CreateMobileAccount(myOperator);
-            myOperator.SetAccountParametres(account: andriy, 
-                                            name: "Andriy", 
-                                            surname: "Andriyovych", 
-                                            email: "andriy.andriyovych@gmail.com", 
-                                            dateTime: new DateTime(1997, 10, 16));
+            myOperator.SetAccountParametres(andriy, 
+                                            "Andriy", 
+                                            "Andriyovych", 
+                                            "andriy.andriyovych@gmail.com", 
+                                            new DateTime(1997, 10, 16));
 
-            List<IMobileAccount> mobileAccountsForAddressBook = new List<IMobileAccount>
-            {
-                vasyl, petro, taras, nazar, igor, andriy
-            };
             #endregion
 
             #region Set AddressBook contacts
-            vasyl.Account.AddressBook.SetAccounts(petro, taras, nazar, igor, andriy);
-            petro.Account.AddressBook.SetAccounts(vasyl, taras, nazar, igor, andriy);
-            taras.Account.AddressBook.SetAccounts(vasyl, petro, nazar, igor, andriy);
-            nazar.Account.AddressBook.SetAccounts(vasyl, petro, taras, igor, andriy);
-            igor.Account.AddressBook.SetAccounts(vasyl, petro, taras, nazar, andriy);
-            andriy.Account.AddressBook.SetAccounts(vasyl, petro, taras, nazar, igor);
+            vasyl.AddressBook.SetAccounts(petro, taras, nazar, igor, andriy);
+            petro.AddressBook.SetAccounts(vasyl, taras, nazar, igor, andriy);
+            taras.AddressBook.SetAccounts(vasyl, petro, nazar, igor, andriy);
+            nazar.AddressBook.SetAccounts(vasyl, petro, taras, igor, andriy);
+            igor.AddressBook.SetAccounts(vasyl, petro, taras, nazar, andriy);
+            andriy.AddressBook.SetAccounts(vasyl, petro, taras, nazar, igor);
             #endregion
 
             #region Account actions via Operator
@@ -89,7 +86,7 @@ namespace MobileCommunication
             igor.SendSms(andriy.Account.Number);
             #endregion
 
-            CallLog callLog = new CallLog();
+            Logger callLog = new Logger();
             callLog.ShowAllLog();
 
             Console.ReadKey();

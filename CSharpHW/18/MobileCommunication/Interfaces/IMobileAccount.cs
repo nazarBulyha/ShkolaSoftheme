@@ -7,8 +7,9 @@ namespace MobileCommunication.Interfaces
     internal interface IMobileAccount
     {
         Account Account { get; set; }
+		AddressBook AddressBook { get; set; }
 
-        event EventHandler<AccountEventArgs> OnStartCallHandler;
+		event EventHandler<AccountEventArgs> OnStartCallHandler;
         event EventHandler<AccountEventArgs> OnEndCallHandler;
         event EventHandler<AccountEventArgs> OnStartSmsHandler;
         event EventHandler<AccountEventArgs> OnEndSmsHandler;
