@@ -1,18 +1,19 @@
 ﻿using MobileCommunication.Models;
-using System;
 
 namespace MobileCommunication.Interfaces
 {
-    internal interface ILog
-    {
-        LogMessage LoggerMessage { get; set; }
+	using System;
 
-        void Log(string message, bool isError);
+	public interface ILog
+	{
+		LogMessage LoggerMessage { get; set; }
 
-        void ShowAllLog();
+		void Log(string message, bool isError);
 
-        void ShowLog(DateTime dateTime, string message, int sender, int receiver, bool isError = false);
+		void ShowAllLog();
 
-        void CheckExcisting(string path, bool isError);
-    }
+		void ShowLog(DateTime dateTime, string message = null, bool isError = false);
+
+		void CreateDirectoryAndPathIfNotExcist(string path, bool isError);
+	}
 }

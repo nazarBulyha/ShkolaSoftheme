@@ -4,9 +4,10 @@ using MobileCommunication.Models;
 
 namespace MobileCommunication.Interfaces
 {
-    internal interface IMobileAccount
+	public interface IMobileAccount
     {
         Account Account { get; set; }
+
 		AddressBook AddressBook { get; set; }
 
 		event EventHandler<AccountEventArgs> OnStartCallHandler;

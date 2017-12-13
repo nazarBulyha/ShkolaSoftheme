@@ -1,17 +1,20 @@
 ﻿namespace MobileCommunication.Controllers
 {
 	using System;
+	using System.Runtime.Serialization;
 
 	using MobileCommunication.Extensions;
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
-	internal class MobileAccount : IMobileAccount
+	[DataContract]
+	[KnownType(typeof(Account))]
+	public class MobileAccount : IMobileAccount
     {
-        public IMobileOperator Operator { get; }
-
+		[DataMember]
         public Account Account { get; set; }
 
+	    //[DataMember]
 		public AddressBook AddressBook { get; set; }
 
         public event EventHandler<AccountEventArgs> OnStartCallHandler;
@@ -21,9 +24,9 @@
 
         private AccountEventArgs numberEventArgs;
 
-        public MobileAccount(IMobileOperator mobileOperator)
+        public MobileAccount()
         {
-			Operator = mobileOperator;
+	        AddressBook = new AddressBook();
         }
 
         public void MakeCall(int number)

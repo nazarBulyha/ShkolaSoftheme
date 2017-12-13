@@ -3,71 +3,79 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Xml.Serialization;
 
 	using MobileCommunication.Extensions;
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
-	internal class MobileOperator : IMobileOperator
-    {
-        private IMobileAccount mobileAccountSender;
+	public class MobileOperator : IMobileOperator
+	{
+		public List<IMobileAccount> MobileAccounts { get; set; }
+
+		public List<Account> StandardMobileAccounts { get; set; }
+
+		public ILog Logger { get; set; }
+
+		private IMobileAccount mobileAccountSender;
+
         private IMobileAccount mobileAccountReceiver;
+
+		[XmlIgnore]
         private int number = 2219320;
 
-        public List<IMobileAccount> MobileAccounts { get; set; } = new List<IMobileAccount>();
-        public List<IMobileAccount> StandardMobileAccounts { get; set; }
-        public AccountEventArgs NumberEventArgs { get; private set; }
-        public ILog CallLogger { get; set; } = new Logger();
-
-        public MobileOperator()
+		public MobileOperator()
         {
 			StandardMobileAccounts = CreateStandardMobileAccounts();
-        }
+	        MobileAccounts = new List<IMobileAccount>();
+			Logger = new Logger();
+		}
 
-        private List<IMobileAccount> CreateStandardMobileAccounts()
+        private List<Account> CreateStandardMobileAccounts()
         {
             #region Define standard accounts for address book
-            IMobileAccount standartAccount1 = new MobileAccount(this);
-            IMobileAccount standartAccount2 = new MobileAccount(this);
-            IMobileAccount standartAccount3 = new MobileAccount(this);
-            IMobileAccount standartAccount4 = new MobileAccount(this);
+            var standartAccount1 = new Account(CreateNumber());
+            var standartAccount2 = new Account(CreateNumber());
+            var standartAccount3 = new Account(CreateNumber());
+            var standartAccount4 = new Account(CreateNumber());
 
-            standartAccount1.Account = new Account(number: CreateNumber())
+            standartAccount1 = new Account(CreateNumber())
             {
                 Name = "standartName1",
                 Surname = "standartSurname1",
                 DateBirth = DateTime.Now
             };
-            standartAccount2.Account = new Account(number: CreateNumber())
+            standartAccount2 = new Account(CreateNumber())
             {
                 Name = "standartName2",
                 Surname = "standartSurname2",
                 DateBirth = DateTime.Now
             };
-            standartAccount3.Account = new Account(CreateNumber())
+            standartAccount3 = new Account(CreateNumber())
             {
                 Name = "standartName3",
                 Surname = "standartSurname3",
                 DateBirth = DateTime.Now
             };
-            standartAccount4.Account = new Account(CreateNumber())
+            standartAccount4 = new Account(CreateNumber())
             {
                 Name = "standartName4",
                 Surname = "standartSurname4s",
                 DateBirth = DateTime.Now
             };
 
-            StandardMobileAccounts = new List<IMobileAccount>();
-			// because AddRange take List of elements but no params type
-            StandardMobileAccounts.AddMany(standartAccount1, standartAccount2, standartAccount3, standartAccount4);
+            StandardMobileAccounts = new List<Account>
+	        {
+				standartAccount1, standartAccount2, standartAccount3, standartAccount4
+			};
             #endregion
 			
             return StandardMobileAccounts;
         }
 
-        public IMobileAccount CreateMobileAccount(IMobileOperator mobileOperator)
+        public IMobileAccount CreateMobileAccount()
         {
-            var mobileAccount = new MobileAccount(this);
+            var mobileAccount = new MobileAccount();
 
 			MobileAccounts.Add(mobileAccount);
 
@@ -167,12 +175,6 @@
                 return;
             }
 
-			NumberEventArgs = new AccountEventArgs
-            {
-                SenderNumber = mobileAccountSender.Account.Number,
-                ReceiverNumber = mobileAccountReceiver.Account.Number
-            };
-
 			LogCallEvent("Try to call");
 
 			mobileAccountReceiver.ReceiveCall(mobileAccountSender.Account.Number);
@@ -245,12 +247,6 @@
                 return;
             }
 
-			NumberEventArgs = new AccountEventArgs
-            {
-                SenderNumber = mobileAccountSender.Account.Number,
-                ReceiverNumber = mobileAccountReceiver.Account.Number
-            };
-
 			LogSmsEvent("Try to send sms");
 
 			mobileAccountReceiver.ReceiveSms(mobileAccountSender.Account.Number);
@@ -272,12 +268,12 @@
 
         private void LogCallEvent(string message, bool isError = false)
         {
-			CallLogger.Log(message, isError);
+			Logger.Log(message, isError);
         }
 
         private void LogSmsEvent(string message, bool isError = false)
         {
-			CallLogger.Log(message, isError);
+			Logger.Log(message, isError);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MobileCommunication.Models
 {
-    internal class LogMessage
+    public class LogMessage
     {
         public DateTime DateTime { get; set; } = DateTime.Now;
 

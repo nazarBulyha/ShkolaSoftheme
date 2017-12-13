@@ -3,14 +3,17 @@ using System.Collections.Generic;
 
 namespace MobileCommunication.Interfaces
 {
-    internal interface IMobileOperator
+	using MobileCommunication.Models;
+
+	public interface IMobileOperator
     {
         List<IMobileAccount> MobileAccounts { get; set; }
-	    List<IMobileAccount> StandardMobileAccounts { get; set; }
 
-		ILog CallLogger { get; set; }
+		List<Account> StandardMobileAccounts { get; set; }
 
-        IMobileAccount CreateMobileAccount(IMobileOperator mobileOperator);
+		ILog Logger { get; set; }
+
+        IMobileAccount CreateMobileAccount();
 
         IMobileAccount SetAccountParametres(IMobileAccount account, string name, string surname, string email, DateTime dateTime);
 
