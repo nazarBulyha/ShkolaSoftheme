@@ -14,6 +14,6 @@ namespace MobileCommunication.Interfaces
 
 		void ShowLog(DateTime dateTime, string message = null, bool isError = false);
 
-		void CreateDirectoryAndPathIfNotExcist(string path, bool isError);
+		void CreateDirectoryAndPathExcisting(string path, bool isError);
 	}
 }

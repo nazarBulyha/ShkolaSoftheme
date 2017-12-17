@@ -15,107 +15,105 @@
 
 		public List<Account> StandardMobileAccounts { get; set; }
 
+		[XmlIgnore]
 		public ILog Logger { get; set; }
 
 		private IMobileAccount mobileAccountSender;
 
-        private IMobileAccount mobileAccountReceiver;
+		private IMobileAccount mobileAccountReceiver;
 
-		[XmlIgnore]
-        private int number = 2219320;
+		private int number = 2219320;
 
 		public MobileOperator()
-        {
-			StandardMobileAccounts = CreateStandardMobileAccounts();
-	        MobileAccounts = new List<IMobileAccount>();
+		{
+			MobileAccounts = new List<IMobileAccount>();
+			StandardMobileAccounts = CreateStandardMobileAccountsList();
+
 			Logger = new Logger();
 		}
 
-        private List<Account> CreateStandardMobileAccounts()
-        {
-            #region Define standard accounts for address book
-            var standartAccount1 = new Account(CreateNumber());
-            var standartAccount2 = new Account(CreateNumber());
-            var standartAccount3 = new Account(CreateNumber());
-            var standartAccount4 = new Account(CreateNumber());
+		private List<Account> CreateStandardMobileAccountsList()
+		{
+			#region Define standard accounts for address book
+			var standartAccount1 = new Account(CreateNumber())
+			{
+				Name = "standartName1",
+				Surname = "standartSurname1",
+				DateBirth = DateTime.Now
+			};
+			var standartAccount2 = new Account(CreateNumber())
+			{
+				Name = "standartName2",
+				Surname = "standartSurname2",
+				DateBirth = DateTime.Now
+			};
+			var standartAccount3 = new Account(CreateNumber())
+			{
+				Name = "standartName3",
+				Surname = "standartSurname3",
+				DateBirth = DateTime.Now
+			};
+			var standartAccount4 = new Account(CreateNumber())
+			{
+				Name = "standartName4",
+				Surname = "standartSurname4s",
+				DateBirth = DateTime.Now
+			};
 
-            standartAccount1 = new Account(CreateNumber())
-            {
-                Name = "standartName1",
-                Surname = "standartSurname1",
-                DateBirth = DateTime.Now
-            };
-            standartAccount2 = new Account(CreateNumber())
-            {
-                Name = "standartName2",
-                Surname = "standartSurname2",
-                DateBirth = DateTime.Now
-            };
-            standartAccount3 = new Account(CreateNumber())
-            {
-                Name = "standartName3",
-                Surname = "standartSurname3",
-                DateBirth = DateTime.Now
-            };
-            standartAccount4 = new Account(CreateNumber())
-            {
-                Name = "standartName4",
-                Surname = "standartSurname4s",
-                DateBirth = DateTime.Now
-            };
-
-            StandardMobileAccounts = new List<Account>
-	        {
+			StandardMobileAccounts = new List<Account>
+			{
 				standartAccount1, standartAccount2, standartAccount3, standartAccount4
 			};
-            #endregion
-			
-            return StandardMobileAccounts;
-        }
+			#endregion
 
-        public IMobileAccount CreateMobileAccount()
-        {
-            var mobileAccount = new MobileAccount();
+			return StandardMobileAccounts;
+		}
+
+		public IMobileAccount CreateMobileAccount()
+		{
+			var mobileAccount = new MobileAccount();
 
 			MobileAccounts.Add(mobileAccount);
 
-            mobileAccount.OnStartCallHandler += TryMakeCall;
-            mobileAccount.OnEndCallHandler += EndCall;
-            mobileAccount.OnStartSmsHandler += TrySendSms;
-            mobileAccount.OnEndSmsHandler += ReceiveSms;
+			mobileAccount.OnCallHandler += TryMakeCall;
+			mobileAccount.OnCallHandler += EndCall;
+			mobileAccount.OnSmsHandler += TrySendSms;
+			mobileAccount.OnSmsHandler += ReceiveSms;
 
-            return mobileAccount;
-        }
+			return mobileAccount;
+		}
 
-        public IMobileAccount SetAccountParametres(IMobileAccount mobileAccount, string name, string surname, string email, DateTime dateTime)
-        {
-            var account = new Account(CreateNumber())
-            {
-                Name = name,
-                Surname = surname,
-                Email = email,
-                DateBirth = dateTime
-            };
-	        mobileAccount.AddressBook.SetAccounts(StandardMobileAccounts);
+		public IMobileAccount SetAccountParametres(IMobileAccount mobileAccount, string name, string surname, string email, DateTime dateTime)
+		{
+			var account = new Account(CreateNumber())
+			{
+				Name = name,
+				Surname = surname,
+				Email = email,
+				DateBirth = dateTime
+			};
 
-            mobileAccount.Account = account;
+			// Address book is already initialized on mobileAccount created
+			mobileAccount.AddressBook.SetAccounts(StandardMobileAccounts);
 
-            return mobileAccount;
-        }
+			mobileAccount.Account = account;
 
-        public int CreateNumber()
-        {
-            return number++;
-        }
+			return mobileAccount;
+		}
 
-        private void TryMakeCall(object sender, AccountEventArgs e)
-        {
-            try
-            {
+		public int CreateNumber()
+		{
+			return number++;
+		}
+
+		private void TryMakeCall(object sender, AccountEventArgs e)
+		{
+			try
+			{
 				mobileAccountSender = sender as IMobileAccount;
 				mobileAccountReceiver = MobileAccounts.FirstOrDefault(mobileAccount => e.ReceiverNumber.Equals(mobileAccount.Account.Number));
 
-                if (mobileAccountSender == null || mobileAccountReceiver == null || mobileAccountReceiver.Account.Number == 0 || mobileAccountSender.Account.Number == 0 || mobileAccountSender.Account == null || mobileAccountReceiver.Account == null)
+				if (mobileAccountSender == null || mobileAccountReceiver == null || mobileAccountReceiver.Account.Number == 0 || mobileAccountSender.Account.Number == 0 || mobileAccountSender.Account == null || mobileAccountReceiver.Account == null)
 				{
 					throw new NullReferenceException();
 				}
@@ -125,69 +123,53 @@
 					throw new ArgumentException();
 				}
 			}
-            catch (NullReferenceException)
-            {
-	            if (mobileAccountSender != null)
+			catch (NullReferenceException)
+			{
+				if (mobileAccountSender != null)
 				{
-					mobileAccountSender.OnEndCallHandler -= EndCall;
+					mobileAccountSender.OnCallHandler -= EndCall;
 				}
 
 				LogCallEvent("Call crashed.", true);
 
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Call crashed");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-
-                return;
-            }
-            catch (ArgumentException)
-            {
-	            if (mobileAccountSender != null)
+				return;
+			}
+			catch (ArgumentException)
+			{
+				if (mobileAccountSender != null)
 				{
-					mobileAccountSender.OnEndCallHandler -= EndCall;
+					mobileAccountSender.OnCallHandler -= EndCall;
 				}
 
 				LogCallEvent("Call crashed.", true);
 
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Call crashed");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-
-                return;
-            }
-            catch (Exception exceptionStandart)
-            {
-	            if (mobileAccountSender != null)
+				return;
+			}
+			catch (Exception)
+			{
+				if (mobileAccountSender != null)
 				{
-					mobileAccountSender.OnEndCallHandler -= EndCall;
+					mobileAccountSender.OnCallHandler -= EndCall;
 				}
 
 				LogCallEvent("Call crashed.", true);
 
-	            Console.WriteLine(exceptionStandart.Message);
-				Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Call crashed");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-
-                return;
-            }
+				return;
+			}
 
 			LogCallEvent("Try to call");
 
 			mobileAccountReceiver.ReceiveCall(mobileAccountSender.Account.Number);
-        }
+		}
 
-        private void TrySendSms(object sender, AccountEventArgs e)
-        {
-            try
-            {
+		private void TrySendSms(object sender, AccountEventArgs e)
+		{
+			try
+			{
 				mobileAccountSender = (IMobileAccount)sender;
 				mobileAccountReceiver = MobileAccounts.FirstOrDefault(mobileAccount => e.ReceiverNumber.Equals(mobileAccount.Account.Number));
 
-                if (mobileAccountSender == null || mobileAccountReceiver == null || mobileAccountReceiver.Account.Number == 0 || mobileAccountSender.Account.Number == 0 || mobileAccountSender.Account == null || mobileAccountReceiver.Account == null)
+				if (mobileAccountSender == null || mobileAccountReceiver == null || mobileAccountReceiver.Account.Number == 0 || mobileAccountSender.Account.Number == 0 || mobileAccountSender.Account == null || mobileAccountReceiver.Account == null)
 				{
 					throw new NullReferenceException();
 				}
@@ -197,83 +179,67 @@
 					throw new ArgumentException();
 				}
 			}
-            catch (NullReferenceException)
-            {
-	            if (mobileAccountSender != null)
+			catch (NullReferenceException)
+			{
+				if (mobileAccountSender != null)
 				{
-					mobileAccountSender.OnEndSmsHandler -= ReceiveSms;
+					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
 				LogSmsEvent("Sms wasn't send.", true);
 
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Sms wasn't send.");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-
-                return;
-            }
-            catch (ArgumentException)
-            {
-	            if (mobileAccountSender != null)
+				return;
+			}
+			catch (ArgumentException)
+			{
+				if (mobileAccountSender != null)
 				{
-					mobileAccountSender.OnEndSmsHandler -= ReceiveSms;
+					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
 				LogSmsEvent("Sms wasn't send.", true);
 
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Sms wasn't send.");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-
-                return;
-            }
-            catch (Exception standartException)
-            {
-	            if (mobileAccountSender != null)
+				return;
+			}
+			catch (Exception)
+			{
+				if (mobileAccountSender != null)
 				{
-					mobileAccountSender.OnEndSmsHandler -= ReceiveSms;
+					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
 				LogSmsEvent("Sms wasn't send.", true);
 
-	            Console.WriteLine(standartException.Message + Environment.NewLine);
-				Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Sms wasn't send.");
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.White;
-
-                return;
-            }
+				return;
+			}
 
 			LogSmsEvent("Try to send sms");
 
 			mobileAccountReceiver.ReceiveSms(mobileAccountSender.Account.Number);
-        }
+		}
 
-        // TODO: Implement logic after receiving Call
-        private void EndCall(object sender, AccountEventArgs e)
-        {
+		// TODO: Implement logic after receiving Call
+		private void EndCall(object sender, AccountEventArgs e)
+		{
 			// end call for both users
 			// if number doesn't exists, end call for one user
 			LogSmsEvent("Call ended.");
-        }
+		}
 
-        private void ReceiveSms(object sender, AccountEventArgs e)
-        {
+		private void ReceiveSms(object sender, AccountEventArgs e)
+		{
 			// if sender number isn't in blocked numbers than receive sms
 			LogSmsEvent("Sms received.");
-        }
+		}
 
-        private void LogCallEvent(string message, bool isError = false)
-        {
+		private void LogCallEvent(string message, bool isError = false)
+		{
 			Logger.Log(message, isError);
-        }
+		}
 
-        private void LogSmsEvent(string message, bool isError = false)
-        {
+		private void LogSmsEvent(string message, bool isError = false)
+		{
 			Logger.Log(message, isError);
-        }
-    }
+		}
+	}
 }

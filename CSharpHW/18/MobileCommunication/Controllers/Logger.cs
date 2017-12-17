@@ -3,13 +3,14 @@
 	using System;
 	using System.IO;
 
+	using MobileCommunication.Additional;
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
-	internal class Logger : ILog
+	public class Logger : ILog
 	{
-		private readonly string standartLogName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
-		private readonly string path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\CallLogs\";
+		private readonly string standardLogName = Global.StandardLogName;
+		private readonly string path = Global.Path;
 
 		public LogMessage LoggerMessage { get; set; }
 
@@ -21,44 +22,54 @@
 				IsError = isError,
 				DateTime = DateTime.Now
 			};
+
+			// TODO: write to file .txt
+			using (var writter = new StreamWriter(path + standardLogName))
+			{
+				writter.WriteLine(isError ? $"Error: {message}" : message);
+			}
 		}
 
 		public void ShowAllLog()
 		{
+			CreateDirectoryAndPathExcisting(path);
 
-			CreateDirectoryAndPathIfNotExcist(path);
-
-			// TODO: write to file .txt
-		}
-
-		public void ShowLog(DateTime dateTime, string message = null, bool isError = false)
-		{
-			CreateDirectoryAndPathIfNotExcist(path);
-
-			// TODO: Read and sort data from file
-			using (var reader = new StreamReader(path + standartLogName))
+			using (var reader = new StreamReader(path + standardLogName))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
 				{
-					if (line.Contains("DateTime"))
-					{
-
-					}
+					Console.WriteLine(line);
 				}
 			}
 		}
 
-		public void CreateDirectoryAndPathIfNotExcist(string filePath, bool isError = false)
+		public void ShowLog(DateTime dateTime, string message = null, bool isError = false)
+		{
+			CreateDirectoryAndPathExcisting(path);
+
+			// TODO: Read and sort data from file
+			using (var reader = new StreamReader(path + standardLogName))
+			{
+				string line;
+				while ((line = reader.ReadLine()) != null)
+				{
+					// if ( sort statement )
+					Console.WriteLine(line);
+				}
+			}
+		}
+
+		public void CreateDirectoryAndPathExcisting(string filePath, bool isError = false)
 		{
 			if (!Directory.Exists(filePath))
 			{
 				Directory.CreateDirectory(filePath);
 			}
 
-			if (!File.Exists(filePath + standartLogName))
+			if (!File.Exists(filePath + standardLogName))
 			{
-				File.Create(filePath + standartLogName);
+				File.Create(filePath + standardLogName);
 			}
 		}
 	}
