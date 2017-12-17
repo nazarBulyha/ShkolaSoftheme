@@ -3,9 +3,9 @@ using System;
 
 namespace MobileCommunication
 {
-	using System.Configuration;
 	using System.IO;
-	using System.Xml.Serialization;
+	using System.Runtime.Serialization;
+	using System.Xml;
 
 	using MobileCommunication.Controllers;
 
@@ -13,136 +13,124 @@ namespace MobileCommunication
 	{
 		public static IMobileOperator MyOperator = new MobileOperator();
 
-		public static readonly string FileName = "XmlSerialization.xml";
-
-		public static readonly string Path = ConfigurationManager.AppSettings["LocalStoragePath"];
+		public static readonly string Path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\CallLogs\XmlSerialization.xml";
 
 		private static void Main()
 		{
-			Deserialization();
+			CurrentDomainProcessStart();
 
-			AppDomain.CurrentDomain.ProcessExit += Serialization;
+			AppDomain.CurrentDomain.ProcessExit += CurrentDomainProcessExit;
 
-			//#region Initializing mobile accounts
-			//var tempAccount = MyOperator.CreateMobileAccount();
-			//MyOperator.SetAccountParametres(tempAccount, "tempAccount", "tempAccount", "", new DateTime(1988, 01, 15));
+			#region Initializing mobile accounts
+			var tempAccount = MyOperator.CreateMobileAccount();
+			MyOperator.SetAccountParametres(tempAccount, "tempAccount", "tempAccount", "", new DateTime(1988, 01, 15));
 
-			//var adminAccount = MyOperator.CreateMobileAccount();
-			//MyOperator.SetAccountParametres(adminAccount, "adminAccount", "adminAccount", "", new DateTime(1977, 01, 15));
+			var adminAccount = MyOperator.CreateMobileAccount();
+			MyOperator.SetAccountParametres(adminAccount, "adminAccount", "adminAccount", "", new DateTime(1977, 01, 15));
 
-			//var vasyl = MyOperator.CreateMobileAccount();
-			//MyOperator.SetAccountParametres(vasyl,
-			//								 "Vasyl",
-			//								 "Vasylovych",
-			//								 "vasyl.vasylovych@gmail.com",
-			//								 new DateTime(1987, 10, 24));
+			var vasyl = MyOperator.CreateMobileAccount();
+			MyOperator.SetAccountParametres(vasyl,
+											 "Vasyl",
+											 "Vasylovych",
+											 "vasyl.vasylovych@gmail.com",
+											 new DateTime(1987, 10, 24));
 
-			//var petro = MyOperator.CreateMobileAccount();
-			//MyOperator.SetAccountParametres(petro,
-			//								 "Petro",
-			//								 "Petrovych",
-			//								 "petro.petrovych@gmail.com",
-			//								 new DateTime(1988, 01, 15));
-
-			//var taras = MyOperator.CreateMobileAccount();
-			//MyOperator.SetAccountParametres(taras,
-			//								 "Taras",
-			//								 "Tarasovych",
-			//								 "taras.tarasovych@gmail.com",
-			//								 new DateTime(1991, 01, 28));
-
-			//var nazar = MyOperator.CreateMobileAccount();
-			//MyOperator.SetAccountParametres(nazar,
-			//								 "Nazar",
-			//								 "Nazarovych",
-			//								 "nazar.nazarovych@gmail.com",
-			//								 new DateTime(1997, 06, 10));
-
-			//var igor = MyOperator.CreateMobileAccount();
-			//MyOperator.SetAccountParametres(igor,
-			//								 "Igor",
-			//								 "Igorovych",
-			//								 "igor.igorovych@gmail.com",
-			//								 new DateTime(1997, 01, 28));
-
-			//var andriy = MyOperator.CreateMobileAccount();
-			//MyOperator.SetAccountParametres(andriy,
-			//								 "Andriy",
-			//								 "Andriyovych",
-			//								 "andriy.andriyovych@gmail.com",
-			//								 new DateTime(1997, 10, 16));
-
-			//#endregion
-
-			//#region Set AddressBook contacts
-
-			//vasyl.AddressBook.SetAccounts(petro.Account, taras.Account, nazar.Account, igor.Account, andriy.Account);
-			//petro.AddressBook.SetAccounts(vasyl.Account, taras.Account, nazar.Account, igor.Account, andriy.Account);
-			//taras.AddressBook.SetAccounts(vasyl.Account, petro.Account, nazar.Account, igor.Account, andriy.Account);
-			//nazar.AddressBook.SetAccounts(vasyl.Account, petro.Account, taras.Account, igor.Account, andriy.Account);
-			//andriy.AddressBook.SetAccounts(vasyl.Account, petro.Account, taras.Account, nazar.Account, igor.Account);
-			//igor.AddressBook.SetAccounts(vasyl.Account, petro.Account, taras.Account, nazar.Account);
-
-			//#endregion
-
-			//#region Account actions via Operator
-
-			//vasyl.MakeCall(adminAccount.Account.Number);
-			//vasyl.MakeCall(tempAccount.Account.Number);
-			//vasyl.MakeCall(petro.Account.Number);
-			//taras.MakeCall(nazar.Account.Number);
-			//igor.MakeCall(andriy.Account.Number);
-
-			//vasyl.SendSms(tempAccount.Account.Number);
-			//tempAccount.SendSms(vasyl.Account.Number);
-
-			//vasyl.SendSms(petro.Account.Number);
-			//taras.SendSms(nazar.Account.Number);
-			//igor.SendSms(andriy.Account.Number);
-
-			//#endregion
-
-			var vasyl1 = MyOperator.CreateMobileAccount();
-			MyOperator.SetAccountParametres(vasyl1,
-			                                "Vasyl",
-			                                "Vasylovych",
-			                                "vasyl.vasylovych@gmail.com",
-			                                new DateTime(1987, 10, 24));
-
-			var petro1 = MyOperator.CreateMobileAccount();
-			MyOperator.SetAccountParametres(petro1,
+			var petro = MyOperator.CreateMobileAccount();
+			MyOperator.SetAccountParametres(petro,
 											 "Petro",
 											 "Petrovych",
 											 "petro.petrovych@gmail.com",
 											 new DateTime(1988, 01, 15));
-			vasyl1.AddressBook.SetAccounts(petro1.Account);
+
+			var taras = MyOperator.CreateMobileAccount();
+			MyOperator.SetAccountParametres(taras,
+											 "Taras",
+											 "Tarasovych",
+											 "taras.tarasovych@gmail.com",
+											 new DateTime(1991, 01, 28));
+
+			var nazar = MyOperator.CreateMobileAccount();
+			MyOperator.SetAccountParametres(nazar,
+											 "Nazar",
+											 "Nazarovych",
+											 "nazar.nazarovych@gmail.com",
+											 new DateTime(1997, 06, 10));
+
+			var igor = MyOperator.CreateMobileAccount();
+			MyOperator.SetAccountParametres(igor,
+											 "Igor",
+											 "Igorovych",
+											 "igor.igorovych@gmail.com",
+											 new DateTime(1997, 01, 28));
+
+			var andriy = MyOperator.CreateMobileAccount();
+			MyOperator.SetAccountParametres(andriy,
+											 "Andriy",
+											 "Andriyovych",
+											 "andriy.andriyovych@gmail.com",
+											 new DateTime(1997, 10, 16));
+
+			#endregion
+
+			#region Set AddressBook contacts
+
+			vasyl.AddressBook.SetAccounts(petro.Account, taras.Account, nazar.Account, igor.Account, andriy.Account);
+			petro.AddressBook.SetAccounts(vasyl.Account, taras.Account, nazar.Account, igor.Account, andriy.Account);
+			taras.AddressBook.SetAccounts(vasyl.Account, petro.Account, nazar.Account, igor.Account, andriy.Account);
+			nazar.AddressBook.SetAccounts(vasyl.Account, petro.Account, taras.Account, igor.Account, andriy.Account);
+			andriy.AddressBook.SetAccounts(vasyl.Account, petro.Account, taras.Account, nazar.Account, igor.Account);
+			igor.AddressBook.SetAccounts(vasyl.Account, petro.Account, taras.Account, nazar.Account);
+
+			#endregion
+
+			#region Account actions via Operator
+
+			vasyl.MakeCall(adminAccount.Account.Number);
+			vasyl.MakeCall(tempAccount.Account.Number);
+			vasyl.MakeCall(petro.Account.Number);
+			taras.MakeCall(nazar.Account.Number);
+			igor.MakeCall(andriy.Account.Number);
+
+			vasyl.SendSms(tempAccount.Account.Number);
+			tempAccount.SendSms(vasyl.Account.Number);
+
+			vasyl.SendSms(petro.Account.Number);
+			taras.SendSms(nazar.Account.Number);
+			igor.SendSms(andriy.Account.Number);
+
+			#endregion
 
 
-			//var callLog = new Logger();
-			//callLog.ShowAllLog();
+			var callLog = new Logger();
+			callLog.ShowAllLog();
 
 			//Console.ReadKey();
 		}
 
-		private static void Serialization(object sender, EventArgs args)
+		private static void CurrentDomainProcessExit(object sender, EventArgs args)
 		{
-			using (var fileStream = new FileStream(Path + FileName, FileMode.OpenOrCreate))
+			// TODO: do deserialization
+			using (var fileStream = new FileStream(Path, FileMode.Create))
 			{
-				var serializer = new XmlSerializer(typeof(MobileOperator));
+				var serializer = new DataContractSerializer(typeof(IMobileOperator));
 
-				serializer.Serialize(fileStream, MyOperator);
+				serializer.WriteObject(fileStream, MyOperator);
 			}
 		}
 
-		private static void Deserialization()
+		private static void CurrentDomainProcessStart()
 		{
-			if (!File.Exists(Path + FileName)) return;
-
-			using (var fileStream = new FileStream(Path + FileName, FileMode.Open))
+			if (!File.Exists(Path)) return;
+			// TODO: do serialization
+			using (var fileStream = new FileStream(Path, FileMode.Open))
 			{
-				var serializer = new XmlSerializer(typeof(MobileOperator));
+				var reader = XmlDictionaryReader.CreateTextReader(fileStream, new XmlDictionaryReaderQuotas());
 
-				MyOperator = (IMobileOperator)serializer.Deserialize(fileStream);
+				var serializer = new DataContractSerializer(typeof(IMobileOperator));
+
+				// Exception
+				MyOperator = (IMobileOperator)serializer.ReadObject(reader, true);
+
 			}
 		}
 	}

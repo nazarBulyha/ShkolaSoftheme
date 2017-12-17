@@ -1,37 +1,38 @@
 ﻿namespace MobileCommunication.Models
 {
-	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Runtime.Serialization;
 
-	[Serializable]
+	[DataContract]
 	public class AddressBook
-	{
-		// make address book unique for each user
-		public List<Account> NumberList { get; set; } = new List<Account>();
+    {
+        // make address book unique for each user
+		[DataMember]
+        protected List<Account> NumberList { get; set; } = new List<Account>();
 
-		public string GetAccountNameByNumber(int number)
-		{
-			var accountName = NumberList.SingleOrDefault(mobileAccount => mobileAccount.Number == number) != null ?
+        public string GetAccountNameByNumber(int number)
+        {
+            string accountName = NumberList.SingleOrDefault(mobileAccount => mobileAccount.Number == number) != null ?
 								 NumberList.Where(mobileAccount => mobileAccount.Number == number).Select(account => account.Name).SingleOrDefault() :
-								 number.ToString();
+                                 number.ToString();
 
-			return accountName;
-		}
+            return accountName;
+        }
 
-		public void SetAccount(Account mobileAccount)
-		{
-			NumberList.Add(mobileAccount);
-		}
+        public void SetAccount(Account mobileAccount)
+	    {
+			NumberList.Add( mobileAccount );
+	    }
 
-		public void SetAccounts(params Account[] mobileAccounts)
-		{
-			NumberList.AddRange(mobileAccounts);
-		}
+	    public void SetAccounts(params Account[] mobileAccounts)
+	    {
+			NumberList.AddRange( mobileAccounts );
+	    }
 
-		public void SetAccounts(List<Account> mobileAccounts)
-		{
-			NumberList.AddRange(mobileAccounts);
-		}
-	}
+	    public void SetAccounts(List<Account> mobileAccounts)
+	    {
+			NumberList.AddRange( mobileAccounts );
+	    }
+    }
 }

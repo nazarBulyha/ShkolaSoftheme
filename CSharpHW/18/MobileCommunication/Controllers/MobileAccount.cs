@@ -1,19 +1,26 @@
 ﻿namespace MobileCommunication.Controllers
 {
 	using System;
+	using System.Runtime.Serialization;
 
 	using MobileCommunication.Extensions;
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
+	[DataContract]
+	[KnownType(typeof(Account))]
 	public class MobileAccount : IMobileAccount
     {
+		[DataMember]
         public Account Account { get; set; }
 
+	    //[DataMember]
 		public AddressBook AddressBook { get; set; }
 
-        public event EventHandler<AccountEventArgs> OnCallHandler;
-        public event EventHandler<AccountEventArgs> OnSmsHandler;
+        public event EventHandler<AccountEventArgs> OnStartCallHandler;
+        public event EventHandler<AccountEventArgs> OnEndCallHandler;
+        public event EventHandler<AccountEventArgs> OnStartSmsHandler;
+        public event EventHandler<AccountEventArgs> OnEndSmsHandler;
 
         private AccountEventArgs numberEventArgs;
 
@@ -33,7 +40,7 @@
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Try call to {AddressBook.GetAccountNameByNumber(number)}.");
 
-			OnCallHandler?.Invoke(this, numberEventArgs);
+			OnStartCallHandler?.Invoke(this, numberEventArgs);
         }
 
         public void SendSms(int number)
@@ -47,7 +54,7 @@
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"Try send SMS to {AddressBook.GetAccountNameByNumber(number)}.");
 
-			OnSmsHandler?.Invoke(this, numberEventArgs);
+			OnStartSmsHandler?.Invoke(this, numberEventArgs);
         }
 
         public void ReceiveCall(int number)
@@ -73,7 +80,7 @@
             // if account want to receive a call
             if (true)
             {
-				OnCallHandler?.Invoke(this, numberEventArgs);
+				OnEndCallHandler?.Invoke(this, numberEventArgs);
             }
         }
 
@@ -94,7 +101,7 @@
                 ReceiverNumber = Account.Number
             };
 
-			OnSmsHandler?.Invoke(this, numberEventArgs);
+			OnEndSmsHandler?.Invoke(this, numberEventArgs);
         }
     }
 }

@@ -3,14 +3,13 @@
 	using System;
 	using System.IO;
 
-	using MobileCommunication.Additional;
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
-	public class Logger : ILog
+	internal class Logger : ILog
 	{
-		private readonly string standardLogName = Global.StandardLogName;
-		private readonly string path = Global.Path;
+		private readonly string standartLogName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
+		private readonly string path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\CallLogs\";
 
 		public LogMessage LoggerMessage { get; set; }
 
@@ -22,54 +21,44 @@
 				IsError = isError,
 				DateTime = DateTime.Now
 			};
-
-			// TODO: write to file .txt
-			using (var writter = new StreamWriter(path + standardLogName))
-			{
-				writter.WriteLine(isError ? $"Error: {message}" : message);
-			}
 		}
 
 		public void ShowAllLog()
 		{
-			CreateDirectoryAndPathExcisting(path);
 
-			using (var reader = new StreamReader(path + standardLogName))
-			{
-				string line;
-				while ((line = reader.ReadLine()) != null)
-				{
-					Console.WriteLine(line);
-				}
-			}
+			CreateDirectoryAndPathIfNotExcist(path);
+
+			// TODO: write to file .txt
 		}
 
 		public void ShowLog(DateTime dateTime, string message = null, bool isError = false)
 		{
-			CreateDirectoryAndPathExcisting(path);
+			CreateDirectoryAndPathIfNotExcist(path);
 
 			// TODO: Read and sort data from file
-			using (var reader = new StreamReader(path + standardLogName))
+			using (var reader = new StreamReader(path + standartLogName))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
 				{
-					// if ( sort statement )
-					Console.WriteLine(line);
+					if (line.Contains("DateTime"))
+					{
+
+					}
 				}
 			}
 		}
 
-		public void CreateDirectoryAndPathExcisting(string filePath, bool isError = false)
+		public void CreateDirectoryAndPathIfNotExcist(string filePath, bool isError = false)
 		{
 			if (!Directory.Exists(filePath))
 			{
 				Directory.CreateDirectory(filePath);
 			}
 
-			if (!File.Exists(filePath + standardLogName))
+			if (!File.Exists(filePath + standartLogName))
 			{
-				File.Create(filePath + standardLogName);
+				File.Create(filePath + standartLogName);
 			}
 		}
 	}

@@ -10,8 +10,10 @@ namespace MobileCommunication.Interfaces
 
 		AddressBook AddressBook { get; set; }
 
-		event EventHandler<AccountEventArgs> OnCallHandler;
-        event EventHandler<AccountEventArgs> OnSmsHandler;
+		event EventHandler<AccountEventArgs> OnStartCallHandler;
+        event EventHandler<AccountEventArgs> OnEndCallHandler;
+        event EventHandler<AccountEventArgs> OnStartSmsHandler;
+        event EventHandler<AccountEventArgs> OnEndSmsHandler;
 
         void SendSms(int number);
 
