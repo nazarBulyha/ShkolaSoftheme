@@ -2,29 +2,24 @@
 
 namespace MobileCommunication.Models
 {
-	using System.Runtime.Serialization;
-
-	[DataContract]
 	public class Account
     {
+		public Account() { }
+
         public Account(int number)
         {
             Number = number;
-        }
+			DateBirth = DateTime.Now;
+		}
 
-		[DataMember]
-        public int Number { get; private set; }
+        public int Number { get; }
 
-		[DataMember]
 	    public string Name { get; set; }
 
-		[DataMember]
         public string Surname { get; set; }
 
-		[DataMember]
         public string Email { get; set; }
 
-		[DataMember]
-        public DateTime DateBirth { get; set; } = DateTime.Now;
+        public DateTime DateBirth { get; set; }
     }
 }

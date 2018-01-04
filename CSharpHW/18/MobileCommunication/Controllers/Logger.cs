@@ -6,10 +6,10 @@
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
-	internal class Logger : ILog
+	public class Logger : ILog
 	{
-		private readonly string standartLogName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
 		private readonly string path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\CallLogs\";
+		private readonly string standartLogName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
 
 		public LogMessage LoggerMessage { get; set; }
 
@@ -26,14 +26,16 @@
 		public void ShowAllLog()
 		{
 
-			CreateDirectoryAndPathIfNotExcist(path);
+			//if (CreateNotExcistingDirectoryAndPath())
+			//	return;
 
-			// TODO: write to file .txt
+			// TODO: show all log
+			Console.WriteLine("All log");
 		}
 
 		public void ShowLog(DateTime dateTime, string message = null, bool isError = false)
 		{
-			CreateDirectoryAndPathIfNotExcist(path);
+			//CreateNotExcistingDirectoryAndPath();
 
 			// TODO: Read and sort data from file
 			using (var reader = new StreamReader(path + standartLogName))
@@ -46,19 +48,6 @@
 
 					}
 				}
-			}
-		}
-
-		public void CreateDirectoryAndPathIfNotExcist(string filePath, bool isError = false)
-		{
-			if (!Directory.Exists(filePath))
-			{
-				Directory.CreateDirectory(filePath);
-			}
-
-			if (!File.Exists(filePath + standartLogName))
-			{
-				File.Create(filePath + standartLogName);
 			}
 		}
 	}
