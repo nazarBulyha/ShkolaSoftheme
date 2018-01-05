@@ -1,16 +1,20 @@
-﻿using MobileCommunication.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MobileCommunication.Interfaces
 {
-    public interface IMobileOperator
+	using MobileCommunication.Controllers;
+	using MobileCommunication.Models;
+
+	public interface IMobileOperator
     {
         List<MobileAccount> MobileAccounts { get; set; }
-        ILog CallLogger { get; set; }
-        int OperatorId { get; set; }
 
-        MobileAccount CreateMobileAccount(MobileOperator mobileOperator);
+		List<Account> StandardMobileAccounts { get; set; }
+
+		Logger Logger { get; set; }
+
+        MobileAccount CreateMobileAccount();
 
         MobileAccount SetAccountParametres(MobileAccount account, string name, string surname, string email, DateTime dateTime);
 
