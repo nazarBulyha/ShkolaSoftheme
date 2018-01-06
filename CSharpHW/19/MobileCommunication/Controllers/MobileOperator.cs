@@ -10,6 +10,7 @@
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
+	[Serializable]
 	public class MobileOperator : IMobileOperator
 	{
 		public List<MobileAccount> MobileAccounts { get; set; }
@@ -76,6 +77,23 @@
 			var mobileAccount = new MobileAccount();
 
 			MobileAccounts.Add(mobileAccount);
+
+			mobileAccount.OnCallHandler += EndCall;
+			mobileAccount.OnCallHandler += TryMakeCall;
+			mobileAccount.OnSmsHandler += ReceiveSms;
+			mobileAccount.OnSmsHandler += TrySendSms;
+
+			return mobileAccount;
+		}
+
+		public MobileAccount FindMobileAccountByName(string name)
+		{
+			var mobileAccount =  MobileAccounts.SingleOrDefault(mobileAcc => mobileAcc.Account.Name == name);
+
+			if (mobileAccount == null)
+			{
+				return null;
+			}
 
 			mobileAccount.OnCallHandler += EndCall;
 			mobileAccount.OnCallHandler += TryMakeCall;

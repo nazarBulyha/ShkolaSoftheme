@@ -1,7 +1,9 @@
-﻿using System;
-
+﻿
 namespace MobileCommunication
 {
+	using System;
+	using System.Linq;
+
 	using MobileCommunication.Controllers;
 	using MobileCommunication.Extensions;
 
@@ -17,42 +19,46 @@ namespace MobileCommunication
 				#region Initializing mobile accounts
 
 				var vasyl = myOperator.CreateMobileAccount();
-				myOperator.SetAccountParametres(vasyl,
-				                                "Vasyl",
-				                                "Vasylovych",
-				                                "vasyl.vasylovych@gmail.com",
-				                                new DateTime(1987, 10, 24));
+				vasyl = myOperator.SetAccountParametres(vasyl,
+														"Vasyl",
+														"Vasylovych",
+														"vasyl.vasylovych@gmail.com",
+														new DateTime(1987, 10, 24));
 
 				var petro = myOperator.CreateMobileAccount();
-				myOperator.SetAccountParametres(petro,
-				                                "Petro",
-				                                "Petrovych",
-				                                "petro.petrovych@gmail.com",
-				                                new DateTime(1988, 01, 15));
+				petro = myOperator.SetAccountParametres(petro,
+														"Petro",
+														"Petrovych",
+														"petro.petrovych@gmail.com",
+														new DateTime(1988, 01, 15));
 
 				var taras = myOperator.CreateMobileAccount();
-				myOperator.SetAccountParametres(taras,
-				                                "Taras",
-				                                "Tarasovych",
-				                                "taras.tarasovych@gmail.com",
-				                                new DateTime(1991, 01, 28));
+				taras = myOperator.SetAccountParametres(taras,
+														"Taras",
+														"Tarasovych",
+														"taras.tarasovych@gmail.com",
+														new DateTime(1991, 01, 28));
 
 				var nazar = myOperator.CreateMobileAccount();
-				myOperator.SetAccountParametres(nazar,
-				                                "Nazar",
-				                                "Nazarovych",
-				                                "nazar.nazarovych@gmail.com",
-				                                new DateTime(1997, 06, 10));
+				nazar = myOperator.SetAccountParametres(nazar,
+														"Nazar",
+														"Nazarovych",
+														"nazar.nazarovych@gmail.com",
+														new DateTime(1997, 06, 10));
 
 				var igor = myOperator.CreateMobileAccount();
-				myOperator.SetAccountParametres(igor, "Igor", "Igorovych", "igor.igorovych@gmail.com", new DateTime(1997, 01, 28));
+				igor = myOperator.SetAccountParametres(igor,
+													   "Igor",
+													   "Igorovych",
+													   "igor.igorovych@gmail.com",
+													   new DateTime(1997, 01, 28));
 
 				var andriy = myOperator.CreateMobileAccount();
-				myOperator.SetAccountParametres(andriy,
-				                                "Andriy",
-				                                "Andriyovych",
-				                                "andriy.andriyovych@gmail.com",
-				                                new DateTime(1997, 10, 16));
+				andriy = myOperator.SetAccountParametres(andriy,
+														 "Andriy",
+														 "Andriyovych",
+														 "andriy.andriyovych@gmail.com",
+														 new DateTime(1997, 10, 16));
 
 				#endregion
 
@@ -66,22 +72,115 @@ namespace MobileCommunication
 				igor.AddressBook.SetAccounts(vasyl.Account, petro.Account, taras.Account, nazar.Account);
 
 				#endregion
-
-				#region Account actions via Operator
-
-				vasyl.MakeCall(petro.Account.Number);
-				taras.MakeCall(nazar.Account.Number);
-				igor.MakeCall(andriy.Account.Number);
-
-				vasyl.SendSms(petro.Account.Number);
-				taras.SendSms(nazar.Account.Number);
-				igor.SendSms(andriy.Account.Number);
-
-				#endregion
 			}
 
+			#region Account actions via Operator
+
+			#region Get/initialize accounts from file
+
+			var vasyl1 = myOperator.FindMobileAccountByName("Vasyl");
+			var petro1 = myOperator.FindMobileAccountByName("Petro");
+			var taras1 = myOperator.FindMobileAccountByName("Taras");
+			var nazar1 = myOperator.FindMobileAccountByName("Nazar");
+			var igor1 = myOperator.FindMobileAccountByName("Igor");
+			var andriy1 = myOperator.FindMobileAccountByName("Andriy");
+
+			#endregion
+
+			#region Call
+			vasyl1.MakeCall(petro1.Account.Number);
+			vasyl1.MakeCall(andriy1.Account.Number);
+			vasyl1.MakeCall(nazar1.Account.Number);
+			vasyl1.MakeCall(petro1.Account.Number);
+			vasyl1.MakeCall(petro1.Account.Number);
+
+			petro1.MakeCall(vasyl1.Account.Number);
+			petro1.MakeCall(vasyl1.Account.Number);
+			petro1.MakeCall(andriy1.Account.Number);
+			petro1.MakeCall(andriy1.Account.Number);
+
+			taras1.MakeCall(nazar1.Account.Number);
+			taras1.MakeCall(nazar1.Account.Number);
+			taras1.MakeCall(nazar1.Account.Number);
+			taras1.MakeCall(andriy1.Account.Number);
+			taras1.MakeCall(andriy1.Account.Number);
+			taras1.MakeCall(vasyl1.Account.Number);
+			taras1.MakeCall(igor1.Account.Number);
+			taras1.MakeCall(igor1.Account.Number);
+			taras1.MakeCall(nazar1.Account.Number);
+
+			nazar1.MakeCall(taras1.Account.Number);
+			nazar1.MakeCall(taras1.Account.Number);
+			nazar1.MakeCall(andriy1.Account.Number);
+			nazar1.MakeCall(andriy1.Account.Number);
+			nazar1.MakeCall(igor1.Account.Number);
+			nazar1.MakeCall(igor1.Account.Number);
+			nazar1.MakeCall(petro1.Account.Number);
+			nazar1.MakeCall(vasyl1.Account.Number);
+
+			igor1.MakeCall(andriy1.Account.Number);
+			igor1.MakeCall(nazar1.Account.Number);
+			igor1.MakeCall(taras1.Account.Number);
+			igor1.MakeCall(petro1.Account.Number);
+
+			andriy1.MakeCall(igor1.Account.Number);
+			andriy1.MakeCall(nazar1.Account.Number);
+			andriy1.MakeCall(taras1.Account.Number);
+			andriy1.MakeCall(petro1.Account.Number);
+
+			#endregion Call
+
+			#region SMS
+			vasyl1.SendSms(petro1.Account.Number);
+			vasyl1.SendSms(andriy1.Account.Number);
+			vasyl1.SendSms(nazar1.Account.Number);
+			vasyl1.SendSms(petro1.Account.Number);
+			vasyl1.SendSms(petro1.Account.Number);
+
+			petro1.SendSms(vasyl1.Account.Number);
+			petro1.SendSms(vasyl1.Account.Number);
+			petro1.SendSms(andriy1.Account.Number);
+			petro1.SendSms(andriy1.Account.Number);
+
+			taras1.SendSms(nazar1.Account.Number);
+			taras1.SendSms(nazar1.Account.Number);
+			taras1.SendSms(nazar1.Account.Number);
+			taras1.SendSms(andriy1.Account.Number);
+			taras1.SendSms(andriy1.Account.Number);
+			taras1.SendSms(vasyl1.Account.Number);
+			taras1.SendSms(igor1.Account.Number);
+			taras1.SendSms(igor1.Account.Number);
+			taras1.SendSms(nazar1.Account.Number);
+
+			nazar1.SendSms(taras1.Account.Number);
+			nazar1.SendSms(taras1.Account.Number);
+			nazar1.SendSms(andriy1.Account.Number);
+			nazar1.SendSms(andriy1.Account.Number);
+			nazar1.SendSms(igor1.Account.Number);
+			nazar1.SendSms(igor1.Account.Number);
+			nazar1.SendSms(petro1.Account.Number);
+			nazar1.SendSms(vasyl1.Account.Number);
+
+			igor1.SendSms(andriy1.Account.Number);
+			igor1.SendSms(nazar1.Account.Number);
+			igor1.SendSms(taras1.Account.Number);
+			igor1.SendSms(petro1.Account.Number);
+
+			andriy1.SendSms(igor1.Account.Number);
+			andriy1.SendSms(nazar1.Account.Number);
+			andriy1.SendSms(taras1.Account.Number);
+			andriy1.SendSms(petro1.Account.Number);
+
+			#endregion SMS 
+
+			#endregion Account actions via Operator
+
 			myOperator.Logger.ShowAllLog();
-			Console.ReadKey();
+
+			//TODO: most active users
+
+
+			//Console.ReadKey();
 
 			SerializerDesserializer.Serialize(myOperator);
 		}

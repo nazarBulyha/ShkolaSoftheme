@@ -1,11 +1,13 @@
 ﻿namespace MobileCommunication.Models
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
+	[Serializable]
 	public class AddressBook
     {
-        private List<Account> NumberList { get; } = new List<Account>();
+        public List<Account> NumberList { get; } = new List<Account>();
 
         public string GetAccountNameByNumber(int number)
         {

@@ -6,14 +6,15 @@
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
+	[Serializable]
 	public class MobileAccount : IMobileAccount
     {
         public Account Account { get; set; }
 
 		public AddressBook AddressBook { get; set; }
 
-        public event EventHandler<AccountEventArgs> OnCallHandler;
-        public event EventHandler<AccountEventArgs> OnSmsHandler;
+		public event EventHandler<AccountEventArgs> OnCallHandler;
+		public event EventHandler<AccountEventArgs> OnSmsHandler;
 
         private AccountEventArgs numberEventArgs;
 

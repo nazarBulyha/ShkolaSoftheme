@@ -2,6 +2,7 @@
 
 namespace MobileCommunication.Models
 {
+	[Serializable]
 	public class Account
     {
 		public Account() { }
@@ -12,7 +13,7 @@ namespace MobileCommunication.Models
 			DateBirth = DateTime.Now;
 		}
 
-        public int Number { get; }
+        public int Number { get; set; }
 
 	    public string Name { get; set; }
 
