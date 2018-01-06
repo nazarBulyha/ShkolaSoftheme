@@ -11,6 +11,7 @@ namespace MobileCommunication
 		{
 			var myOperator = (MobileOperator)SerializerDesserializer.Deserialize<MobileOperator>();
 
+			// initialize empty Operator
 			if (myOperator.MobileAccounts.Count == 0)
 			{
 				#region Initializing mobile accounts
@@ -78,7 +79,8 @@ namespace MobileCommunication
 
 				#endregion
 			}
-			//callLog.ShowAllLog();
+
+			myOperator.Logger.ShowAllLog();
 			Console.ReadKey();
 
 			SerializerDesserializer.Serialize(myOperator);

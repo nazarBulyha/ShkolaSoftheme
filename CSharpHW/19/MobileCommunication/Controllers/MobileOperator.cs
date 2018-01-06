@@ -5,6 +5,7 @@
 	using System.Linq;
 	using System.Xml.Serialization;
 
+	using MobileCommunication.Enums;
 	using MobileCommunication.Extensions;
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
@@ -129,12 +130,7 @@
 					mobileAccountSender.OnCallHandler -= EndCall;
 				}
 
-				LogCallEvent("Call crashed.", true);
-
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Call crashed");
-				Console.WriteLine();
-				Console.ForegroundColor = ConsoleColor.White;
+				LogCallEvent($"Call between sender: {e.SenderNumber} and receiver: {e.ReceiverNumber} crashed.");
 
 				return;
 			}
@@ -145,34 +141,23 @@
 					mobileAccountSender.OnCallHandler -= EndCall;
 				}
 
-				LogCallEvent("Call crashed.", true);
-
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Call crashed");
-				Console.WriteLine();
-				Console.ForegroundColor = ConsoleColor.White;
+				LogCallEvent($"Call between sender: {e.SenderNumber} and receiver: {e.ReceiverNumber} crashed.");
 
 				return;
 			}
-			catch (Exception exceptionStandart)
+			catch (Exception)
 			{
 				if (mobileAccountSender != null)
 				{
 					mobileAccountSender.OnCallHandler -= EndCall;
 				}
 
-				LogCallEvent("Call crashed.", true);
-
-				Console.WriteLine(exceptionStandart.Message);
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Call crashed");
-				Console.WriteLine();
-				Console.ForegroundColor = ConsoleColor.White;
+				LogCallEvent($"Call between sender: {e.SenderNumber} and receiver: {e.ReceiverNumber} crashed.");
 
 				return;
 			}
 
-			LogCallEvent("Try to call");
+			LogCallEvent($"Try to call to {e.ReceiverNumber} from {e.SenderNumber}", MessageType.Call);
 
 			mobileAccountReceiver.ReceiveCall(mobileAccountSender.Account.Number);
 		}
@@ -201,12 +186,7 @@
 					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
-				LogSmsEvent("Sms wasn't send.", true);
-
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Sms wasn't send.");
-				Console.WriteLine();
-				Console.ForegroundColor = ConsoleColor.White;
+				LogSmsEvent($"Sms from sender: {e.SenderNumber} to receiver: {e.ReceiverNumber} wasn't send.");
 
 				return;
 			}
@@ -217,34 +197,23 @@
 					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
-				LogSmsEvent("Sms wasn't send.", true);
-
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Sms wasn't send.");
-				Console.WriteLine();
-				Console.ForegroundColor = ConsoleColor.White;
+				LogSmsEvent($"Sms from sender: {e.SenderNumber} to receiver: {e.ReceiverNumber} wasn't send.");
 
 				return;
 			}
-			catch (Exception standartException)
+			catch (Exception)
 			{
 				if (mobileAccountSender != null)
 				{
 					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
-				LogSmsEvent("Sms wasn't send.", true);
-
-				Console.WriteLine(standartException.Message + Environment.NewLine);
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine("Sms wasn't send.");
-				Console.WriteLine();
-				Console.ForegroundColor = ConsoleColor.White;
+				LogSmsEvent($"Sms from sender: {e.SenderNumber} to receiver: {e.ReceiverNumber} wasn't send.");
 
 				return;
 			}
 
-			LogSmsEvent("Try to send sms");
+			LogSmsEvent($"Try to send sms to {e.ReceiverNumber} from {e.SenderNumber}.", MessageType.Message);
 
 			mobileAccountReceiver.ReceiveSms(mobileAccountSender.Account.Number);
 		}
@@ -254,23 +223,23 @@
 		{
 			// end call for both users
 			// if number doesn't exists, end call for one user
-			LogSmsEvent("Call ended.");
+			LogSmsEvent($"Call between sender: {e.SenderNumber} and receiver: {e.ReceiverNumber} ended.", MessageType.Call);
 		}
 
 		private void ReceiveSms(object sender, AccountEventArgs e)
 		{
 			// if sender number isn't in blocked numbers than receive sms
-			LogSmsEvent("Sms received.");
+			LogSmsEvent($"Sms received from {e.SenderNumber} to {e.ReceiverNumber}.", MessageType.Message);
 		}
 
-		private void LogCallEvent(string message, bool isError = false)
+		private void LogCallEvent(string message, MessageType messageType = MessageType.Error)
 		{
-			Logger.Log(message, isError);
+			Logger.Log(message, messageType);
 		}
 
-		private void LogSmsEvent(string message, bool isError = false)
+		private void LogSmsEvent(string message, MessageType messageType = MessageType.Error)
 		{
-			Logger.Log(message, isError);
+			Logger.Log(message, messageType);
 		}
 	}
 }

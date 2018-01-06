@@ -30,9 +30,6 @@
                 ReceiverNumber = number
             };
 
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Try call to {AddressBook.GetAccountNameByNumber(number)}.");
-
 			OnCallHandler?.Invoke(this, numberEventArgs);
         }
 
@@ -44,26 +41,12 @@
                 ReceiverNumber = number
             };
 
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"Try send SMS to {AddressBook.GetAccountNameByNumber(number)}.");
-
 			OnSmsHandler?.Invoke(this, numberEventArgs);
         }
 
+		// TODO: make smth
         public void ReceiveCall(int number)
         {
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("Call");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(" from ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write($"{AddressBook.GetAccountNameByNumber(number)}");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(", established.");
-            Console.ForegroundColor = ConsoleColor.White;
-
-            Console.WriteLine();
-
 			numberEventArgs = new AccountEventArgs
             {
                 SenderNumber = number,
@@ -71,17 +54,9 @@
             };
         }
 
-        public void ReceiveSms(int number)
+	    // TODO: make smth
+		public void ReceiveSms(int number)
         {
-            Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("Sms");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write(" received from ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"{AddressBook.GetAccountNameByNumber(number)}.");
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine();
-
 			numberEventArgs = new AccountEventArgs
             {
                 SenderNumber = number,
