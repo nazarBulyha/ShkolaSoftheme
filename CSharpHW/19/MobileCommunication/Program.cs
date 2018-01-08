@@ -2,16 +2,16 @@
 namespace MobileCommunication
 {
 	using System;
-	using System.Linq;
 
 	using MobileCommunication.Controllers;
 	using MobileCommunication.Extensions;
+	using MobileCommunication.Models;
 
 	public class Program
 	{
 		private static void Main()
 		{
-			var myOperator = (MobileOperator)SerializerDesserializer.Deserialize<MobileOperator>();
+			var myOperator = (MobileOperator)Logger.Deserialize<MobileOperator>();
 
 			// initialize empty Operator
 			if (myOperator.MobileAccounts.Count == 0)
@@ -175,14 +175,14 @@ namespace MobileCommunication
 
 			#endregion Account actions via Operator
 
-			myOperator.Logger.ShowAllLog();
+			Logger.ShowAllLog();
 
 			//TODO: most active users
-
+			myOperator.GetMostActiveUser(Logger.FolderPath + Logger.CallLoggerName, myOperator.MobileAccounts);
 
 			//Console.ReadKey();
 
-			SerializerDesserializer.Serialize(myOperator);
+			Logger.Serialize(myOperator);
 		}
 	}
 }

@@ -2,62 +2,66 @@
 {
 	using System;
 	using System.IO;
+	using System.Xml.Serialization;
 
 	using MobileCommunication.Enums;
-	using MobileCommunication.Interfaces;
+	using MobileCommunication.Extensions;
 	using MobileCommunication.Models;
 
-	public class Logger : ILog
+	public static class Logger
 	{
-		private readonly string path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\CallLogs\";
-		private readonly string standartLogName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
+		public static readonly string FolderPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\CallLogs\";
+		public static readonly string CallLoggerName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
+		public static readonly string SerializedItemName = @"Operator.txt";
 
-		public LogMessage LoggerMessage { get; set; }
+		public static LogMessage LoggerMessage { get; set; }
 
-		public void Log(string message, MessageType messageType)
+		public static void Log(string message, AccountEventArgs numbersArgs, MessageType messageType)
 		{
 			LoggerMessage = new LogMessage
 			{
-				Message = message,
 				MessageType = messageType,
+				Message = message,
+				Sender = numbersArgs.SenderNumber,
+				Receiver = numbersArgs.ReceiverNumber,
 				DateTime = DateTime.Now
 			};
 
-			if (!Directory.Exists(path))
+			if (!Directory.Exists(FolderPath))
 			{
-				Directory.CreateDirectory(path);
+				Directory.CreateDirectory(FolderPath);
 			}
 
-			using (var fileStream = new FileStream(path + standartLogName, FileMode.Append))
+			using (var fileStream = new FileStream(FolderPath + CallLoggerName, FileMode.Append))
 			using (var writter = new StreamWriter(fileStream))
 			{
 				writter.WriteLine($"MessageType: {LoggerMessage.MessageType}");
 				writter.WriteLine($"Message: {LoggerMessage.Message}");
+				writter.WriteLine($"Sender: {LoggerMessage.Sender}");
+				writter.WriteLine($"Receiver: {LoggerMessage.Receiver}");
 				writter.WriteLine($"Date and time: {LoggerMessage.DateTime}");
 				writter.WriteLine();
 			}
 		}
 
-		public void ShowAllLog()
+		public static void ShowAllLog()
 		{
-			using (var fileStream = new FileStream(path + standartLogName, FileMode.OpenOrCreate))
+			using (var fileStream = new FileStream(FolderPath + CallLoggerName, FileMode.OpenOrCreate))
+			using (var reader = new StreamReader(fileStream))
 			{
-				using (var reader = new StreamReader(fileStream))
+				string line;
+				while ((line = reader.ReadLine()) != null)
 				{
-					string line;
-					while ((line = reader.ReadLine()) != null)
-					{
-						// TODO: make readable sort
-						Console.WriteLine(line);
-					}
+					// TODO: make readable sort
+					Console.WriteLine(line);
 				}
 			}
 		}
 
-		public void ShowLog(DateTime dateTime, string message, MessageType messageType = MessageType.Error)
+		public static void ShowLog(DateTime dateTime, string message, MessageType messageType = MessageType.Error)
 		{
 			// TODO: Read and sort data from file
-			using (var reader = new StreamReader(path + standartLogName))
+			using (var reader = new StreamReader(FolderPath + CallLoggerName))
 			{
 				string line;
 				while ((line = reader.ReadLine()) != null)
@@ -67,6 +71,31 @@
 
 					}
 				}
+			}
+		}
+
+		public static void Serialize<TItem>(TItem myItem)
+		{
+			var serializer = new XmlSerializer(typeof(TItem));
+
+			using (var fileStream = new FileStream(FolderPath + SerializedItemName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+			{
+				serializer.Serialize(fileStream, myItem);
+			}
+		}
+
+		public static object Deserialize<TItem>()
+		{
+			if (!File.Exists(FolderPath + SerializedItemName))
+			{
+				return Activator.CreateInstance(typeof(TItem));
+			}
+
+			using (var fileStream = new FileStream(FolderPath + SerializedItemName, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read))
+			{
+				var serializer = new XmlSerializer(typeof(TItem));
+
+				return (TItem)serializer.Deserialize(fileStream);
 			}
 		}
 	}

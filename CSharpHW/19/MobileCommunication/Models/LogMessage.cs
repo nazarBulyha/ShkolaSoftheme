@@ -10,6 +10,10 @@
 
         public  string Message { get; set; }
 
-	    public MessageType MessageType { get; set; } = MessageType.Error;
+	    public int Sender { get; set; }
+
+	    public int Receiver { get; set; }
+
+		public MessageType MessageType { get; set; } = MessageType.Error;
     }
 }

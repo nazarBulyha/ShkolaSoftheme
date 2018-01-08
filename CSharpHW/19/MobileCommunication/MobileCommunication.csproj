@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\MessageType.cs" />
-    <Compile Include="Extensions\SerializerDesserializer.cs" />
     <Compile Include="Models\AddressBook.cs" />
     <Compile Include="Controllers\Logger.cs" />
     <Compile Include="Interfaces\ILog.cs" />

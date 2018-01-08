@@ -2,7 +2,10 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.IO;
 	using System.Linq;
+	using System.Text;
+	using System.Text.RegularExpressions;
 	using System.Xml.Serialization;
 
 	using MobileCommunication.Enums;
@@ -18,9 +21,6 @@
 		[XmlIgnore]
 		public List<Account> StandardMobileAccounts { get; set; }
 
-		[XmlIgnore]
-		public Logger Logger { get; set; }
-
 		private MobileAccount mobileAccountSender;
 
 		private MobileAccount mobileAccountReceiver;
@@ -31,7 +31,6 @@
 		{
 			StandardMobileAccounts = CreateStandardMobileAccounts();
 			MobileAccounts = new List<MobileAccount>();
-			Logger = new Logger();
 		}
 
 		private List<Account> CreateStandardMobileAccounts()
@@ -78,29 +77,124 @@
 
 			MobileAccounts.Add(mobileAccount);
 
-			mobileAccount.OnCallHandler += EndCall;
 			mobileAccount.OnCallHandler += TryMakeCall;
-			mobileAccount.OnSmsHandler += ReceiveSms;
+			mobileAccount.OnCallHandler += EndCall;
 			mobileAccount.OnSmsHandler += TrySendSms;
+			mobileAccount.OnSmsHandler += ReceiveSms;
 
 			return mobileAccount;
 		}
 
 		public MobileAccount FindMobileAccountByName(string name)
 		{
-			var mobileAccount =  MobileAccounts.SingleOrDefault(mobileAcc => mobileAcc.Account.Name == name);
+			var mobileAccount = MobileAccounts.SingleOrDefault(mobileAcc => mobileAcc.Account.Name == name);
 
 			if (mobileAccount == null)
 			{
 				return null;
 			}
 
-			mobileAccount.OnCallHandler += EndCall;
 			mobileAccount.OnCallHandler += TryMakeCall;
-			mobileAccount.OnSmsHandler += ReceiveSms;
+			mobileAccount.OnCallHandler += EndCall;
 			mobileAccount.OnSmsHandler += TrySendSms;
+			mobileAccount.OnSmsHandler += ReceiveSms;
 
 			return mobileAccount;
+		}
+
+		public void GetMostActiveUser(string filePath, List<MobileAccount> accountList)
+		{
+			var messageBlocksList = new List<List<string>>();
+			var fileContent = new List<string>();
+
+			double senderMaxCount = 0, receiverMaxCount = 0;
+			string maxSenderAccountName = "Nobody", maxReceiverAccountName = "Nobody";
+
+			using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+			using (var reader = new StreamReader(fileStream, Encoding.UTF8))
+			{
+				while (!reader.EndOfStream)
+				{
+					var line = reader.ReadLine();
+
+					if (!string.IsNullOrEmpty(line))
+					{
+						fileContent.Add(line);
+					}
+					else
+					{
+						messageBlocksList.Add(fileContent);
+						fileContent = new List<string>();
+					}
+				}
+			}
+
+			foreach (var user in accountList)
+			{
+				double senderCount = 0, receiverCount = 0;
+
+				messageBlocksList.ForEach(messageBlock =>
+				messageBlock.ForEach(message =>
+				{
+					if (!message.Contains("Try to call") && !message.Contains("Try to send sms") && !message.Contains("Call ended")
+					    && !message.Contains("Sms received"))
+					{
+						return;
+					}
+
+					if (message.Contains("Try to call") &&
+					    Regex.Match(messageBlock.Find(s => s.Contains("Sender")), @"\d+")
+					         .Value == user.Account.Number.ToString())
+					{
+						senderCount++;
+					}
+
+					if (message.Contains("Call ended") &&
+					    Regex.Match(messageBlock.Find(s => s.Contains("Receiver")), @"\d+")
+					         .Value == user.Account.Number.ToString())
+					{
+						receiverCount++;
+					}
+
+					if (message.Contains("Try to send sms") &&
+					    Regex.Match(messageBlock.Find(s => s.Contains("Sender")), @"\d+")
+					         .Value == user.Account.Number.ToString())
+					{
+						senderCount += 0.5;
+					}
+
+					if (message.Contains("Sms received") &&
+					    Regex.Match(messageBlock.Find(s => s.Contains("Receiver")), @"\d+")
+					         .Value == user.Account.Number.ToString())
+					{
+						receiverCount += 0.5;
+					}
+				}));
+
+				if (senderMaxCount < senderCount)
+				{
+					senderMaxCount = senderCount;
+					maxSenderAccountName = user.Account.Name;
+				}
+
+				// ReSharper disable once InvertIf
+				if (receiverMaxCount < receiverCount)
+				{
+					receiverMaxCount = receiverCount;
+					maxReceiverAccountName = user.Account.Name;
+				}
+			}
+
+			Console.WriteLine($"Most SENDER POINTS has User: {maxSenderAccountName}, points: {senderMaxCount}"
+			 + $"\n Most RECEIVER POINTS has User: {maxReceiverAccountName}, points: {receiverMaxCount}");
+
+			Console.ReadKey();
+		}
+
+		public List<MobileAccount> GetMostActiveUsers()
+		{
+
+			return null;
 		}
 
 		public MobileAccount SetAccountParametres(MobileAccount mobileAccount, string name, string surname, string email, DateTime dateTime)
@@ -126,6 +220,8 @@
 
 		private void TryMakeCall(object sender, AccountEventArgs e)
 		{
+			LogCallEvent("Try to call.", e, MessageType.Call);
+
 			try
 			{
 				mobileAccountSender = sender as MobileAccount;
@@ -143,45 +239,35 @@
 			}
 			catch (NullReferenceException)
 			{
-				if (mobileAccountSender != null)
-				{
-					mobileAccountSender.OnCallHandler -= EndCall;
-				}
-
-				LogCallEvent($"Call between sender: {e.SenderNumber} and receiver: {e.ReceiverNumber} crashed.");
+				e.IsHandled = true;
+				LogCallEvent("Call crashed.", e);
 
 				return;
 			}
 			catch (ArgumentException)
 			{
-				if (mobileAccountSender != null)
-				{
-					mobileAccountSender.OnCallHandler -= EndCall;
-				}
-
-				LogCallEvent($"Call between sender: {e.SenderNumber} and receiver: {e.ReceiverNumber} crashed.");
+				e.IsHandled = true;
+				LogCallEvent("Call crashed.", e);
 
 				return;
 			}
 			catch (Exception)
 			{
-				if (mobileAccountSender != null)
-				{
-					mobileAccountSender.OnCallHandler -= EndCall;
-				}
-
-				LogCallEvent($"Call between sender: {e.SenderNumber} and receiver: {e.ReceiverNumber} crashed.");
+				e.IsHandled = true;
+				LogCallEvent("Call crashed.", e);
 
 				return;
 			}
 
-			LogCallEvent($"Try to call to {e.ReceiverNumber} from {e.SenderNumber}", MessageType.Call);
+			LogCallEvent("Speaking.", e, MessageType.Call);
 
 			mobileAccountReceiver.ReceiveCall(mobileAccountSender.Account.Number);
 		}
 
 		private void TrySendSms(object sender, AccountEventArgs e)
 		{
+			LogSmsEvent("Try to send sms.", e, MessageType.Message);
+
 			try
 			{
 				mobileAccountSender = sender as MobileAccount;
@@ -204,7 +290,7 @@
 					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
-				LogSmsEvent($"Sms from sender: {e.SenderNumber} to receiver: {e.ReceiverNumber} wasn't send.");
+				LogSmsEvent("Sms wasn't send.", e);
 
 				return;
 			}
@@ -215,7 +301,7 @@
 					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
-				LogSmsEvent($"Sms from sender: {e.SenderNumber} to receiver: {e.ReceiverNumber} wasn't send.");
+				LogSmsEvent("Sms wasn't send.", e);
 
 				return;
 			}
@@ -226,12 +312,12 @@
 					mobileAccountSender.OnSmsHandler -= ReceiveSms;
 				}
 
-				LogSmsEvent($"Sms from sender: {e.SenderNumber} to receiver: {e.ReceiverNumber} wasn't send.");
+				LogSmsEvent("Sms wasn't send.", e);
 
 				return;
 			}
 
-			LogSmsEvent($"Try to send sms to {e.ReceiverNumber} from {e.SenderNumber}.", MessageType.Message);
+			LogSmsEvent("Sending.", e, MessageType.Message);
 
 			mobileAccountReceiver.ReceiveSms(mobileAccountSender.Account.Number);
 		}
@@ -239,25 +325,30 @@
 		// TODO: Implement logic after receiving Call
 		private void EndCall(object sender, AccountEventArgs e)
 		{
+			if (e.IsHandled)
+			{
+				return;
+			}
+
 			// end call for both users
 			// if number doesn't exists, end call for one user
-			LogSmsEvent($"Call between sender: {e.SenderNumber} and receiver: {e.ReceiverNumber} ended.", MessageType.Call);
+			LogSmsEvent("Call ended.", e, MessageType.Call);
 		}
 
 		private void ReceiveSms(object sender, AccountEventArgs e)
 		{
 			// if sender number isn't in blocked numbers than receive sms
-			LogSmsEvent($"Sms received from {e.SenderNumber} to {e.ReceiverNumber}.", MessageType.Message);
+			LogSmsEvent("Sms received.", e, MessageType.Message);
 		}
 
-		private void LogCallEvent(string message, MessageType messageType = MessageType.Error)
+		private static void LogCallEvent(string message, AccountEventArgs accountArgs, MessageType messageType = MessageType.Error)
 		{
-			Logger.Log(message, messageType);
+			Logger.Log(message, accountArgs, messageType);
 		}
 
-		private void LogSmsEvent(string message, MessageType messageType = MessageType.Error)
+		private static void LogSmsEvent(string message, AccountEventArgs accountArgs, MessageType messageType = MessageType.Error)
 		{
-			Logger.Log(message, messageType);
+			Logger.Log(message, accountArgs, messageType);
 		}
 	}
 }
