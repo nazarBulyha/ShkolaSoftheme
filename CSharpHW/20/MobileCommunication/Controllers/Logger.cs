@@ -22,10 +22,7 @@
 
 		public void AddLogMessage(string message, AccountEventArgs numbersArgs, MessageType messageType)
 		{
-			if (!Directory.Exists(FolderPath))
-			{
-				Directory.CreateDirectory(FolderPath);
-			}
+			CheckExist();
 
 			Message = new LoggerMessage
 			{
@@ -41,6 +38,8 @@
 
 		public void WriteLogMessages()
 		{
+			CheckExist();
+
 			using (var fileStream = new FileStream(FolderPath + CallLoggerFileName, FileMode.Append))
 			using (var writer = new StreamWriter(fileStream))
 			{
@@ -54,6 +53,8 @@
 					writer.WriteLine();
 				}
 			}
+
+			ListMessages.Clear();
 		}
 
 		public void ShowAllLog()
@@ -92,6 +93,8 @@
 
 		public void Serialize<TItem>(TItem myItem)
 		{
+			CheckExist();
+
 			var serializer = new XmlSerializer(typeof(TItem));
 
 			using (var fileStream = new FileStream(FolderPath + SerializedFileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
@@ -112,6 +115,14 @@
 				var serializer = new XmlSerializer(typeof(TItem));
 
 				return (TItem)serializer.Deserialize(fileStream);
+			}
+		}
+
+		private void CheckExist()
+		{
+			if (!Directory.Exists(FolderPath))
+			{
+				Directory.CreateDirectory(FolderPath);
 			}
 		}
 	}

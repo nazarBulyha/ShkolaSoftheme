@@ -12,11 +12,64 @@
 		{
 			var myOperator = new Logger().Deserialize<Operator>();
 
-			const bool FillOperator = true;
-			const bool AddNewUser = true;
+			var createOperator = false;
+			var fillOperator = false;
+			var addNewUser = false;
+
+			int activity;
+			do
+			{
+				Console.WriteLine("Choose what do you want to execute:");
+				Console.WriteLine("1 - Create Operator");
+				Console.WriteLine("2 - Create Operator + Make actions");
+				Console.WriteLine("3 - Make actions + Add new user.");
+				Console.WriteLine("4 - Create Operator + Make actions + Add new user.");
+				Console.WriteLine("5 - Add new user.");
+
+				int.TryParse(Console.ReadLine(), out activity);
+			}
+			while (activity != 1 && activity != 2 && activity != 3 && activity != 4 && activity != 5);
+
+			// ReSharper disable once SwitchStatementMissingSomeCases
+			switch (activity)
+			{
+				case 0:
+					{
+						break;
+					}
+				case 1:
+					{
+						createOperator = true;
+						break;
+					}
+				case 2:
+					{
+						createOperator = true;
+						fillOperator = true;
+						break;
+					}
+				case 3:
+					{
+						createOperator = true;
+						fillOperator = true;
+						break;
+					}
+				case 4:
+					{
+						addNewUser = true;
+						createOperator = true;
+						fillOperator = true;
+						break;
+					}
+				case 5:
+					{
+						fillOperator = true;
+						break;
+					}
+			}
 
 			// initialize empty Operator
-			if (myOperator.ListAccounts.Count == 0 && myOperator.ListAccounts.Count < 4)
+			if (createOperator)
 			{
 				#region Initializing mobile accounts
 
@@ -32,35 +85,35 @@
 														"Petro",
 														"Petrovych",
 														"petro.petrovych@gmail.com",
-														new DateTime(1988, 01, 15));
+														new DateTime(1988, 01, 15, 10, 0, 0));
 
 				var taras = myOperator.CreateMobileAccount();
 				taras = myOperator.SetAccountParameters(taras,
 														"Taras",
 														"Tarasovych",
 														"taras.tarasovych@gmail.com",
-														new DateTime(1991, 01, 28));
+														new DateTime(1991, 01, 28, 10, 0, 0));
 
 				var nazar = myOperator.CreateMobileAccount();
 				nazar = myOperator.SetAccountParameters(nazar,
 														"Nazar",
 														"Nazarovych",
 														"nazar.nazarovych@gmail.com",
-														new DateTime(1997, 06, 10));
+														new DateTime(1997, 06, 10, 10, 0, 0));
 
 				var igor = myOperator.CreateMobileAccount();
 				igor = myOperator.SetAccountParameters(igor,
 													   "Igor",
 													   "Igorovych",
 													   "igor.igorovych@gmail.com",
-													   new DateTime(1997, 01, 28));
+													   new DateTime(1997, 01, 28, 10, 0, 0));
 
 				var andriy = myOperator.CreateMobileAccount();
 				andriy = myOperator.SetAccountParameters(andriy,
 														 "Andriy",
 														 "Andriyovych",
 														 "andriy.andriyovych@gmail.com",
-														 new DateTime(1997, 10, 16));
+														 new DateTime(1997, 10, 16, 10, 0, 0));
 
 				#endregion
 
@@ -76,7 +129,7 @@
 				#endregion
 			}
 
-			if (FillOperator)
+			if (fillOperator)
 			{
 				#region Get/initialize accounts from file
 
@@ -176,10 +229,12 @@
 				andriy1.Sms(petro1.User.Number);
 
 				#endregion SMS 
+
+				myOperator.Logger.WriteLogMessages();
 			}
 
 			// ReSharper disable once InvertIf
-			if (AddNewUser)
+			if (addNewUser)
 			{
 				#region Add new user
 
@@ -244,13 +299,14 @@
 				Console.WriteLine();
 
 				myOperator.Logger.WriteLogMessages();
-				myOperator.Logger.Serialize(myOperator);
-
-				myOperator.GetMostActiveUser(myOperator.Logger.FolderPath + myOperator.Logger.CallLoggerFileName,
-											 myOperator.ListAccounts);
-
-				Console.ReadLine();
 			}
+
+			myOperator.Logger.Serialize(myOperator);
+
+			UserActivity.GetMostActiveUser(myOperator.Logger.FolderPath + myOperator.Logger.CallLoggerFileName,
+			                               myOperator.ListAccounts);
+
+			Console.ReadLine();
 		}
 	}
 }

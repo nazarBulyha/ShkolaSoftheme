@@ -3,10 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations;
-	using System.IO;
 	using System.Linq;
-	using System.Text;
-	using System.Text.RegularExpressions;
 
 	using MobileCommunication.Enums;
 	using MobileCommunication.Extensions;
@@ -36,7 +33,7 @@
 		{
 			Logger = new Logger();
 			ListAccounts = new List<Account>();
-			ListStandardAccounts = CreateStandardMobileAccounts();
+			ListStandardAccounts = CreateStandardAccounts();
 		}
 
 		public Account CreateMobileAccount()
@@ -67,7 +64,7 @@
 
 			mobileAccount.User = account;
 
-			return mobileAccount;
+			return Validate(mobileAccount.User) ? mobileAccount : null;
 		}
 
 		public int CreateNumber()
@@ -93,106 +90,9 @@
 			return mobileAccount;
 		}
 
-		// TODO: check this shit
-		public void GetMostActiveUser(string filePath, List<Account> accountList)
+		private List<Account> CreateStandardAccounts()
 		{
-			if (!File.Exists(filePath))
-			{
-				File.Create(filePath);
-			}
-
-			var messageBlocksList = new List<List<string>>();
-			var fileContent = new List<string>();
-
-			double senderMaxCount = 0, receiverMaxCount = 0;
-			string maxSenderAccountName = "Nobody", maxReceiverAccountName = "Nobody";
-
-			using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-			using (var reader = new StreamReader(fileStream, Encoding.UTF8))
-			{
-				while (!reader.EndOfStream)
-				{
-					var line = reader.ReadLine();
-
-					if (!string.IsNullOrEmpty(line))
-					{
-						fileContent.Add(line);
-					}
-					else
-					{
-						messageBlocksList.Add(fileContent);
-						fileContent = new List<string>();
-					}
-				}
-			}
-
-			foreach (var user in accountList)
-			{
-				double senderCount = 0, receiverCount = 0;
-
-				messageBlocksList.ForEach(messageBlock =>
-				messageBlock.ForEach(message =>
-				{
-					if (!message.Contains("Try to call") && !message.Contains("Try to send sms") && !message.Contains("Call ended")
-						&& !message.Contains("Sms received"))
-					{
-						return;
-					}
-
-					if (message.Contains("Try to call") &&
-						Regex.Match(messageBlock.Find(s => s.Contains("Sender")), @"\d+")
-							 .Value == user.User.Number.ToString())
-					{
-						senderCount++;
-					}
-					else if (message.Contains("Call ended") &&
-						Regex.Match(messageBlock.Find(s => s.Contains("Receiver")), @"\d+")
-							 .Value == user.User.Number.ToString())
-					{
-						receiverCount++;
-					}
-					else if (message.Contains("Try to send sms") &&
-						Regex.Match(messageBlock.Find(s => s.Contains("Sender")), @"\d+")
-							 .Value == user.User.Number.ToString())
-					{
-						senderCount += 0.5;
-					}
-					else if (message.Contains("Sms received") &&
-						Regex.Match(messageBlock.Find(s => s.Contains("Receiver")), @"\d+")
-							 .Value == user.User.Number.ToString())
-					{
-						receiverCount += 0.5;
-					}
-				}));
-
-				if (senderMaxCount < senderCount)
-				{
-					senderMaxCount = senderCount;
-					maxSenderAccountName = user.User.Name;
-				}
-
-				// ReSharper disable once InvertIf
-				if (receiverMaxCount < receiverCount)
-				{
-					receiverMaxCount = receiverCount;
-					maxReceiverAccountName = user.User.Name;
-				}
-			}
-
-			Console.WriteLine($"Most SENDER POINTS has User: {maxSenderAccountName}, points: {senderMaxCount}"
-			 + $"\nMost RECEIVER POINTS has User: {maxReceiverAccountName}, points: {receiverMaxCount}");
-		}
-
-		// TODO: realize this shit
-		public List<Account> GetMostActiveUsers()
-		{
-
-			return null;
-		}
-
-		private List<Account> CreateStandardMobileAccounts()
-		{
-			var standardMobileAccounts = new List<Account>
+			var standardAccounts = new List<Account>
 											 {
 												 new Account
 													 {
@@ -200,7 +100,8 @@
 																	{
 																		Name = "standardName1",
 																		Surname = "standardSurname1",
-																		DateBirth = DateTime.Now
+																		DateBirth = DateTime.Now,
+																		Email = "standard1@gmail.com"
 																	}
 													 },
 												 new Account
@@ -209,7 +110,8 @@
 																	{
 																		Name = "standardName2",
 																		Surname = "standardSurname2",
-																		DateBirth = DateTime.Now
+																		DateBirth = DateTime.Now,
+																		Email = "standard2@gmail.com"
 																	}
 													 },
 												 new Account
@@ -218,7 +120,8 @@
 																	{
 																		Name = "standardName3",
 																		Surname = "standardSurname3",
-																		DateBirth = DateTime.Now
+																		DateBirth = DateTime.Now,
+																		Email = "standard3@gmail.com"
 																	}
 													 },
 												 new Account
@@ -227,12 +130,13 @@
 																	{
 																		Name = "standardName4",
 																		Surname = "standardSurname4",
-																		DateBirth = DateTime.Now
+																		DateBirth = DateTime.Now,
+																		Email = "standard4@gmail.com"
 																	}
 													 }
 											 };
 
-			return standardMobileAccounts;
+			return Validate(standardAccounts.Select(u => u.User)) ? standardAccounts : null;
 		}
 
 		private void CallConnection(object sender, AccountEventArgs e)
@@ -361,7 +265,7 @@
 			Logger.AddLogMessage(message, accountArgs, messageType);
 		}
 
-		private static void Validate(User user)
+		private static bool Validate(User user)
 		{
 			var results = new List<ValidationResult>();
 			var context = new ValidationContext(user);
@@ -370,13 +274,39 @@
 			{
 				foreach (var error in results)
 				{
-					Console.WriteLine(error.ErrorMessage);
+					Console.WriteLine($"User: {user}, Error: {error.ErrorMessage}");
 				}
+
+				return false;
 			}
-			else
+
+			Console.WriteLine($"User '{user.Name}' is Valid");
+
+			return true;
+		}
+
+		private static bool Validate(IEnumerable<User> user)
+		{
+			foreach (var userValidate in user)
 			{
-				Console.WriteLine($"User '{user.Name}' is Valid");
+
+				var results = new List<ValidationResult>();
+				var context = new ValidationContext(userValidate);
+
+				if (!Validator.TryValidateObject(userValidate, context, results, true))
+				{
+					foreach (var error in results)
+					{
+						Console.WriteLine($"User: {userValidate}, Error: {error.ErrorMessage}");
+					}
+
+					return false;
+				}
+
+				Console.WriteLine($"User '{userValidate.Name}' is Valid");
 			}
+
+			return true;
 		}
 	}
 }

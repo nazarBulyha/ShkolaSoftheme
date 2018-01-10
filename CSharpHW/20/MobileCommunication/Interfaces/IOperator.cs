@@ -17,10 +17,6 @@ namespace MobileCommunication.Interfaces
 
 		Account FindMobileAccountByName(string name);
 
-		List<Account> GetMostActiveUsers();
-
-		void GetMostActiveUser(string filePath, List<Account> accountList);
-
 		int CreateNumber();
 	}
 }

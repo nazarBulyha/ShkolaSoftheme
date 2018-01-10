@@ -35,14 +35,14 @@
 				ErrorMessage = "Wrong e-mail format.";
 			}
 
-			if (!DateTime.TryParse(user.DateBirth.ToString("dd/MM/yyyy"), out var temp))
+			if (!DateTime.TryParse(user.DateBirth.ToString("r"), out var temp))
 			{
 				ErrorMessage = "Wrong data format.";
 				return false;
 			}
 
 			// ReSharper disable once InvertIf
-			if (user.Number < 0 && user.Number < 0632219320)
+			if (user.Number < 0 && user.Number < 2219320)
 			{
 				ErrorMessage = "Wrong number.";
 				return false;
