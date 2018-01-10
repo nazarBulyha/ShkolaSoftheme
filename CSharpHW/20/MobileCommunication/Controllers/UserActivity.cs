@@ -73,9 +73,9 @@ namespace MobileCommunication.Controllers
 
 		private static void CheckFileExist(string filePath)
 		{
-			if (!Directory.Exists(filePath))
+			if (!File.Exists(filePath))
 			{
-				Directory.CreateDirectory(filePath);
+				File.Create(filePath);
 			}
 		}
 
