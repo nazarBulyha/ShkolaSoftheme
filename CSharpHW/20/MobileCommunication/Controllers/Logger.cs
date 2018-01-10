@@ -16,7 +16,6 @@
 		public readonly string CallLoggerFileName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
 		public readonly string SerializedFileName = @"Operator.txt";
 
-		// TODO: fix bag ListMessages always 0
 		public List<LoggerMessage> ListMessages { get; set; } = new List<LoggerMessage>();
 
 		public LoggerMessage Message { get; set; }

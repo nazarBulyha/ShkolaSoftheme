@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\MessageType.cs" />
+    <Compile Include="Extensions\UserValidationAttribute.cs" />
     <Compile Include="Models\AddressBook.cs" />
     <Compile Include="Controllers\Logger.cs" />
     <Compile Include="Interfaces\ILog.cs" />

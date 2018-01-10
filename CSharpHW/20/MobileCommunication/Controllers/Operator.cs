@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.ComponentModel.DataAnnotations;
 	using System.IO;
 	using System.Linq;
 	using System.Text;
@@ -358,6 +359,24 @@
 		private void LogSmsEvent(string message, AccountEventArgs accountArgs, MessageType messageType = MessageType.Error)
 		{
 			Logger.AddLogMessage(message, accountArgs, messageType);
+		}
+
+		private static void Validate(User user)
+		{
+			var results = new List<ValidationResult>();
+			var context = new ValidationContext(user);
+
+			if (!Validator.TryValidateObject(user, context, results, true))
+			{
+				foreach (var error in results)
+				{
+					Console.WriteLine(error.ErrorMessage);
+				}
+			}
+			else
+			{
+				Console.WriteLine($"User '{user.Name}' is Valid");
+			}
 		}
 	}
 }
