@@ -16,54 +16,50 @@
 			var fillOperator = false;
 			var addNewUser = false;
 
+			// Get user answer what to do
 			int activity;
+
 			do
 			{
 				Console.WriteLine("Choose what do you want to execute:");
-				Console.WriteLine("1 - Create Operator");
-				Console.WriteLine("2 - Create Operator + Make actions");
-				Console.WriteLine("3 - Make actions + Add new user.");
+				Console.WriteLine("1 - Create Operator.");
+				Console.WriteLine("2 - Make actions(call/sms).");
+				Console.WriteLine("3 - Add new user.");
 				Console.WriteLine("4 - Create Operator + Make actions + Add new user.");
-				Console.WriteLine("5 - Add new user.");
 
 				int.TryParse(Console.ReadLine(), out activity);
 			}
-			while (activity != 1 && activity != 2 && activity != 3 && activity != 4 && activity != 5);
+			while (activity != 1 && activity != 2 && activity != 3 && activity != 4);
 
 			// ReSharper disable once SwitchStatementMissingSomeCases
 			switch (activity)
 			{
-				case 0:
-					{
-						break;
-					}
 				case 1:
 					{
-						createOperator = true;
+						createOperator = myOperator.ListAccounts.Count == 0;
+
 						break;
 					}
 				case 2:
 					{
-						createOperator = true;
+						createOperator = myOperator.ListAccounts.Count == 0;
 						fillOperator = true;
+
 						break;
 					}
 				case 3:
 					{
-						createOperator = true;
-						fillOperator = true;
+						createOperator = myOperator.ListAccounts.Count == 0;
+						addNewUser = true;
+
 						break;
 					}
 				case 4:
 					{
+						createOperator = myOperator.ListAccounts.Count == 0;
+						fillOperator = true;
 						addNewUser = true;
-						createOperator = true;
-						fillOperator = true;
-						break;
-					}
-				case 5:
-					{
-						fillOperator = true;
+
 						break;
 					}
 			}
@@ -71,6 +67,8 @@
 			// initialize empty Operator
 			if (createOperator)
 			{
+				myOperator = new Logger().Deserialize<Operator>();
+
 				#region Initializing mobile accounts
 
 				var vasyl = myOperator.CreateMobileAccount();
@@ -127,10 +125,14 @@
 				igor.AddressBook.SetAccounts(vasyl, petro, taras, nazar);
 
 				#endregion
+
+				myOperator.Logger.Serialize(myOperator);
 			}
 
 			if (fillOperator)
 			{
+				myOperator = new Logger().Deserialize<Operator>();
+
 				#region Get/initialize accounts from file
 
 				var vasyl1 = myOperator.FindMobileAccountByName("Vasyl");
@@ -231,6 +233,8 @@
 				#endregion SMS 
 
 				myOperator.Logger.WriteLogMessages();
+
+				myOperator.Logger.Serialize(myOperator);
 			}
 
 			// ReSharper disable once InvertIf
@@ -299,12 +303,11 @@
 				Console.WriteLine();
 
 				myOperator.Logger.WriteLogMessages();
+
+				myOperator.Logger.Serialize(myOperator);
 			}
 
-			myOperator.Logger.Serialize(myOperator);
-
-			UserActivity.GetMostActiveUser(myOperator.Logger.FolderPath + myOperator.Logger.CallLoggerFileName,
-			                               myOperator.ListAccounts);
+			UserActivity.GetMostActiveUser(myOperator.Logger.FolderPath + myOperator.Logger.CallLoggerFileName, myOperator.ListAccounts);
 
 			Console.ReadLine();
 		}

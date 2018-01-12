@@ -17,14 +17,11 @@ namespace MobileCommunication.Controllers
 
 		private static double senderMaxCount, receiverMaxCount;
 
-		private static string maxSenderAccountName, maxReceiverAccountName;
-
-		private static readonly string FinalMessage = $"Most SENDER POINTS has User: {maxSenderAccountName}, points: {senderMaxCount}"
-		                                     + $"\nMost RECEIVER POINTS has User: {maxReceiverAccountName}, points: {receiverMaxCount}";
+		private static string maxSenderAccountName = "Nobody", maxReceiverAccountName = "Nobody";
 
 		public static void GetMostActiveUser(string filePath, List<Account> accountList)
 		{
-			CheckFileExist(filePath);
+			//CheckFileExist(filePath);
 			ReadAllMessages(filePath);
 
 			foreach (var user in accountList)
@@ -32,12 +29,12 @@ namespace MobileCommunication.Controllers
 				double senderCount = 0, receiverCount = 0;
 
 				foreach (var messageBlock in MessageBlocksList)
-				foreach (var message in messageBlock)
+					foreach (var message in messageBlock)
 					{
-						if (!message.Contains("Try to call") && !message.Contains("Try to send sms") && 
+						if (!message.Contains("Try to call") && !message.Contains("Try to send sms") &&
 							!message.Contains("Call ended") && !message.Contains("Sms received"))
 						{
-							return;
+							continue;
 						}
 
 						if (message.Contains("Try to call") && MatchRegex(user, messageBlock, "Sender"))
@@ -61,7 +58,10 @@ namespace MobileCommunication.Controllers
 				CompareWithMaxNumbers(user, senderCount, receiverCount);
 			}
 
-			Console.WriteLine(FinalMessage);
+			var finalMessage = $"Most SENDER POINTS has User: {maxSenderAccountName}, points: {senderMaxCount}"
+			+ $"\nMost RECEIVER POINTS has User: {maxReceiverAccountName}, points: {receiverMaxCount}";
+
+			Console.WriteLine(finalMessage);
 		}
 
 		// TODO: realize this shit
@@ -71,17 +71,9 @@ namespace MobileCommunication.Controllers
 			return null;
 		}
 
-		private static void CheckFileExist(string filePath)
-		{
-			if (!File.Exists(filePath))
-			{
-				File.Create(filePath);
-			}
-		}
-
 		private static void ReadAllMessages(string filePath)
 		{
-			using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+			using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Read))
 			using (var reader = new StreamReader(fileStream, Encoding.UTF8))
 			{
 				while (!reader.EndOfStream)
@@ -104,7 +96,7 @@ namespace MobileCommunication.Controllers
 		private static bool MatchRegex(IAccount user, List<string> messageBlock, string text)
 		{
 			return Regex.Match(messageBlock.Find(s => s.Contains(text)), @"\d+")
-			     .Value == user.User.Number.ToString();
+				 .Value == user.User.Number.ToString();
 		}
 
 		private static void CompareWithMaxNumbers(IAccount user, double senderCount, double receiverCount)

@@ -75,6 +75,7 @@
 
 		public Account FindMobileAccountByName(string name)
 		{
+			// more than one user
 			var mobileAccount = ListAccounts.SingleOrDefault(mobileAcc => mobileAcc.User.Name == name);
 
 			if (mobileAccount == null)
@@ -293,17 +294,17 @@
 				var results = new List<ValidationResult>();
 				var context = new ValidationContext(userValidate);
 
-				if (!Validator.TryValidateObject(userValidate, context, results, true))
-				{
-					foreach (var error in results)
-					{
-						Console.WriteLine($"User: {userValidate}, Error: {error.ErrorMessage}");
-					}
+				if (Validator.TryValidateObject(userValidate, context, results, true))
+					continue;
 
-					return false;
+				foreach (var error in results)
+				{
+					Console.WriteLine($"User: {userValidate}, Error: {error.ErrorMessage}");
 				}
 
-				Console.WriteLine($"User '{userValidate.Name}' is Valid");
+				return false;
+
+				// Console.WriteLine($"User '{userValidate.Name}' is Valid");
 			}
 
 			return true;
