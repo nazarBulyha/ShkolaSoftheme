@@ -8,7 +8,7 @@
 	{
 		private static void Main()
 		{
-			var myOperator = new SerializerDeserializer().DeserializeXmlTime<Operator>();
+			var myOperator = new SerializerDeserializer().DeserializeJsonTime<Operator>();
 
 			var operations = new Operations();
 			var createOperator = false;
@@ -70,6 +70,8 @@
 			{
 				UserActivity.GetMostActiveUser(myOperator.Logger.FolderPath + myOperator.Logger.FileName, myOperator.ListAccounts);
 			}
+
+			myOperator.Logger.ShowAllJsonLog();
 
 			Console.ReadLine();
 		}

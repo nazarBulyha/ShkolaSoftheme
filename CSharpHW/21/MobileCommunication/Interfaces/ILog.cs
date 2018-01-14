@@ -16,8 +16,8 @@
 
 		void ShowLog(int messageCount, string message, MessageType messageType);
 
-		void WriteLogMessages();
+		void WriteMessagesToLog();
 
-		void ShowAllLog();
+		void ShowAllTextLog();
 	}
 }

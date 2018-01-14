@@ -11,86 +11,86 @@
 
 		public void CreateOperator(bool createOperator)
 		{
-			// initialize empty Operator
 			if (!createOperator)
 			{
 				Console.WriteLine("Operator has been already created.");
 				Console.WriteLine();
 			}
-			else
-			{
-				var myOperator = serializerDeserializer.DeserializeXmlTime<Operator>();
-				myOperator.ListStandardAccounts = myOperator.CreateStandardAccounts();
 
-				#region Initializing mobile accounts
+			var myOperator = serializerDeserializer.DeserializeJsonTime<Operator>();
 
-				var vasyl = myOperator.CreateAccount();
-				vasyl = myOperator.SetAccountParameters(vasyl,
-														"Vasyl",
-														"Vasylovych",
-														"vasyl.vasylovych@gmail.com",
-														new DateTime(1987, 10, 24));
+			#region Initialize operator
 
-				var petro = myOperator.CreateAccount();
-				petro = myOperator.SetAccountParameters(petro,
-														"Petro",
-														"Petrovych",
-														"petro.petrovych@gmail.com",
-														new DateTime(1988, 01, 15, 10, 0, 0));
+			myOperator.ListStandardAccounts = myOperator.CreateStandardAccounts();
 
-				var taras = myOperator.CreateAccount();
-				taras = myOperator.SetAccountParameters(taras,
-														"Taras",
-														"Tarasovych",
-														"taras.tarasovych@gmail.com",
-														new DateTime(1991, 01, 28, 10, 0, 0));
+			var vasyl = myOperator.CreateAccount();
+			vasyl = myOperator.SetAccountParameters(vasyl,
+			                                        "Vasyl",
+			                                        "Vasylovych",
+			                                        "vasyl.vasylovych@gmail.com",
+			                                        new DateTime(1987, 10, 24));
 
-				var nazar = myOperator.CreateAccount();
-				nazar = myOperator.SetAccountParameters(nazar,
-														"Nazar",
-														"Nazarovych",
-														"nazar.nazarovych@gmail.com",
-														new DateTime(1997, 06, 10, 10, 0, 0));
+			var petro = myOperator.CreateAccount();
+			petro = myOperator.SetAccountParameters(petro,
+			                                        "Petro",
+			                                        "Petrovych",
+			                                        "petro.petrovych@gmail.com",
+			                                        new DateTime(1988, 01, 15, 10, 0, 0));
 
-				var igor = myOperator.CreateAccount();
-				igor = myOperator.SetAccountParameters(igor,
-													   "Igor",
-													   "Igorovych",
-													   "igor.igorovych@gmail.com",
-													   new DateTime(1997, 01, 28, 10, 0, 0));
+			var taras = myOperator.CreateAccount();
+			taras = myOperator.SetAccountParameters(taras,
+			                                        "Taras",
+			                                        "Tarasovych",
+			                                        "taras.tarasovych@gmail.com",
+			                                        new DateTime(1991, 01, 28, 10, 0, 0));
 
-				var andriy = myOperator.CreateAccount();
-				andriy = myOperator.SetAccountParameters(andriy,
-														 "Andriy",
-														 "Andriyovych",
-														 "andriy.andriyovych@gmail.com",
-														 new DateTime(1997, 10, 16, 10, 0, 0));
+			var nazar = myOperator.CreateAccount();
+			nazar = myOperator.SetAccountParameters(nazar,
+			                                        "Nazar",
+			                                        "Nazarovych",
+			                                        "nazar.nazarovych@gmail.com",
+			                                        new DateTime(1997, 06, 10, 10, 0, 0));
 
-				#endregion
+			var igor = myOperator.CreateAccount();
+			igor = myOperator.SetAccountParameters(igor,
+			                                       "Igor",
+			                                       "Igorovych",
+			                                       "igor.igorovych@gmail.com",
+			                                       new DateTime(1997, 01, 28, 10, 0, 0));
 
-				#region Set AddressBook contacts
+			var andriy = myOperator.CreateAccount();
+			andriy = myOperator.SetAccountParameters(andriy,
+			                                         "Andriy",
+			                                         "Andriyovych",
+			                                         "andriy.andriyovych@gmail.com",
+			                                         new DateTime(1997, 10, 16, 10, 0, 0));
 
-				vasyl.AddressBook.SetAccounts(petro, taras, nazar, igor, andriy);
-				petro.AddressBook.SetAccounts(vasyl, taras, nazar, igor, andriy);
-				taras.AddressBook.SetAccounts(vasyl, petro, nazar, igor, andriy);
-				nazar.AddressBook.SetAccounts(vasyl, petro, taras, igor, andriy);
-				andriy.AddressBook.SetAccounts(vasyl, petro, taras, nazar, igor);
-				igor.AddressBook.SetAccounts(vasyl, petro, taras, nazar);
+			#endregion
 
-				#endregion
+			#region Set AddressBook contacts
 
-				serializerDeserializer.SerializeXmlTime(myOperator);
-			}
+			vasyl.AddressBook.SetAccounts(petro, taras, nazar, igor, andriy);
+			petro.AddressBook.SetAccounts(vasyl, taras, nazar, igor, andriy);
+			taras.AddressBook.SetAccounts(vasyl, petro, nazar, igor, andriy);
+			nazar.AddressBook.SetAccounts(vasyl, petro, taras, igor, andriy);
+			andriy.AddressBook.SetAccounts(vasyl, petro, taras, nazar, igor);
+			igor.AddressBook.SetAccounts(vasyl, petro, taras, nazar);
+
+			#endregion
+
+			serializerDeserializer.SerializeJsonTime(myOperator);
 		}
 
 		public void FillOperator(bool fillOperator)
 		{
 			if (!fillOperator)
+			{
 				return;
+			}
 
-			var myOperator = serializerDeserializer.DeserializeXmlTime<Operator>();
+			var myOperator = serializerDeserializer.DeserializeJsonTime<Operator>();
 
-			#region Get/initialize accounts from file
+			#region Initialize accounts
 
 			var vasyl1 = myOperator.FindAccountByName("Vasyl");
 			var petro1 = myOperator.FindAccountByName("Petro");
@@ -189,15 +189,17 @@
 
 			#endregion SMS 
 
-			myOperator.Logger.WriteLogMessages();
+			myOperator.Logger.WriteMessagesToLog();
 
-			serializerDeserializer.SerializeXmlTime(myOperator);
+			serializerDeserializer.SerializeJsonTime(myOperator);
 		}
 
 		public void AddNewUser(bool addNewUser, Operator myOperator)
 		{
 			if (!addNewUser)
+			{
 				return;
+			}
 
 			// Get answer from user if he want to add a new account until answer yes/no
 			string addNewUserAnswer;
@@ -213,7 +215,7 @@
 			{
 				var user = new User();
 
-				#region Fill new account properties
+				
 
 				Console.WriteLine();
 				Console.WriteLine("Enter user properties:");
@@ -230,7 +232,7 @@
 				Console.Write("E-mail: ");
 				user.Email = Console.ReadLine();
 
-				#endregion
+				
 
 				#region Create new account
 
@@ -256,12 +258,9 @@
 				#endregion Make call/sms
 			}
 
-			//Logger.ShowLog(6, "Call ended", MessageType.Call);
 			Console.WriteLine();
 
-			myOperator.Logger.WriteLogMessages();
-
-			serializerDeserializer.SerializeXmlTime(myOperator);
+			serializerDeserializer.SerializeJsonTime(myOperator);
 		}
 	}
 }

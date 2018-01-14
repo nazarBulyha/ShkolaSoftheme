@@ -9,10 +9,14 @@
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
+	using Newtonsoft.Json;
+	using Newtonsoft.Json.Linq;
+
 	public class Logger : ILog
 	{
 		public readonly string FolderPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\CallLogs\";
 		public readonly string FileName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
+		public readonly string JsonFileName = @"Operator.json";
 
 		public List<LoggerMessage> ListMessages { get; set; } = new List<LoggerMessage>();
 
@@ -32,7 +36,7 @@
 			ListMessages.Add(Message);
 		}
 
-		public void WriteLogMessages()
+		public void WriteMessagesToLog()
 		{
 			Directory.CreateDirectory(Path.GetDirectoryName(FolderPath + FileName) ?? throw new InvalidOperationException());
 
@@ -53,7 +57,7 @@
 			ListMessages.Clear();
 		}
 
-		public void ShowAllLog()
+		public void ShowAllTextLog()
 		{
 			using (var fileStream = new FileStream(FolderPath + FileName, FileMode.OpenOrCreate))
 			using (var reader = new StreamReader(fileStream))
@@ -63,6 +67,17 @@
 				{
 					Console.WriteLine(line);
 				}
+			}
+		}
+
+		public void ShowAllJsonLog()
+		{
+			using (var file = File.OpenText(FolderPath + JsonFileName))
+			using (var reader = new JsonTextReader(file))
+			{
+				var jobject = (JObject)JToken.ReadFrom(reader);
+
+				Console.WriteLine(jobject);
 			}
 		}
 
