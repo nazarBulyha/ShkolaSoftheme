@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Operations.cs" />
+    <Compile Include="Controllers\ProgramOperations.cs" />
     <Compile Include="Controllers\SerializerDeserializer.cs" />
     <Compile Include="Controllers\UserActivity.cs" />
     <Compile Include="Enums\MessageType.cs" />

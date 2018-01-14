@@ -5,7 +5,7 @@
 
 	using MobileCommunication.Models;
 
-	public class Operations
+	public class ProgramOperations
 	{
 		private readonly SerializerDeserializer serializerDeserializer = new SerializerDeserializer();
 

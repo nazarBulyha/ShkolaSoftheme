@@ -8,9 +8,9 @@
 	{
 		private static void Main()
 		{
-			var myOperator = new SerializerDeserializer().DeserializeXmlTime<Operator>();
+			var myOperator = new SerializerDeserializer().DeserializeXml<Operator>();
 
-			var operations = new Operations();
+			var operations = new ProgramOperations();
 			var createOperator = false;
 			var fillOperator = false;
 			var addNewUser = false;
