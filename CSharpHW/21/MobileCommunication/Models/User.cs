@@ -5,8 +5,10 @@
 
 	using MobileCommunication.Extensions;
 
-	[Serializable]
+	using ProtoBuf;
+
 	[UserValidation]
+	[ProtoContract]
 	public class User
 	{
 		public User() { }
@@ -17,18 +19,23 @@
 			DateBirth = DateTime.Now;
 		}
 
+		[ProtoMember(1)]
 		public int Number { get; set; }
 
 		[Required]
+		[ProtoMember(2)]
 		public string Name { get; set; }
 
 		[Required]
+		[ProtoMember(3)]
 		public string Surname { get; set; }
 
 		[Required]
+		[ProtoMember(4)]
 		public string Email { get; set; }
 
 		[Required]
+		[ProtoMember(5)]
 		public DateTime DateBirth { get; set; }
 	}
 }

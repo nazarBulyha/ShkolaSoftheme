@@ -6,19 +6,24 @@
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
-	[Serializable]
+	using ProtoBuf;
+
+	[ProtoContract]
 	public class Account : IAccount
 	{
+		[ProtoMember(1)]
 		public User User { get; set; }
 
+		[ProtoMember(2)]
 		public AddressBook AddressBook { get; set; }
 
-		[field: NonSerialized]
+		[field: ProtoIgnore]
 		public event EventHandler<AccountEventArgs> OnCallHandler;
 
-		[field: NonSerialized]
+		[field: ProtoIgnore]
 		public event EventHandler<AccountEventArgs> OnSmsHandler;
 
+		[ProtoIgnore]
 		private AccountEventArgs numberEventArgs;
 
 		public Account()

@@ -12,15 +12,25 @@
 	using Newtonsoft.Json;
 	using Newtonsoft.Json.Linq;
 
+	using ProtoBuf;
+
+	[ProtoContract]
 	public class Logger : ILog
 	{
+		[ProtoMember(1)]
 		public readonly string FolderPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}\CallLogs\";
+
+		[ProtoMember(2)]
 		public readonly string FileName = $"CallLogFor {DateTime.Now:dd_MM_yyyy}.txt";
+
+		[ProtoMember(3)]
 		public readonly string JsonFileName = @"Operator.json";
 
-		public List<LoggerMessage> ListMessages { get; set; } = new List<LoggerMessage>();
+		[ProtoIgnore]
+		private List<LoggerMessage> ListMessages { get; } = new List<LoggerMessage>();
 
-		public LoggerMessage Message { get; set; }
+		[ProtoIgnore]
+		private LoggerMessage Message { get; set; }
 
 		public void AddLogMessage(string message, AccountEventArgs numbersArgs, MessageType messageType)
 		{
@@ -79,6 +89,18 @@
 
 				Console.WriteLine(jobject);
 			}
+		}
+
+		// TODO: realize
+		public void ShowAllXmlLog()
+		{
+
+		}
+
+		// TODO: realize
+		public void ShowAllBinaryLog()
+		{
+
 		}
 
 		public void ShowLog(DateTime dateTime, string message, MessageType messageType = MessageType.Error)

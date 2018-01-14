@@ -1,16 +1,19 @@
 ﻿namespace MobileCommunication.Models
 {
-	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
 	using MobileCommunication.Controllers;
 
-	[Serializable]
+	using ProtoBuf;
+
+	[ProtoContract]
 	public class AddressBook
 	{
+		[ProtoMember(1)]
 		public List<User> NumberList { get; set; }
 
+		[ProtoMember(2)]
 		public List<User> StandardNumberList { get; set; }
 
 		public string GetAccountNameByNumber(int number)

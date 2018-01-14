@@ -4,6 +4,7 @@
 
 	using MobileCommunication.Enums;
 
+	[Serializable]
 	public class LoggerMessage
 	{
 		public string Message { get; set; }

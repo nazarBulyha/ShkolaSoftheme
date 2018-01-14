@@ -10,17 +10,28 @@
 	using MobileCommunication.Interfaces;
 	using MobileCommunication.Models;
 
-	[Serializable]
+	using ProtoBuf;
+
+	[ProtoContract]
 	public class Operator : IOperator
 	{
-		public List<Account> ListAccounts { get; set; } = new List<Account>();
+		[ProtoMember(1)]
+		public List<Account> ListAccounts { get; set; }
 
-		public List<Account> ListStandardAccounts { get; set; } = new List<Account>();
+		[ProtoMember(2)]
+		public List<Account> ListStandardAccounts { get; set; }
 
-		[NonSerialized]
-		public readonly Logger Logger = new Logger();
+		[ProtoMember(3)]
+		public Logger Logger { get; set; }
 
-		[NonSerialized]
+		public Operator()
+		{
+			ListAccounts = new List<Account>();
+			ListStandardAccounts = new List<Account>();
+			Logger = new Logger();
+		}
+
+		[ProtoMember(4)]
 		public const int OperatorNumber = 2219320;
 
 		private Account accountSender;

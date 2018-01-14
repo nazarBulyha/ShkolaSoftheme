@@ -5,7 +5,7 @@
 
 	using MobileCommunication.Models;
 
-	public class Operations
+	public class ProgramOperations
 	{
 		private readonly SerializerDeserializer serializerDeserializer = new SerializerDeserializer();
 
@@ -19,7 +19,7 @@
 				return;
 			}
 
-			var myOperator = serializerDeserializer.DeserializeJsonTime<Operator>();
+			var myOperator = serializerDeserializer.DeserializeGpbTime<Operator>();
 
 			#region Initialize operator
 
@@ -27,45 +27,45 @@
 
 			var vasyl = myOperator.CreateAccount();
 			vasyl = myOperator.SetAccountParameters(vasyl,
-			                                        "Vasyl",
-			                                        "Vasylovych",
-			                                        "vasyl.vasylovych@gmail.com",
-			                                        new DateTime(1987, 10, 24));
+													"Vasyl",
+													"Vasylovych",
+													"vasyl.vasylovych@gmail.com",
+													new DateTime(1987, 10, 24));
 
 			var petro = myOperator.CreateAccount();
 			petro = myOperator.SetAccountParameters(petro,
-			                                        "Petro",
-			                                        "Petrovych",
-			                                        "petro.petrovych@gmail.com",
-			                                        new DateTime(1988, 01, 15, 10, 0, 0));
+													"Petro",
+													"Petrovych",
+													"petro.petrovych@gmail.com",
+													new DateTime(1988, 01, 15, 10, 0, 0));
 
 			var taras = myOperator.CreateAccount();
 			taras = myOperator.SetAccountParameters(taras,
-			                                        "Taras",
-			                                        "Tarasovych",
-			                                        "taras.tarasovych@gmail.com",
-			                                        new DateTime(1991, 01, 28, 10, 0, 0));
+													"Taras",
+													"Tarasovych",
+													"taras.tarasovych@gmail.com",
+													new DateTime(1991, 01, 28, 10, 0, 0));
 
 			var nazar = myOperator.CreateAccount();
 			nazar = myOperator.SetAccountParameters(nazar,
-			                                        "Nazar",
-			                                        "Nazarovych",
-			                                        "nazar.nazarovych@gmail.com",
-			                                        new DateTime(1997, 06, 10, 10, 0, 0));
+													"Nazar",
+													"Nazarovych",
+													"nazar.nazarovych@gmail.com",
+													new DateTime(1997, 06, 10, 10, 0, 0));
 
 			var igor = myOperator.CreateAccount();
 			igor = myOperator.SetAccountParameters(igor,
-			                                       "Igor",
-			                                       "Igorovych",
-			                                       "igor.igorovych@gmail.com",
-			                                       new DateTime(1997, 01, 28, 10, 0, 0));
+												   "Igor",
+												   "Igorovych",
+												   "igor.igorovych@gmail.com",
+												   new DateTime(1997, 01, 28, 10, 0, 0));
 
 			var andriy = myOperator.CreateAccount();
 			andriy = myOperator.SetAccountParameters(andriy,
-			                                         "Andriy",
-			                                         "Andriyovych",
-			                                         "andriy.andriyovych@gmail.com",
-			                                         new DateTime(1997, 10, 16, 10, 0, 0));
+													 "Andriy",
+													 "Andriyovych",
+													 "andriy.andriyovych@gmail.com",
+													 new DateTime(1997, 10, 16, 10, 0, 0));
 
 			#endregion
 
@@ -80,7 +80,7 @@
 
 			#endregion
 
-			serializerDeserializer.SerializeJsonTime(myOperator);
+			serializerDeserializer.SerializeGpbTime(myOperator);
 		}
 
 		public void FillOperator(bool fillOperator)
@@ -90,7 +90,7 @@
 				return;
 			}
 
-			var myOperator = serializerDeserializer.DeserializeJsonTime<Operator>();
+			var myOperator = serializerDeserializer.DeserializeGpbTime<Operator>();
 
 			#region Initialize accounts
 
@@ -193,7 +193,7 @@
 
 			myOperator.Logger.WriteMessagesToLog();
 
-			serializerDeserializer.SerializeJsonTime(myOperator);
+			serializerDeserializer.SerializeGpbTime(myOperator);
 		}
 
 		public void AddNewUser(bool addNewUser, Operator myOperator)
@@ -217,7 +217,7 @@
 			{
 				var user = new User();
 
-				
+
 
 				Console.WriteLine();
 				Console.WriteLine("Enter user properties:");
@@ -234,7 +234,7 @@
 				Console.Write("E-mail: ");
 				user.Email = Console.ReadLine();
 
-				
+
 
 				#region Create new account
 
@@ -262,7 +262,7 @@
 
 			Console.WriteLine();
 
-			serializerDeserializer.SerializeJsonTime(myOperator);
+			serializerDeserializer.SerializeGpbTime(myOperator);
 		}
 	}
 }

@@ -8,9 +8,9 @@
 	{
 		private static void Main()
 		{
-			var myOperator = new SerializerDeserializer().DeserializeJsonTime<Operator>();
+			var myOperator = new SerializerDeserializer().DeserializeGpb<Operator>();
 
-			var operations = new Operations();
+			var operations = new ProgramOperations();
 			var createOperator = false;
 			var fillOperator = false;
 			var addNewUser = false;
@@ -65,6 +65,8 @@
 			operations.CreateOperator(createOperator);
 			operations.FillOperator(fillOperator);
 			operations.AddNewUser(addNewUser, myOperator);
+
+			myOperator = new SerializerDeserializer().DeserializeGpb<Operator>();
 
 			if (myOperator.ListAccounts.Count != 0)
 			{
