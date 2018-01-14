@@ -15,6 +15,8 @@
 			{
 				Console.WriteLine("Operator has been already created.");
 				Console.WriteLine();
+
+				return;
 			}
 
 			var myOperator = serializerDeserializer.DeserializeJsonTime<Operator>();

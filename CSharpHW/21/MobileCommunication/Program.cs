@@ -71,7 +71,7 @@
 				UserActivity.GetMostActiveUser(myOperator.Logger.FolderPath + myOperator.Logger.FileName, myOperator.ListAccounts);
 			}
 
-			myOperator.Logger.ShowAllJsonLog();
+			// myOperator.Logger.ShowAllJsonLog();
 
 			Console.ReadLine();
 		}

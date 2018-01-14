@@ -118,7 +118,7 @@
 		public Account FindAccountByName(string name)
 		{
 			// more than one user
-			var account = ListAccounts.SingleOrDefault(mobileAcc => mobileAcc.User.Name == name);
+			var account = ListAccounts.FirstOrDefault(mobileAcc => mobileAcc.User.Name == name);
 
 			if (account == null)
 			{
