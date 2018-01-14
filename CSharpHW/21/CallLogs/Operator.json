@@ -1,0 +1,519 @@
+{
+  "ListAccounts": [
+    {
+      "User": {
+        "Number": 2219324,
+        "Name": "Vasyl",
+        "Surname": "Vasylovych",
+        "Email": "vasyl.vasylovych@gmail.com",
+        "DateBirth": "1987-10-24T00:00:00"
+      },
+      "AddressBook": {
+        "NumberList": [
+          {
+            "Number": 2219325,
+            "Name": "Petro",
+            "Surname": "Petrovych",
+            "Email": "petro.petrovych@gmail.com",
+            "DateBirth": "1988-01-15T10:00:00"
+          },
+          {
+            "Number": 2219326,
+            "Name": "Taras",
+            "Surname": "Tarasovych",
+            "Email": "taras.tarasovych@gmail.com",
+            "DateBirth": "1991-01-28T10:00:00"
+          },
+          {
+            "Number": 2219327,
+            "Name": "Nazar",
+            "Surname": "Nazarovych",
+            "Email": "nazar.nazarovych@gmail.com",
+            "DateBirth": "1997-06-10T10:00:00"
+          },
+          {
+            "Number": 2219328,
+            "Name": "Igor",
+            "Surname": "Igorovych",
+            "Email": "igor.igorovych@gmail.com",
+            "DateBirth": "1997-01-28T10:00:00"
+          },
+          {
+            "Number": 2219329,
+            "Name": "Andriy",
+            "Surname": "Andriyovych",
+            "Email": "andriy.andriyovych@gmail.com",
+            "DateBirth": "1997-10-16T10:00:00"
+          }
+        ],
+        "StandardNumberList": [
+          {
+            "Number": 2219320,
+            "Name": "standardName1",
+            "Surname": "standardSurname1",
+            "Email": "standard1@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219321,
+            "Name": "standardName2",
+            "Surname": "standardSurname2",
+            "Email": "standard2@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219322,
+            "Name": "standardName3",
+            "Surname": "standardSurname3",
+            "Email": "standard3@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219323,
+            "Name": "standardName4",
+            "Surname": "standardSurname4",
+            "Email": "standard4@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          }
+        ]
+      }
+    },
+    {
+      "User": {
+        "Number": 2219325,
+        "Name": "Petro",
+        "Surname": "Petrovych",
+        "Email": "petro.petrovych@gmail.com",
+        "DateBirth": "1988-01-15T10:00:00"
+      },
+      "AddressBook": {
+        "NumberList": [
+          {
+            "Number": 2219324,
+            "Name": "Vasyl",
+            "Surname": "Vasylovych",
+            "Email": "vasyl.vasylovych@gmail.com",
+            "DateBirth": "1987-10-24T00:00:00"
+          },
+          {
+            "Number": 2219326,
+            "Name": "Taras",
+            "Surname": "Tarasovych",
+            "Email": "taras.tarasovych@gmail.com",
+            "DateBirth": "1991-01-28T10:00:00"
+          },
+          {
+            "Number": 2219327,
+            "Name": "Nazar",
+            "Surname": "Nazarovych",
+            "Email": "nazar.nazarovych@gmail.com",
+            "DateBirth": "1997-06-10T10:00:00"
+          },
+          {
+            "Number": 2219328,
+            "Name": "Igor",
+            "Surname": "Igorovych",
+            "Email": "igor.igorovych@gmail.com",
+            "DateBirth": "1997-01-28T10:00:00"
+          },
+          {
+            "Number": 2219329,
+            "Name": "Andriy",
+            "Surname": "Andriyovych",
+            "Email": "andriy.andriyovych@gmail.com",
+            "DateBirth": "1997-10-16T10:00:00"
+          }
+        ],
+        "StandardNumberList": [
+          {
+            "Number": 2219320,
+            "Name": "standardName1",
+            "Surname": "standardSurname1",
+            "Email": "standard1@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219321,
+            "Name": "standardName2",
+            "Surname": "standardSurname2",
+            "Email": "standard2@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219322,
+            "Name": "standardName3",
+            "Surname": "standardSurname3",
+            "Email": "standard3@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219323,
+            "Name": "standardName4",
+            "Surname": "standardSurname4",
+            "Email": "standard4@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          }
+        ]
+      }
+    },
+    {
+      "User": {
+        "Number": 2219326,
+        "Name": "Taras",
+        "Surname": "Tarasovych",
+        "Email": "taras.tarasovych@gmail.com",
+        "DateBirth": "1991-01-28T10:00:00"
+      },
+      "AddressBook": {
+        "NumberList": [
+          {
+            "Number": 2219324,
+            "Name": "Vasyl",
+            "Surname": "Vasylovych",
+            "Email": "vasyl.vasylovych@gmail.com",
+            "DateBirth": "1987-10-24T00:00:00"
+          },
+          {
+            "Number": 2219325,
+            "Name": "Petro",
+            "Surname": "Petrovych",
+            "Email": "petro.petrovych@gmail.com",
+            "DateBirth": "1988-01-15T10:00:00"
+          },
+          {
+            "Number": 2219327,
+            "Name": "Nazar",
+            "Surname": "Nazarovych",
+            "Email": "nazar.nazarovych@gmail.com",
+            "DateBirth": "1997-06-10T10:00:00"
+          },
+          {
+            "Number": 2219328,
+            "Name": "Igor",
+            "Surname": "Igorovych",
+            "Email": "igor.igorovych@gmail.com",
+            "DateBirth": "1997-01-28T10:00:00"
+          },
+          {
+            "Number": 2219329,
+            "Name": "Andriy",
+            "Surname": "Andriyovych",
+            "Email": "andriy.andriyovych@gmail.com",
+            "DateBirth": "1997-10-16T10:00:00"
+          }
+        ],
+        "StandardNumberList": [
+          {
+            "Number": 2219320,
+            "Name": "standardName1",
+            "Surname": "standardSurname1",
+            "Email": "standard1@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219321,
+            "Name": "standardName2",
+            "Surname": "standardSurname2",
+            "Email": "standard2@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219322,
+            "Name": "standardName3",
+            "Surname": "standardSurname3",
+            "Email": "standard3@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219323,
+            "Name": "standardName4",
+            "Surname": "standardSurname4",
+            "Email": "standard4@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          }
+        ]
+      }
+    },
+    {
+      "User": {
+        "Number": 2219327,
+        "Name": "Nazar",
+        "Surname": "Nazarovych",
+        "Email": "nazar.nazarovych@gmail.com",
+        "DateBirth": "1997-06-10T10:00:00"
+      },
+      "AddressBook": {
+        "NumberList": [
+          {
+            "Number": 2219324,
+            "Name": "Vasyl",
+            "Surname": "Vasylovych",
+            "Email": "vasyl.vasylovych@gmail.com",
+            "DateBirth": "1987-10-24T00:00:00"
+          },
+          {
+            "Number": 2219325,
+            "Name": "Petro",
+            "Surname": "Petrovych",
+            "Email": "petro.petrovych@gmail.com",
+            "DateBirth": "1988-01-15T10:00:00"
+          },
+          {
+            "Number": 2219326,
+            "Name": "Taras",
+            "Surname": "Tarasovych",
+            "Email": "taras.tarasovych@gmail.com",
+            "DateBirth": "1991-01-28T10:00:00"
+          },
+          {
+            "Number": 2219328,
+            "Name": "Igor",
+            "Surname": "Igorovych",
+            "Email": "igor.igorovych@gmail.com",
+            "DateBirth": "1997-01-28T10:00:00"
+          },
+          {
+            "Number": 2219329,
+            "Name": "Andriy",
+            "Surname": "Andriyovych",
+            "Email": "andriy.andriyovych@gmail.com",
+            "DateBirth": "1997-10-16T10:00:00"
+          }
+        ],
+        "StandardNumberList": [
+          {
+            "Number": 2219320,
+            "Name": "standardName1",
+            "Surname": "standardSurname1",
+            "Email": "standard1@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219321,
+            "Name": "standardName2",
+            "Surname": "standardSurname2",
+            "Email": "standard2@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219322,
+            "Name": "standardName3",
+            "Surname": "standardSurname3",
+            "Email": "standard3@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219323,
+            "Name": "standardName4",
+            "Surname": "standardSurname4",
+            "Email": "standard4@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          }
+        ]
+      }
+    },
+    {
+      "User": {
+        "Number": 2219328,
+        "Name": "Igor",
+        "Surname": "Igorovych",
+        "Email": "igor.igorovych@gmail.com",
+        "DateBirth": "1997-01-28T10:00:00"
+      },
+      "AddressBook": {
+        "NumberList": [
+          {
+            "Number": 2219324,
+            "Name": "Vasyl",
+            "Surname": "Vasylovych",
+            "Email": "vasyl.vasylovych@gmail.com",
+            "DateBirth": "1987-10-24T00:00:00"
+          },
+          {
+            "Number": 2219325,
+            "Name": "Petro",
+            "Surname": "Petrovych",
+            "Email": "petro.petrovych@gmail.com",
+            "DateBirth": "1988-01-15T10:00:00"
+          },
+          {
+            "Number": 2219326,
+            "Name": "Taras",
+            "Surname": "Tarasovych",
+            "Email": "taras.tarasovych@gmail.com",
+            "DateBirth": "1991-01-28T10:00:00"
+          },
+          {
+            "Number": 2219327,
+            "Name": "Nazar",
+            "Surname": "Nazarovych",
+            "Email": "nazar.nazarovych@gmail.com",
+            "DateBirth": "1997-06-10T10:00:00"
+          }
+        ],
+        "StandardNumberList": [
+          {
+            "Number": 2219320,
+            "Name": "standardName1",
+            "Surname": "standardSurname1",
+            "Email": "standard1@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219321,
+            "Name": "standardName2",
+            "Surname": "standardSurname2",
+            "Email": "standard2@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219322,
+            "Name": "standardName3",
+            "Surname": "standardSurname3",
+            "Email": "standard3@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219323,
+            "Name": "standardName4",
+            "Surname": "standardSurname4",
+            "Email": "standard4@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          }
+        ]
+      }
+    },
+    {
+      "User": {
+        "Number": 2219329,
+        "Name": "Andriy",
+        "Surname": "Andriyovych",
+        "Email": "andriy.andriyovych@gmail.com",
+        "DateBirth": "1997-10-16T10:00:00"
+      },
+      "AddressBook": {
+        "NumberList": [
+          {
+            "Number": 2219324,
+            "Name": "Vasyl",
+            "Surname": "Vasylovych",
+            "Email": "vasyl.vasylovych@gmail.com",
+            "DateBirth": "1987-10-24T00:00:00"
+          },
+          {
+            "Number": 2219325,
+            "Name": "Petro",
+            "Surname": "Petrovych",
+            "Email": "petro.petrovych@gmail.com",
+            "DateBirth": "1988-01-15T10:00:00"
+          },
+          {
+            "Number": 2219326,
+            "Name": "Taras",
+            "Surname": "Tarasovych",
+            "Email": "taras.tarasovych@gmail.com",
+            "DateBirth": "1991-01-28T10:00:00"
+          },
+          {
+            "Number": 2219327,
+            "Name": "Nazar",
+            "Surname": "Nazarovych",
+            "Email": "nazar.nazarovych@gmail.com",
+            "DateBirth": "1997-06-10T10:00:00"
+          },
+          {
+            "Number": 2219328,
+            "Name": "Igor",
+            "Surname": "Igorovych",
+            "Email": "igor.igorovych@gmail.com",
+            "DateBirth": "1997-01-28T10:00:00"
+          }
+        ],
+        "StandardNumberList": [
+          {
+            "Number": 2219320,
+            "Name": "standardName1",
+            "Surname": "standardSurname1",
+            "Email": "standard1@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219321,
+            "Name": "standardName2",
+            "Surname": "standardSurname2",
+            "Email": "standard2@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219322,
+            "Name": "standardName3",
+            "Surname": "standardSurname3",
+            "Email": "standard3@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          },
+          {
+            "Number": 2219323,
+            "Name": "standardName4",
+            "Surname": "standardSurname4",
+            "Email": "standard4@gmail.com",
+            "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+          }
+        ]
+      }
+    }
+  ],
+  "ListStandardAccounts": [
+    {
+      "User": {
+        "Number": 2219320,
+        "Name": "standardName1",
+        "Surname": "standardSurname1",
+        "Email": "standard1@gmail.com",
+        "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+      },
+      "AddressBook": {
+        "NumberList": null,
+        "StandardNumberList": null
+      }
+    },
+    {
+      "User": {
+        "Number": 2219321,
+        "Name": "standardName2",
+        "Surname": "standardSurname2",
+        "Email": "standard2@gmail.com",
+        "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+      },
+      "AddressBook": {
+        "NumberList": null,
+        "StandardNumberList": null
+      }
+    },
+    {
+      "User": {
+        "Number": 2219322,
+        "Name": "standardName3",
+        "Surname": "standardSurname3",
+        "Email": "standard3@gmail.com",
+        "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+      },
+      "AddressBook": {
+        "NumberList": null,
+        "StandardNumberList": null
+      }
+    },
+    {
+      "User": {
+        "Number": 2219323,
+        "Name": "standardName4",
+        "Surname": "standardSurname4",
+        "Email": "standard4@gmail.com",
+        "DateBirth": "2018-01-14T04:15:20.4233157+02:00"
+      },
+      "AddressBook": {
+        "NumberList": null,
+        "StandardNumberList": null
+      }
+    }
+  ]
+}
